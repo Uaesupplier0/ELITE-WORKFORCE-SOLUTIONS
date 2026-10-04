@@ -218,7 +218,7 @@ textarea{min-height:115px;resize:vertical}
     </div>
 </section>
 
-<!-- PUBLIC LEADERBOARD SECTION WITH LOGOS & TRADE LICENSES -->
+<!-- PUBLIC LEADERBOARD SECTION -->
 <section class="requirement-section" id="leaderboard" style="background:#fff; padding:80px 25px;">
   <div class="container">
     <div class="section-title">
@@ -312,7 +312,7 @@ textarea{min-height:115px;resize:vertical}
     </div>
 </section>
 
-<!-- REQUIREMENTS SECTION WITH TRADE LICENSE & LOGO INPUTS -->
+<!-- REQUIREMENTS SECTION -->
 <section class="requirement-section" id="requirements">
   <div class="container">
     <div class="section-title">
@@ -359,7 +359,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </section>
 
-<!-- SUPPLIERS SECTION -->
+<!-- SUPPLIERS SECTION WITH TRADE LICENSE & LOGO INPUTS -->
 <section class="requirement-section" id="suppliers" style="background:#fff;">
   <div class="container">
     <div class="section-title">
@@ -371,6 +371,14 @@ textarea{min-height:115px;resize:vertical}
         <div class="form-group">
           <label>Supplier / Company Name</label>
           <input type="text" id="supp_name" required placeholder="e.g. Gulf Manpower Services">
+        </div>
+        <div class="form-group">
+          <label>Trade License Number</label>
+          <input type="text" id="supp_license" required placeholder="e.g. UAE-SUPP-789012">
+        </div>
+        <div class="form-group">
+          <label>Supplier Logo Image URL</label>
+          <input type="url" id="supp_logo" placeholder="https://example.com/supplier-logo.png">
         </div>
         <div class="form-group">
           <label>Contact Person</label>
@@ -855,7 +863,6 @@ textarea{min-height:115px;resize:vertical}
       }, 6000);
   }
 
-  // Updated Company Form Submit with Trade License and Logo URL
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
@@ -883,6 +890,7 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Submit Requirement';
   }
 
+  // Updated Supplier Form Submit with Trade License and Logo URL
   async function submitSupplierForm(e) {
     e.preventDefault();
     const btn = document.getElementById('supp_btn');
@@ -891,6 +899,8 @@ textarea{min-height:115px;resize:vertical}
     const rawWorkers = document.getElementById('supp_workers').value;
     const payload = {
       company_name: document.getElementById('supp_name').value.trim(),
+      trade_license: document.getElementById('supp_license').value.trim(),
+      logo_url: document.getElementById('supp_logo').value.trim(),
       contact_person: document.getElementById('supp_person').value.trim(),
       email: document.getElementById('supp_email').value.trim(),
       phone: document.getElementById('supp_phone').value.trim(),
@@ -901,8 +911,9 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('suppliers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Supplier registered successfully!');
+      showToast('Supplier registered successfully with license!');
       document.getElementById('supplierForm').reset();
+      loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
     btn.disabled = false; btn.innerText = 'Register as Supplier';
@@ -1017,9 +1028,9 @@ textarea{min-height:115px;resize:vertical}
     if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
     if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>'; return; }
 
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Supplier</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.company_name}</b></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
     container.innerHTML = html + '</tbody></table>';
   }
