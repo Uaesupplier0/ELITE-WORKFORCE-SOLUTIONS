@@ -75,7 +75,7 @@ header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.98);b
 .hero h1{font-size:48px;line-height:1.1;margin-bottom:22px}.hero h1 span{color:var(--gold)}
 .hero-lead{font-size:17px;color:#e2eaf5;max-width:650px;margin-bottom:30px}
 .hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
-.btn{display:inline-block;padding:14px 22px;border-radius:8px;font-weight:800;transition:.25s;border:0;cursor:pointer}
+.btn{display:inline-block;padding:14px 22px;border-radius:8px;font-weight:800;transition:.25s;border:0;cursor:pointer;text-align:center;}
 .btn-primary{background:var(--gold2);color:#111827}.btn-primary:hover{transform:translateY(-2px);background:var(--gold)}
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-2px)}
@@ -166,7 +166,7 @@ textarea{min-height:115px;resize:vertical}
       <p class="hero-lead">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
       <div class="hero-buttons">
         <a href="#requirements" class="btn btn-primary">Post Requirement</a>
-        <a href="#suppliers" class="btn btn-outline">Join as Supplier</a>
+        <button onclick="openSupplierModal()" class="btn btn-outline"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
         <button onclick="openAzadModal()" class="btn btn-azad-hero"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
       </div>
     </div>
@@ -359,7 +359,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </section>
 
-<!-- SUPPLIERS SECTION WITH TRADE LICENSE & LOGO INPUTS -->
+<!-- SUPPLIERS SECTION -->
 <section class="requirement-section" id="suppliers" style="background:#fff;">
   <div class="container">
     <div class="section-title">
@@ -601,6 +601,51 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
+<!-- SUPPLIER POPUP MODAL -->
+<div class="azad-modal" id="supplierModal">
+  <div class="azad-modal-content">
+    <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
+    <h3 style="color:var(--blue);margin-bottom:10px;">🚚 Quick Registration: Manpower Supplier</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register your supply company.</p>
+    
+    <form onsubmit="submitModalSupplier(event)">
+      <div class="form-group">
+        <label>Supplier / Company Name</label>
+        <input type="text" id="m_supp_name" required placeholder="e.g. Gulf Manpower Services">
+      </div>
+      <div class="form-group">
+        <label>Trade License Number</label>
+        <input type="text" id="m_supp_license" required placeholder="e.g. UAE-SUPP-789012">
+      </div>
+      <div class="form-group">
+        <label>Supplier Logo Image URL</label>
+        <input type="url" id="m_supp_logo" placeholder="https://example.com/logo.png">
+      </div>
+      <div class="form-group">
+        <label>Contact Person</label>
+        <input type="text" id="m_supp_person" required placeholder="Your Name">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="m_supp_email" required placeholder="supplier@domain.com">
+      </div>
+      <div class="form-group">
+        <label>Phone / WhatsApp</label>
+        <input type="tel" id="m_supp_phone" required pattern="(\+971|0)[0-9]{8,9}" title="Valid UAE Phone Number" placeholder="+971 50 987 6543">
+      </div>
+      <div class="form-group">
+        <label>Available Manpower Categories</label>
+        <input type="text" id="m_supp_types" placeholder="e.g. Electricians, Welders, Fitters">
+      </div>
+      <div class="form-group">
+        <label>Total Workers Available</label>
+        <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
+      </div>
+      <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
+    </form>
+  </div>
+</div>
+
 <!-- AZAD VISA POPUP MODAL -->
 <div class="azad-modal" id="azadModal">
   <div class="azad-modal-content">
@@ -661,6 +706,11 @@ textarea{min-height:115px;resize:vertical}
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
 
+  // Supplier Modal Functions
+  function openSupplierModal() { document.getElementById('supplierModal').style.display = 'flex'; }
+  function closeSupplierModal() { document.getElementById('supplierModal').style.display = 'none'; }
+
+  // Azad Modal Functions
   function openAzadModal() { document.getElementById('azadModal').style.display = 'flex'; }
   function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
 
@@ -890,7 +940,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Submit Requirement';
   }
 
-  // Updated Supplier Form Submit with Trade License and Logo URL
   async function submitSupplierForm(e) {
     e.preventDefault();
     const btn = document.getElementById('supp_btn');
@@ -917,6 +966,35 @@ textarea{min-height:115px;resize:vertical}
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
     btn.disabled = false; btn.innerText = 'Register as Supplier';
+  }
+
+  // Modal Supplier Form Submit
+  async function submitModalSupplier(e) {
+    e.preventDefault();
+    const btn = document.getElementById('m_supp_btn');
+    btn.disabled = true; btn.innerText = 'Registering...';
+
+    const rawWorkers = document.getElementById('m_supp_workers').value;
+    const payload = {
+      company_name: document.getElementById('m_supp_name').value.trim(),
+      trade_license: document.getElementById('m_supp_license').value.trim(),
+      logo_url: document.getElementById('m_supp_logo').value.trim(),
+      contact_person: document.getElementById('m_supp_person').value.trim(),
+      email: document.getElementById('m_supp_email').value.trim(),
+      phone: document.getElementById('m_supp_phone').value.trim(),
+      manpower_types: document.getElementById('m_supp_types').value.trim(),
+      workers_available: rawWorkers ? parseInt(rawWorkers, 10) : 0
+    };
+
+    const { error } = await _supabase.from('suppliers').insert([payload]);
+    if (error) { showToast('Error: ' + error.message, 'error'); } 
+    else {
+      showToast('Supplier registered successfully!');
+      closeSupplierModal();
+      loadPublicLeaderboard();
+      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+    }
+    btn.disabled = false; btn.innerText = 'Submit Supplier Details';
   }
 
   async function submitAzadWorkerForm(e) {
