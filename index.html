@@ -182,7 +182,6 @@ textarea{min-height:115px;resize:vertical}
         </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
-            <!-- Trade License Box -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; background: rgba(11,61,145,0.1); color: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
                     <i class="fa-solid fa-file-shield"></i>
@@ -194,7 +193,6 @@ textarea{min-height:115px;resize:vertical}
                 </div>
             </div>
             
-            <!-- Government Compliance Box -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; background: rgba(16,185,129,0.1); color: var(--emerald2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
                     <i class="fa-solid fa-building-columns"></i>
@@ -206,7 +204,6 @@ textarea{min-height:115px;resize:vertical}
                 </div>
             </div>
 
-            <!-- Secure Data & Verification Box -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; background: rgba(245,158,11,0.1); color: var(--gold2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
                     <i class="fa-solid fa-shield-halved"></i>
@@ -259,7 +256,6 @@ textarea{min-height:115px;resize:vertical}
                     Whether you are a multinational enterprise expanding operations or an energetic startup assembling a high-performance team, our tailor-made human resource solutions ensure operational efficiency and sustainable growth.
                 </p>
 
-                <!-- Mission & Vision Cards -->
                 <div class="grid sm:grid-cols-2 gap-4 pt-4" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
                     <div class="p-5 bg-slate-50 rounded-xl border border-slate-200" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #e2e8f0;">
                         <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-3 text-lg font-bold" style="font-size:18px; color:var(--blue); margin-bottom:8px;"><i class="fa-solid fa-bullseye"></i></div>
@@ -316,7 +312,7 @@ textarea{min-height:115px;resize:vertical}
     </div>
 </section>
 
-<!-- REQUIREMENTS SECTION -->
+<!-- REQUIREMENTS SECTION WITH TRADE LICENSE & LOGO INPUTS -->
 <section class="requirement-section" id="requirements">
   <div class="container">
     <div class="section-title">
@@ -328,6 +324,14 @@ textarea{min-height:115px;resize:vertical}
         <div class="form-group">
           <label>Company Name</label>
           <input type="text" id="comp_name" required placeholder="e.g. Al Habtoor Contracting">
+        </div>
+        <div class="form-group">
+          <label>Trade License Number</label>
+          <input type="text" id="comp_license" required placeholder="e.g. UAE-CN-123456">
+        </div>
+        <div class="form-group">
+          <label>Company Logo Image URL</label>
+          <input type="url" id="comp_logo" placeholder="https://example.com/logo.png">
         </div>
         <div class="form-group">
           <label>Contact Person</label>
@@ -533,7 +537,6 @@ textarea{min-height:115px;resize:vertical}
                 </div>
             </div>
 
-            <!-- Google Map -->
             <div style="background:#fff; padding:5px; border-radius:12px; border:1px solid #e2e8f0; overflow:hidden; height:280px;">
                 <iframe title="Office Location Map" style="width:100%; height:100%; border:0; border-radius:10px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1786541819777!2d55.2721877150094!3d25.18880398390069!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682def2893d9%3A0xe349f7831f13b632!2sBusiness%20Bay%2C%20Dubai!5e0!3m2!1sen!2sae!4v1650000000000" allowfullscreen="" loading="lazy"></iframe>
             </div>
@@ -647,15 +650,12 @@ textarea{min-height:115px;resize:vertical}
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
 
-  // Navigation Logic
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
 
-  // Modal Functions
   function openAzadModal() { document.getElementById('azadModal').style.display = 'flex'; }
   function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
 
-  // Custom Toast Notification System
   function showToast(msg, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
@@ -665,7 +665,6 @@ textarea{min-height:115px;resize:vertical}
     setTimeout(() => toast.remove(), 4000);
   }
 
-  // Secure Admin Access Gate using Supabase Auth
   async function unlockAdminPanel() {
     const session = await _supabase.auth.getSession();
     if (session.data.session) {
@@ -698,14 +697,12 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Admin Logout Function
   async function logoutAdmin() {
     await _supabase.auth.signOut();
     document.getElementById('admin').style.display = 'none';
     showToast("Logged out successfully.");
   }
 
-  // PUBLIC LEADERBOARD FUNCTIONS (With Logo & Trade License Display)
   function switchPublicTab(tab, btn) {
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
@@ -832,7 +829,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Resume File Selection Handler
   function handleFileSelect(event) {
       const file = event.target.files[0];
       const label = document.getElementById('file-name-label');
@@ -848,7 +844,6 @@ textarea{min-height:115px;resize:vertical}
       }
   }
 
-  // Handle Career Form Submit
   function handleCareerFormSubmit(event) {
       event.preventDefault();
       document.getElementById('career-success-msg').style.display = 'block';
@@ -860,7 +855,7 @@ textarea{min-height:115px;resize:vertical}
       }, 6000);
   }
 
-  // Company Form Submit
+  // Updated Company Form Submit with Trade License and Logo URL
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
@@ -868,6 +863,8 @@ textarea{min-height:115px;resize:vertical}
 
     const payload = {
       company_name: document.getElementById('comp_name').value.trim(),
+      trade_license: document.getElementById('comp_license').value.trim(),
+      logo_url: document.getElementById('comp_logo').value.trim(),
       contact_person: document.getElementById('comp_person').value.trim(),
       email: document.getElementById('comp_email').value.trim(),
       phone: document.getElementById('comp_phone').value.trim(),
@@ -878,7 +875,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('companies').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Requirement posted successfully!');
+      showToast('Requirement posted successfully with license!');
       document.getElementById('companyForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -886,7 +883,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Submit Requirement';
   }
 
-  // Supplier Form Submit
   async function submitSupplierForm(e) {
     e.preventDefault();
     const btn = document.getElementById('supp_btn');
@@ -912,7 +908,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Register as Supplier';
   }
 
-  // Azad Worker Form Submit
   async function submitAzadWorkerForm(e) {
     e.preventDefault();
     const btn = document.getElementById('azad_btn');
@@ -939,7 +934,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Register as Freelance Worker';
   }
 
-  // Modal Azad Worker Form Submit
   async function submitModalAzadWorker(e) {
     e.preventDefault();
     const btn = document.getElementById('m_azad_btn');
@@ -965,7 +959,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Submit Azad Worker Details';
   }
 
-  // Contact Form Submit
   async function submitContactForm(e) {
     e.preventDefault();
     const btn = document.getElementById('cont_btn');
@@ -987,7 +980,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Send Message';
   }
 
-  // ADMIN PANEL CONTROLLERS
   function switchTab(tableName, btn) {
     currentTab = tableName;
     document.querySelectorAll('.admin-section .admin-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1010,9 +1002,9 @@ textarea{min-height:115px;resize:vertical}
     if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
     if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No company requirements posted yet.</p>'; return; }
 
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Company</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.company_name}</b></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
     container.innerHTML = html + '</tbody></table>';
   }
@@ -1074,7 +1066,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Load Leaderboard & Check Active Session on Startup
   window.addEventListener('DOMContentLoaded', async () => {
     loadPublicLeaderboard();
     const session = await _supabase.auth.getSession();
