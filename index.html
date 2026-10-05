@@ -652,6 +652,11 @@ textarea{min-height:115px;resize:vertical}
         <label>Total Workers Available</label>
         <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
       </div>
+      <!-- Document / PDF Upload Field for Supplier Modal -->
+      <div class="form-group">
+        <label>Upload Original Documents (PDF format)</label>
+        <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
+      </div>
       <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
     </form>
   </div>
@@ -693,6 +698,11 @@ textarea{min-height:115px;resize:vertical}
           <option value="Sharjah">Sharjah</option>
           <option value="Ajman">Ajman</option>
         </select>
+      </div>
+      <!-- Document / PDF Upload Field for Azad Modal -->
+      <div class="form-group">
+        <label>Upload Experience / Certificates (PDF format)</label>
+        <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
       </div>
       <button type="submit" class="submit-btn" id="m_azad_btn" style="background:var(--emerald2);">Submit Azad Worker Details</button>
     </form>
@@ -987,7 +997,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('suppliers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Supplier registered successfully!');
+      showToast('Supplier registered successfully with documents!');
       closeSupplierModal();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -1036,7 +1046,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('azad_workers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Registered successfully!');
+      showToast('Registered successfully with certificates!');
       closeAzadModal();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
