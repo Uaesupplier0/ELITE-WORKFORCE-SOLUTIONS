@@ -710,15 +710,14 @@ textarea{min-height:115px;resize:vertical}
 </div>
 
 <!-- SUCCESS POPUP MODAL -->
-<div id="successPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="popupContent">
-        <!-- Success Icon -->
-        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+<div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
+        <div style="width:60px; height:60px; background:#dcfce7; color:#16a34a; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px; font-size:28px; font-weight:bold;">
             ✓
         </div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">Done!</h3>
-        <p class="text-gray-600 mb-6" id="popupMessage">Aapka data successfully submit ho gaya hai.</p>
-        <button onclick="closeSuccessPopup()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition duration-200 cursor-pointer">
+        <h3 style="font-size:22px; font-weight:bold; color:#1e293b; margin-bottom:8px;">Done!</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:20px;" id="popupMessage">Aapka data successfully submit ho gaya hai.</p>
+        <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">
             OK
         </button>
     </div>
@@ -749,28 +748,15 @@ textarea{min-height:115px;resize:vertical}
   // Success Popup Functions
   function showSuccessPopup(customMessage = "Aapka data successfully submit ho gaya hai!") {
       const popup = document.getElementById('successPopup');
-      const popupContent = document.getElementById('popupContent');
       const msgElement = document.getElementById('popupMessage');
       
       msgElement.innerText = customMessage;
-      popup.classList.remove('hidden');
-      
-      setTimeout(() => {
-          popupContent.classList.remove('scale-95', 'opacity-0');
-          popupContent.classList.add('scale-100', 'opacity-100');
-      }, 10);
+      popup.style.display = 'flex';
   }
 
   function closeSuccessPopup() {
       const popup = document.getElementById('successPopup');
-      const popupContent = document.getElementById('popupContent');
-      
-      popupContent.classList.remove('scale-100', 'opacity-100');
-      popupContent.classList.add('scale-95', 'opacity-0');
-      
-      setTimeout(() => {
-          popup.classList.add('hidden');
-      }, 300);
+      popup.style.display = 'none';
   }
 
   function showToast(msg, type = 'success') {
