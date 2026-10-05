@@ -353,6 +353,11 @@ textarea{min-height:115px;resize:vertical}
           <label>Requirement Details</label>
           <textarea id="comp_details" required placeholder="Specify needed roles, number of workers, duration, etc."></textarea>
         </div>
+        <!-- Document / PDF Upload Field for Company -->
+        <div class="form-group">
+          <label>Upload Company Trade License / Profile (PDF format)</label>
+          <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: #fafafa;">
+        </div>
         <button type="submit" class="submit-btn" id="comp_btn">Submit Requirement</button>
       </form>
     </div>
@@ -399,6 +404,11 @@ textarea{min-height:115px;resize:vertical}
         <div class="form-group">
           <label>Total Workers Available</label>
           <input type="number" id="supp_workers" min="1" placeholder="e.g. 25">
+        </div>
+        <!-- Document / PDF Upload Field for Supplier (Original Documents) -->
+        <div class="form-group">
+          <label>Upload Original Documents (Trade License, Establishment Card - PDF)</label>
+          <input type="file" id="supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
         </div>
         <button type="submit" class="submit-btn" id="supp_btn">Register as Supplier</button>
       </form>
@@ -457,6 +467,11 @@ textarea{min-height:115px;resize:vertical}
         <div class="form-group">
           <label>Expected Daily / Hourly Rate (AED)</label>
           <input type="number" id="azad_rate" placeholder="e.g. 100 AED/Day or 12 AED/Hour">
+        </div>
+        <!-- Document / PDF Upload Field for Azad Worker (Experience & ID) -->
+        <div class="form-group">
+          <label>Upload Emirates ID & Work Experience / Certificates (PDF format)</label>
+          <input type="file" id="azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
         </div>
         <button type="submit" class="submit-btn" id="azad_btn" style="background:var(--emerald2);">Register as Freelance Worker</button>
       </form>
@@ -932,7 +947,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('companies').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Requirement posted successfully with license!');
+      showToast('Requirement posted successfully with documents!');
       document.getElementById('companyForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -960,7 +975,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('suppliers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Supplier registered successfully with license!');
+      showToast('Supplier registered successfully with original documents!');
       document.getElementById('supplierForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -1015,7 +1030,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('azad_workers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Azad Worker profile registered!');
+      showToast('Azad Worker profile and experience documents registered!');
       document.getElementById('azadWorkerForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
