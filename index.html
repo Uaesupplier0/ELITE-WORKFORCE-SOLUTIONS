@@ -466,7 +466,7 @@ textarea{min-height:115px;resize:vertical}
         </div>
         <!-- Document / PDF Upload Field for Azad Worker (Experience & ID) -->
         <div class="form-group">
-          <label>Upload Work Experience / Certificates (PDF format)</label>
+          <label>Upload Experience & Emirates ID (PDF format)</label>
           <input type="file" id="azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
         </div>
         <button type="submit" class="submit-btn" id="azad_btn" style="background:var(--emerald2);">Register as Freelance Worker</button>
@@ -701,7 +701,7 @@ textarea{min-height:115px;resize:vertical}
       </div>
       <!-- Document / PDF Upload Field for Azad Modal -->
       <div class="form-group">
-        <label>Upload Experience / Certificates (PDF format)</label>
+        <label>Upload Experience & Emirates ID (PDF format)</label>
         <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
       </div>
       <button type="submit" class="submit-btn" id="m_azad_btn" style="background:var(--emerald2);">Submit Azad Worker Details</button>
@@ -1046,7 +1046,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('azad_workers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showToast('Registered successfully with certificates!');
+      showToast('Registered successfully with certificates and ID!');
       closeAzadModal();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
