@@ -542,7 +542,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
-<!-- SUPPLIER POPUP MODAL (UPDATED WITH EMAIL & PHOTO SELECT) -->
+<!-- SUPPLIER POPUP MODAL (LOGO URL REMOVED) -->
 <div class="azad-modal" id="supplierModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
@@ -565,10 +565,6 @@ textarea{min-height:115px;resize:vertical}
       <div class="form-group">
         <label>Select Company Logo / Photo (Image format)</label>
         <input type="file" id="m_supp_photo" accept="image/*" required style="padding: 9px; background: var(--light);">
-      </div>
-      <div class="form-group">
-        <label>Supplier Logo Image URL (Optional)</label>
-        <input type="url" id="m_supp_logo" placeholder="https://example.com/logo.png">
       </div>
       <div class="form-group">
         <label>Contact Person</label>
@@ -877,7 +873,7 @@ textarea{min-height:115px;resize:vertical}
       let html = `<table class="admin-table">
         <thead>
           <tr>
-            <th>Supplier / Logo</th>
+            <th>Supplier</th>
             <th>Trade License</th>
             <th>Email</th>
             <th>Categories</th>
@@ -887,11 +883,10 @@ textarea{min-height:115px;resize:vertical}
         </thead><tbody>`;
       dataList.forEach(i => {
         const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
-        const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
         const tradeLic = i.trade_license || 'UAE-SUPP-Verified';
 
         html += `<tr>
-          <td><div style="display:flex;align-items:center;gap:10px;">${logoImg} <b>${i.company_name}</b></div></td>
+          <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div> <b>${i.company_name}</b></div></td>
           <td><span style="font-family:monospace;color:var(--blue);font-weight:bold;"><i class="fa-solid fa-file-shield"></i> ${tradeLic}</span></td>
           <td>${i.email || 'N/A'}</td>
           <td>${i.manpower_types || 'General Manpower'}</td>
@@ -1020,7 +1015,7 @@ textarea{min-height:115px;resize:vertical}
       company_name: document.getElementById('m_supp_name').value.trim(),
       trade_license: document.getElementById('m_supp_license').value.trim(),
       email: document.getElementById('m_supp_email_field').value.trim(),
-      logo_url: document.getElementById('m_supp_logo').value.trim(),
+      logo_url: '',
       contact_person: document.getElementById('m_supp_person').value.trim(),
       phone: document.getElementById('m_supp_phone').value.trim(),
       manpower_types: document.getElementById('m_supp_types').value.trim(),
