@@ -253,12 +253,17 @@ textarea{min-height:115px;resize:vertical}
     </div>
 </section>
 
-<!-- PUBLIC LEADERBOARD SECTION -->
+<!-- PUBLIC LEADERBOARD SECTION WITH LIVE SEARCH/FILTER -->
 <section class="requirement-section reveal-on-scroll" id="leaderboard" style="padding:80px 25px;">
   <div class="container">
     <div class="section-title">
       <h2>🔥 Verified Company Requirements & Suppliers</h2>
       <p>Browse active company requirements and verified manpower suppliers with official trade licenses and direct WhatsApp contact.</p>
+    </div>
+
+    <!-- Live Search & Filter Bar -->
+    <div style="max-width: 600px; margin: 0 auto 25px auto;">
+      <input type="text" id="publicSearchInput" oninput="filterPublicTable()" placeholder="🔍 Search by company name, skill, or location..." style="padding: 12px 18px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
     </div>
 
     <div class="admin-tabs" style="justify-content: center; margin-bottom: 25px;">
@@ -765,6 +770,7 @@ textarea{min-height:115px;resize:vertical}
 
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
+  let rawPublicData = []; // Cached for live filtering
 
   // Dark / Light Mode Logic
   function toggleDarkMode() {
@@ -882,6 +888,7 @@ textarea{min-height:115px;resize:vertical}
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    document.getElementById('publicSearchInput').value = ''; // Reset search on tab switch
     loadPublicLeaderboard();
   }
 
@@ -893,10 +900,51 @@ textarea{min-height:115px;resize:vertical}
       const { data, error } = await _supabase.from('companies').select('*').order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
+        rawPublicData = [];
         container.innerHTML = '<p style="padding:20px;text-align:center;">No active requirements posted yet.</p>';
         return;
       }
+      rawPublicData = data;
+      renderPublicTable(rawPublicData);
 
+    } else if (currentPublicTab === 'suppliers') {
+      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
+      const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        rawPublicData = [];
+        container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>';
+        return;
+      }
+      rawPublicData = data;
+      renderPublicTable(rawPublicData);
+
+    } else if (currentPublicTab === 'azad_workers') {
+      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading available workers...</p>';
+      const { data, error } = await _supabase
+        .from('azad_workers')
+        .select('created_at, full_name, trade, location, expected_daily_rate, phone_number')
+        .order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        rawPublicData = [];
+        container.innerHTML = '<p style="padding:20px;text-align:center;">No workers registered yet.</p>';
+        return;
+      }
+      rawPublicData = data;
+      renderPublicTable(rawPublicData);
+    }
+  }
+
+  // Render public table dynamically based on active tab and filter query
+  function renderPublicTable(dataList) {
+    const container = document.getElementById('public-table-container');
+    if (!dataList || dataList.length === 0) {
+      container.innerHTML = '<p style="padding:20px;text-align:center;">No matching records found.</p>';
+      return;
+    }
+
+    if (currentPublicTab === 'companies') {
       let html = `<table class="admin-table">
         <thead>
           <tr>
@@ -907,7 +955,7 @@ textarea{min-height:115px;resize:vertical}
             <th>Contact</th>
           </tr>
         </thead><tbody>`;
-      data.forEach(i => {
+      dataList.forEach(i => {
         const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
         const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
         const tradeLic = i.trade_license || 'UAE-LIC-Verified';
@@ -923,14 +971,6 @@ textarea{min-height:115px;resize:vertical}
       container.innerHTML = html + '</tbody></table>';
 
     } else if (currentPublicTab === 'suppliers') {
-      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
-      const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
-
-      if (error || !data || data.length === 0) {
-        container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>';
-        return;
-      }
-
       let html = `<table class="admin-table">
         <thead>
           <tr>
@@ -941,7 +981,7 @@ textarea{min-height:115px;resize:vertical}
             <th>Connect</th>
           </tr>
         </thead><tbody>`;
-      data.forEach(i => {
+      dataList.forEach(i => {
         const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
         const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
         const tradeLic = i.trade_license || 'UAE-SUPP-Verified';
@@ -957,17 +997,6 @@ textarea{min-height:115px;resize:vertical}
       container.innerHTML = html + '</tbody></table>';
 
     } else if (currentPublicTab === 'azad_workers') {
-      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading available workers...</p>';
-      const { data, error } = await _supabase
-        .from('azad_workers')
-        .select('created_at, full_name, trade, location, expected_daily_rate, phone_number')
-        .order('created_at', { ascending: false });
-
-      if (error || !data || data.length === 0) {
-        container.innerHTML = '<p style="padding:20px;text-align:center;">No workers registered yet.</p>';
-        return;
-      }
-
       let html = `<table class="admin-table">
         <thead>
           <tr>
@@ -979,7 +1008,7 @@ textarea{min-height:115px;resize:vertical}
             <th>Connect</th>
           </tr>
         </thead><tbody>`;
-      data.forEach(i => {
+      dataList.forEach(i => {
         const cleanPhone = i.phone_number ? i.phone_number.replace(/[^0-9]/g, '') : '';
 
         html += `<tr>
@@ -993,6 +1022,33 @@ textarea{min-height:115px;resize:vertical}
       });
       container.innerHTML = html + '</tbody></table>';
     }
+  }
+
+  // Live filter function for the search bar
+  function filterPublicTable() {
+    const query = document.getElementById('publicSearchInput').value.toLowerCase().trim();
+    if (!query) {
+      renderPublicTable(rawPublicData);
+      return;
+    }
+
+    const filtered = rawPublicData.filter(item => {
+      if (currentPublicTab === 'companies') {
+        return (item.company_name && item.company_name.toLowerCase().includes(query)) ||
+               (item.location && item.location.toLowerCase().includes(query)) ||
+               (item.requirement_details && item.requirement_details.toLowerCase().includes(query));
+      } else if (currentPublicTab === 'suppliers') {
+        return (item.company_name && item.company_name.toLowerCase().includes(query)) ||
+               (item.manpower_types && item.manpower_types.toLowerCase().includes(query));
+      } else if (currentPublicTab === 'azad_workers') {
+        return (item.full_name && item.full_name.toLowerCase().includes(query)) ||
+               (item.trade && item.trade.toLowerCase().includes(query)) ||
+               (item.location && item.location.toLowerCase().includes(query));
+      }
+      return false;
+    });
+
+    renderPublicTable(filtered);
   }
 
   function handleFileSelect(event) {
