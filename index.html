@@ -659,21 +659,40 @@ textarea{min-height:115px;resize:vertical}
 <div class="azad-modal" id="supplierModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
-    <h3 style="color:var(--blue);margin-bottom:10px;">🚚 Quick Registration: Manpower Supplier</h3>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register your supply company.</p>
+    <h3 style="color:var(--blue);margin-bottom:10px;">🚚 Quick Registration: Manpower Supplier / Company / Azad Worker</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register.</p>
     
     <form onsubmit="submitModalSupplier(event)">
+      <!-- Dynamic Entry Type Selection -->
       <div class="form-group">
-        <label>Supplier / Company Name</label>
+        <label>Entry Type</label>
+        <select id="modal_entryType" class="w-full border border-gray-300 rounded-md p-2 text-sm" onchange="updatePhotoLabel()">
+          <option value="supplier">Supplier</option>
+          <option value="company">Company</option>
+          <option value="worker">Azad Worker</option>
+        </select>
+      </div>
+
+      <!-- Smart Dynamic Photo / Logo Selection Box -->
+      <div class="form-group">
+        <label id="modal_photoLabel" class="block text-sm font-medium text-gray-700 mb-1">Supplier Logo / Photo</label>
+        <div class="flex items-center space-x-4" style="display: flex; align-items: center; gap: 12px;">
+          <!-- Preview Box -->
+          <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-100 border border-gray-300 flex items-center justify-center" style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #f3f4f6; flex-shrink: 0;">
+            <img id="modal_photoPreview" src="https://via.placeholder.com/48?text=Img" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <!-- File Input -->
+          <input type="file" id="modal_dynamicPhotoInput" accept="image/*" class="block w-full text-sm text-gray-500" onchange="previewImage(event)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Supplier / Company / Worker Name</label>
         <input type="text" id="m_supp_name" required placeholder="e.g. Gulf Manpower Services">
       </div>
       <div class="form-group">
         <label>Trade License Number</label>
         <input type="text" id="m_supp_license" required placeholder="e.g. UAE-SUPP-789012">
-      </div>
-      <div class="form-group">
-        <label>Supplier Logo Image URL</label>
-        <input type="url" id="m_supp_logo" placeholder="https://example.com/logo.png">
       </div>
       <div class="form-group">
         <label>Contact Person</label>
@@ -688,7 +707,7 @@ textarea{min-height:115px;resize:vertical}
         <input type="tel" id="m_supp_phone" required pattern="(\+971|0)[0-9]{8,9}" title="Valid UAE Phone Number" placeholder="+971 50 987 6543">
       </div>
       <div class="form-group">
-        <label>Available Manpower Categories</label>
+        <label>Available Manpower Categories / Skills</label>
         <input type="text" id="m_supp_types" placeholder="e.g. Electricians, Welders, Fitters">
       </div>
       <div class="form-group">
@@ -700,7 +719,7 @@ textarea{min-height:115px;resize:vertical}
         <label>Upload Original Documents (PDF format)</label>
         <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
       </div>
-      <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
+      <button type="submit" class="submit-btn" id="m_supp_btn">Submit Details</button>
     </form>
   </div>
 </div>
@@ -774,6 +793,31 @@ textarea{min-height:115px;resize:vertical}
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
   let rawPublicData = []; // Cached for live filtering
+
+  // Dynamic Photo Label and Preview Functions for Popup Modal
+  function updatePhotoLabel() {
+      const type = document.getElementById('modal_entryType').value;
+      const label = document.getElementById('modal_photoLabel');
+      
+      if (type === 'company') {
+          label.innerText = 'Company Logo / Photo';
+      } else if (type === 'supplier') {
+          label.innerText = 'Supplier Logo / Photo';
+      } else {
+          label.innerText = 'Azad Worker Photo';
+      }
+  }
+
+  function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function(){
+          const output = document.getElementById('modal_photoPreview');
+          output.src = reader.result;
+      };
+      if(event.target.files[0]) {
+          reader.readAsDataURL(event.target.files[0]);
+      }
+  }
 
   // Dark / Light Mode Logic
   function toggleDarkMode() {
@@ -1141,7 +1185,6 @@ textarea{min-height:115px;resize:vertical}
     const payload = {
       company_name: document.getElementById('m_supp_name').value.trim(),
       trade_license: document.getElementById('m_supp_license').value.trim(),
-      logo_url: document.getElementById('m_supp_logo').value.trim(),
       contact_person: document.getElementById('m_supp_person').value.trim(),
       email: document.getElementById('m_supp_email').value.trim(),
       phone: document.getElementById('m_supp_phone').value.trim(),
@@ -1153,11 +1196,11 @@ textarea{min-height:115px;resize:vertical}
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
       closeSupplierModal();
-      showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
+      showSuccessPopup('Done ✅ - Details successfully database mein save ho gaye hain!');
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
-    btn.disabled = false; btn.innerText = 'Submit Supplier Details';
+    btn.disabled = false; btn.innerText = 'Submit Details';
   }
 
   async function submitAzadWorkerForm(e) {
