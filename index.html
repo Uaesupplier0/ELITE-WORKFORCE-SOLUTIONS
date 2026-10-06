@@ -178,7 +178,6 @@ textarea{min-height:115px;resize:vertical}
       <li><a href="#leaderboard" onclick="closeMenu()">Public Board</a></li>
       <li><a href="#requirements" onclick="closeMenu()">Post Requirement</a></li>
       <li><a href="#suppliers" onclick="closeMenu()">Suppliers</a></li>
-      <li><a href="#azad-visa" onclick="closeMenu()">Azad Workers</a></li>
       <li><a href="#careers" onclick="closeMenu()">Careers</a></li>
       <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
       <li><a href="#contact" class="nav-btn" onclick="closeMenu()">Get Staffing</a></li>
@@ -396,7 +395,6 @@ textarea{min-height:115px;resize:vertical}
           <label>Requirement Details</label>
           <textarea id="comp_details" required placeholder="Specify needed roles, number of workers, duration, etc."></textarea>
         </div>
-        <!-- Document / PDF Upload Field for Company -->
         <div class="form-group">
           <label>Upload Company Trade License / Profile (PDF format)</label>
           <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: var(--light);">
@@ -448,71 +446,11 @@ textarea{min-height:115px;resize:vertical}
           <label>Total Workers Available</label>
           <input type="number" id="supp_workers" min="1" placeholder="e.g. 25">
         </div>
-        <!-- Document / PDF Upload Field for Supplier (Original Documents) -->
         <div class="form-group">
           <label>Upload Original Documents (Trade License, Establishment Card - PDF)</label>
           <input type="file" id="supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
         </div>
         <button type="submit" class="submit-btn" id="supp_btn">Register as Supplier</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- AZAD VISA WORKER SECTION -->
-<section class="requirement-section reveal-on-scroll" id="azad-visa">
-  <div class="container">
-    <div class="section-title">
-      <h2>🇦🇪 Azad / Freelance Visa Worker Registration</h2>
-      <p>Register yourself to get immediate short-term & long-term site work across UAE.</p>
-    </div>
-    <div class="requirement-card">
-      <form id="azadWorkerForm" onsubmit="submitAzadWorkerForm(event)">
-        <div class="form-group">
-          <label>Full Name (Poora Naam)</label>
-          <input type="text" id="azad_name" required placeholder="e.g. Mohd Imran">
-        </div>
-        <div class="form-group">
-          <label>UAE Phone / WhatsApp Number</label>
-          <input type="tel" id="azad_phone" required pattern="(\+971|0)[0-9]{8,9}" title="Valid UAE Phone (+971 50 xxx xxxx or 050 xxx xxxx)" placeholder="+971 50 xxx xxxx">
-        </div>
-        <div class="form-group">
-          <label>Trade / Skill Specialization</label>
-          <select id="azad_trade" required>
-            <option value="">Select Your Work Skill</option>
-            <option value="Electrician">Electrician</option>
-            <option value="Plumber">Plumber</option>
-            <option value="Mason">Mason</option>
-            <option value="Welder">Welder</option>
-            <option value="Fitter / Mechanical">Fitter / Mechanical</option>
-            <option value="HVAC Technician">HVAC Technician</option>
-            <option value="Scaffolder">Scaffolder</option>
-            <option value="Driver">Driver</option>
-            <option value="Helper / General Labour">Helper / General Labour</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Current Emirate / Location</label>
-          <select id="azad_location" required>
-            <option value="Dubai">Dubai</option>
-            <option value="Abu Dhabi">Abu Dhabi</option>
-            <option value="Sharjah">Sharjah</option>
-            <option value="Ajman">Ajman</option>
-            <option value="Ras Al Khaimah">Ras Al Khaimah</option>
-            <option value="Umm Al Quwain">Umm Al Quwain</option>
-            <option value="Fujairah">Fujairah</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Expected Daily / Hourly Rate (AED)</label>
-          <input type="number" id="azad_rate" placeholder="e.g. 100 AED/Day or 12 AED/Hour">
-        </div>
-        <!-- Document / PDF Upload Field for Azad Worker (Experience & ID) -->
-        <div class="form-group">
-          <label>Upload Experience & Emirates ID (PDF format)</label>
-          <input type="file" id="azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
-        </div>
-        <button type="submit" class="submit-btn" id="azad_btn" style="background:var(--emerald2);">Register as Freelance Worker</button>
       </form>
     </div>
   </div>
@@ -695,7 +633,6 @@ textarea{min-height:115px;resize:vertical}
         <label>Total Workers Available</label>
         <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
       </div>
-      <!-- Document / PDF Upload Field for Supplier Modal -->
       <div class="form-group">
         <label>Upload Original Documents (PDF format)</label>
         <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -742,7 +679,6 @@ textarea{min-height:115px;resize:vertical}
           <option value="Ajman">Ajman</option>
         </select>
       </div>
-      <!-- Document / PDF Upload Field for Azad Modal -->
       <div class="form-group">
         <label>Upload Experience & Emirates ID (PDF format)</label>
         <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -791,7 +727,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Load saved theme preference on startup
   window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('ews_theme');
     const iconEl = document.getElementById('themeIcon');
@@ -800,7 +735,6 @@ textarea{min-height:115px;resize:vertical}
       if(iconEl) iconEl.className = 'fa-solid fa-sun';
     }
 
-    // Scroll reveal observer animation setup
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -891,7 +825,7 @@ textarea{min-height:115px;resize:vertical}
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('publicSearchInput').value = ''; // Reset search on tab switch
+    document.getElementById('publicSearchInput').value = '';
     loadPublicLeaderboard();
   }
 
@@ -939,7 +873,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Render public table dynamically based on active tab and filter query
   function renderPublicTable(dataList) {
     const container = document.getElementById('public-table-container');
     if (!dataList || dataList.length === 0) {
@@ -1027,7 +960,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Live filter function for the search bar
   function filterPublicTable() {
     const query = document.getElementById('publicSearchInput').value.toLowerCase().trim();
     if (!query) {
@@ -1158,31 +1090,6 @@ textarea{min-height:115px;resize:vertical}
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
     btn.disabled = false; btn.innerText = 'Submit Supplier Details';
-  }
-
-  async function submitAzadWorkerForm(e) {
-    e.preventDefault();
-    const btn = document.getElementById('azad_btn');
-    btn.disabled = true; btn.innerText = 'Submitting...';
-
-    const rawRate = document.getElementById('azad_rate').value;
-    const payload = {
-      full_name: document.getElementById('azad_name').value.trim(),
-      phone_number: document.getElementById('azad_phone').value.trim(),
-      trade: document.getElementById('azad_trade').value,
-      location: document.getElementById('azad_location').value,
-      expected_daily_rate: rawRate ? parseFloat(rawRate) : 0
-    };
-
-    const { error } = await _supabase.from('azad_workers').insert([payload]);
-    if (error) { showToast('Error: ' + error.message, 'error'); } 
-    else {
-      showSuccessPopup('Done ✅ - Azad worker profile successfully database mein save ho gayi hai!');
-      document.getElementById('azadWorkerForm').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-    }
-    btn.disabled = false; btn.innerText = 'Register as Freelance Worker';
   }
 
   async function submitModalAzadWorker(e) {
