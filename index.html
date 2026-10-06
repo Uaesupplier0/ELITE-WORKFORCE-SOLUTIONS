@@ -709,15 +709,12 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- SUCCESS POPUP MODAL -->
-<div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:16px; padding:30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
-        <div style="width:60px; height:60px; background:#dcfce7; color:#16a34a; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px; font-size:28px; font-weight:bold;">
-            ✓
-        </div>
-        <h3 style="font-size:22px; font-weight:bold; color:#1e293b; margin-bottom:8px;">Done!</h3>
-        <p style="color:#64748b; font-size:14px; margin-bottom:20px;" id="popupMessage">Aapka data successfully submit ho gaya hai.</p>
-        <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">
+<!-- SUCCESS POPUP MODAL (Done ✅) -->
+<div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3); animation: scaleUp 0.3s ease-out;">
+        <div style="font-size:36px; font-weight:bold; color:#16a34a; margin-bottom:10px;">Done ✅</div>
+        <p style="color:#334155; font-size:15px; font-weight:600; margin-bottom:20px;" id="popupMessage">Aapki information successfully database mein save ho gayi hai!</p>
+        <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:16px;">
             OK
         </button>
     </div>
@@ -746,7 +743,7 @@ textarea{min-height:115px;resize:vertical}
   function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
 
   // Success Popup Functions
-  function showSuccessPopup(customMessage = "Aapka data successfully submit ho gaya hai!") {
+  function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
       const popup = document.getElementById('successPopup');
       const msgElement = document.getElementById('popupMessage');
       
@@ -940,7 +937,7 @@ textarea{min-height:115px;resize:vertical}
 
   function handleCareerFormSubmit(event) {
       event.preventDefault();
-      showSuccessPopup("Aapka career application successfully submit ho gaya hai!");
+      showSuccessPopup("Done ✅ - Aapka career application successfully submit ho gaya hai!");
       event.target.reset();
       document.getElementById('file-name-label').innerText = "Click or Drag & Drop PDF Resume Here";
       document.getElementById('file-name-label').style.color = "#e2e8f0";
@@ -965,7 +962,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('companies').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showSuccessPopup('Done! Aapka requirement successfully submit ho gaya hai.');
+      showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
       document.getElementById('companyForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -993,7 +990,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('suppliers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showSuccessPopup('Done! Supplier registration successfully ho gaya hai.');
+      showSuccessPopup('Done ✅ - Supplier registration successfully database mein save ho gaya hai!');
       document.getElementById('supplierForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -1023,7 +1020,7 @@ textarea{min-height:115px;resize:vertical}
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
       closeSupplierModal();
-      showSuccessPopup('Done! Supplier details successfully submit ho gaye hain.');
+      showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
@@ -1047,7 +1044,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('azad_workers').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showSuccessPopup('Done! Azad worker profile successfully register ho gayi hai.');
+      showSuccessPopup('Done ✅ - Azad worker profile successfully database mein save ho gayi hai!');
       document.getElementById('azadWorkerForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -1072,7 +1069,7 @@ textarea{min-height:115px;resize:vertical}
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
       closeAzadModal();
-      showSuccessPopup('Done! Azad worker registration successful.');
+      showSuccessPopup('Done ✅ - Azad worker registration successful.');
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
@@ -1093,7 +1090,7 @@ textarea{min-height:115px;resize:vertical}
     const { error } = await _supabase.from('contact_messages').insert([payload]);
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
-      showSuccessPopup('Done! Aapka message successfully bhej diya gaya hai.');
+      showSuccessPopup('Done ✅ - Aapka message successfully database mein save ho gaya hai!');
       document.getElementById('contactForm').reset();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
