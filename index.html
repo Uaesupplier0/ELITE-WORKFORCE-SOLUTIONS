@@ -24,6 +24,7 @@
 
 <script>
     tailwind.config = {
+        darkMode: 'class',
         theme: {
             extend: {
                 colors: {
@@ -48,19 +49,25 @@
 </script>
 
 <style>
-:root{--navy:#061b3a;--blue:#0b3d91;--blue2:#1255b3;--gold:#fbbf24;--gold2:#f59e0b;--emerald:#10b981;--emerald2:#059669;--text:#17233a;--muted:#64748b;--light:#f8fafc;--white:#fff}
-body{font-family:'Inter',Arial,sans-serif;color:var(--text);background:var(--light);line-height:1.6;padding-bottom:50px}
+:root{--navy:#061b3a;--blue:#0b3d91;--blue2:#1255b3;--gold:#fbbf24;--gold2:#f59e0b;--emerald:#10b981;--emerald2:#059669;--text:#17233a;--muted:#64748b;--light:#f8fafc;--white:#fff; --card-bg:#fff; --border-color:#e7ebf0;}
+.dark{--navy:#020617;--blue:#1d4ed8;--blue2:#2563eb;--gold:#f59e0b;--gold2:#fbbf24;--emerald:#10b981;--emerald2:#059669;--text:#f8fafc;--muted:#94a3b8;--light:#0f172a;--white:#1e293b; --card-bg:#1e293b; --border-color:#334155;}
+
+body{font-family:'Inter',Arial,sans-serif;color:var(--text);background:var(--light);line-height:1.6;padding-bottom:50px;transition:background 0.3s, color 0.3s;}
 a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}
 .container{max-width:1200px;margin:auto}section{padding:80px 25px}
 .section-title{text-align:center;margin-bottom:45px}.section-title h2{font-size:38px;color:var(--blue);margin-bottom:10px}.section-title p{color:var(--muted);max-width:720px;margin:auto}
 
 /* Header & Mobile Navbar */
-header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.98);box-shadow:0 2px 18px rgba(0,0,0,.08);z-index:1000}
+header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow:0 2px 18px rgba(0,0,0,.08);z-index:1000;transition:background 0.3s;}
 .navbar{max-width:1200px;margin:auto;padding:14px 25px;display:flex;align-items:center;justify-content:space-between}
 .brand-logo{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:18px;font-weight:900;letter-spacing:.3px}.brand-logo img{width:42px;height:42px;object-fit:contain;border-radius:6px}.brand-logo span{white-space:nowrap}.brand-logo b{color:var(--gold2)}.brand-logo em{font-style:normal;color:var(--blue)}
 .nav-links{display:flex;gap:18px;align-items:center;list-style:none}.nav-links a{font-size:13px;font-weight:700;transition:color 0.2s}.nav-links a:hover{color:var(--blue2)}
 .nav-btn{background:var(--blue);color:#fff!important;padding:10px 16px;border-radius:7px;transition:0.3s}.nav-btn:hover{background:var(--blue2)}
 .menu-btn{display:none;font-size:24px;cursor:pointer;color:var(--blue)}
+
+/* Theme Toggle Button Style */
+.theme-toggle-btn{background:none;border:0;cursor:pointer;font-size:18px;color:var(--blue2);padding:6px;border-radius:50%;transition:0.2s;}
+.theme-toggle-btn:hover{background:rgba(0,0,0,0.05);}
 
 /* Ticker */
 .ticker-wrap{width:100%;background:var(--gold2);color:#000;overflow:hidden;padding:10px 0;font-weight:bold;font-size:14px;margin-top:68px}
@@ -81,36 +88,56 @@ header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.98);b
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-2px)}
 
 /* Forms & Tables Section */
-.requirement-section{background:#f1f5f9}.requirement-card{background:#fff;border-radius:16px;padding:30px;box-shadow:0 8px 28px rgba(0,0,0,.06);border:1px solid #e7ebf0;max-width:700px;margin:auto}
+.requirement-section{background:var(--light); transition: background 0.3s;}
+.requirement-card{background:var(--card-bg);border-radius:16px;padding:30px;box-shadow:0 8px 28px rgba(0,0,0,.06);border:1px solid var(--border-color);max-width:700px;margin:auto; transition: background 0.3s, border 0.3s;}
 .form-group{margin-bottom:16px}.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:14px}
-input,textarea,select{width:100%;padding:13px 14px;border:1px solid #d5dce6;border-radius:7px;outline:none;background:#fff;transition:border-color 0.2s}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--border-color);border-radius:7px;outline:none;background:var(--card-bg);color:var(--text);transition:border-color 0.2s}
 input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,61,145,0.1)}
 textarea{min-height:115px;resize:vertical}
 .submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:7px;font-weight:800;transition:background 0.2s}
 .submit-btn:hover{background:var(--blue2)}
 
 /* Admin Tabs/Tables */
-.admin-section{background:#fff;border-top:4px solid var(--navy);padding:60px 25px;display:none}
+.admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 25px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.admin-tab-btn{background:#e2e8f0;border:0;padding:10px 20px;border-radius:6px;font-weight:bold;cursor:pointer;color:#334155;transition:0.2s}
+.admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:6px;font-weight:bold;cursor:pointer;color:var(--text);transition:0.2s}
 .admin-tab-btn.active{background:var(--blue);color:#fff}
-.admin-table-wrap{overflow-x:auto;background:#fff;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border:1px solid #e2e8f0}
+.admin-table-wrap{overflow-x:auto;background:var(--card-bg);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border:1px solid var(--border-color)}
 .admin-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px}
-.admin-table th{background:#f8fafc;padding:12px;border-bottom:2px solid #e2e8f0;color:#475569}
-.admin-table td{padding:12px;border-bottom:1px solid #f1f5f9;color:#1e293b}
-.admin-badge{background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold}
+.admin-table th{background:var(--light);padding:12px;border-bottom:2px solid var(--border-color);color:var(--muted)}
+.admin-table td{padding:12px;border-bottom:1px solid var(--border-color);color:var(--text)}
+.admin-badge{background:rgba(37,99,235,0.1);color:var(--blue2);padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold}
 .admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px}
 .admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px}
 .admin-del-btn{background:#ef4444;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px}
 
 /* Modal Styling */
 .azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:20px}
-.azad-modal-content{background:#fff;border-radius:12px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:30px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-.azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:#64748b}
+.azad-modal-content{background:var(--card-bg);border-radius:12px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:30px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted)}
+
+/* Animations & Modern Hover Effects */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hover-card-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-card-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
 
 /* Toast Notifications */
 #toast-container{position:fixed;bottom:20px;right:20px;z-index:9999}
-.toast{background:#1e293b;color:#fff;padding:14px 20px;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.2);margin-top:10px;font-size:14px;display:flex;align-items:center;gap:10px;animation:slideIn 0.3s ease-out}
+.toast{background:var(--navy);color:#fff;padding:14px 20px;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.2);margin-top:10px;font-size:14px;display:flex;align-items:center;gap:10px;animation:slideIn 0.3s ease-out}
 @keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
 
 /* Responsive Navigation Styles */
@@ -119,13 +146,13 @@ textarea{min-height:115px;resize:vertical}
   .hero-lead{margin:0 auto 30px}
   .hero-buttons{justify-content:center}
   .menu-btn{display:block}
-  .nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:#fff;flex-direction:column;padding:20px;box-shadow:0 10px 20px rgba(0,0,0,0.1);align-items:flex-start}
+  .nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:var(--white);flex-direction:column;padding:20px;box-shadow:0 10px 20px rgba(0,0,0,0.1);align-items:flex-start}
   .nav-links.active{display:flex}
 }
 </style>
 <link rel="icon" type="image/png" sizes="48x48" href="logo.png">
 </head>
-<body>
+<body class="">
 
 <header>
   <nav class="navbar">
@@ -133,7 +160,15 @@ textarea{min-height:115px;resize:vertical}
       <img src="logo.png" alt="Elite Workforce">
       <span>ELITE <b>WORKFORCE</b> <em>SOLUTIONS</em></span>
     </a>
-    <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+    
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <!-- Dark / Light Mode Toggle Button -->
+      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+      <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+    </div>
+
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" onclick="closeMenu()">Home</a></li>
       <li><a href="#about" onclick="closeMenu()">About Us</a></li>
@@ -174,42 +209,42 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- TRUST & COMPLIANCE BADGES SECTION -->
-<section style="background: #ffffff; padding: 40px 25px; border-bottom: 1px solid #e2e8f0;">
+<section class="reveal-on-scroll" style="background: var(--white); padding: 40px 25px; border-bottom: 1px solid var(--border-color); transition: background 0.3s;">
     <div class="container" style="max-width: 1200px; margin: auto;">
         <div style="text-align: center; margin-bottom: 25px;">
             <span style="color: var(--blue2); font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Verified Operations</span>
-            <h3 style="font-size: 24px; color: var(--navy); margin-top: 5px;">Licensed & Compliant Manpower Partner in UAE</h3>
+            <h3 style="font-size: 24px; color: var(--text); margin-top: 5px;">Licensed & Compliant Manpower Partner in UAE</h3>
         </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
-            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px;">
+            <div class="hover-card-effect" style="background: var(--light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; background: rgba(11,61,145,0.1); color: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
                     <i class="fa-solid fa-file-shield"></i>
                 </div>
                 <div>
-                    <h4 style="font-size: 16px; font-weight: bold; color: var(--navy); margin-bottom: 3px;">Trade License</h4>
+                    <h4 style="font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 3px;">Trade License</h4>
                     <p style="font-size: 13px; color: var(--muted); margin: 0;">Lic. No: <strong>UAE-EWS-2026</strong></p>
                     <span style="font-size: 11px; color: var(--emerald2); font-weight: bold;"><i class="fa-solid fa-check-circle"></i> Officially Registered</span>
                 </div>
             </div>
             
-            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px;">
+            <div class="hover-card-effect" style="background: var(--light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; background: rgba(16,185,129,0.1); color: var(--emerald2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
                     <i class="fa-solid fa-building-columns"></i>
                 </div>
                 <div>
-                    <h4 style="font-size: 16px; font-weight: bold; color: var(--navy); margin-bottom: 3px;">Government Standard</h4>
+                    <h4 style="font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 3px;">Government Standard</h4>
                     <p style="font-size: 13px; color: var(--muted); margin: 0;">Adhering to UAE Labor Guidelines</p>
                     <span style="font-size: 11px; color: var(--emerald2); font-weight: bold;"><i class="fa-solid fa-check-circle"></i> 100% Compliant</span>
                 </div>
             </div>
 
-            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px;">
+            <div class="hover-card-effect" style="background: var(--light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; background: rgba(245,158,11,0.1); color: var(--gold2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div>
-                    <h4 style="font-size: 16px; font-weight: bold; color: var(--navy); margin-bottom: 3px;">Secure Platform</h4>
+                    <h4 style="font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 3px;">Secure Platform</h4>
                     <p style="font-size: 13px; color: var(--muted); margin: 0;">Encrypted Database & Forms</p>
                     <span style="font-size: 11px; color: var(--emerald2); font-weight: bold;"><i class="fa-solid fa-check-circle"></i> Verified SSL</span>
                 </div>
@@ -219,7 +254,7 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- PUBLIC LEADERBOARD SECTION -->
-<section class="requirement-section" id="leaderboard" style="background:#fff; padding:80px 25px;">
+<section class="requirement-section reveal-on-scroll" id="leaderboard" style="padding:80px 25px;">
   <div class="container">
     <div class="section-title">
       <h2>🔥 Verified Company Requirements & Suppliers</h2>
@@ -239,15 +274,15 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- ABOUT US SECTION -->
-<section id="about" class="py-20 bg-white" style="background:#f8fafc; padding:80px 25px;">
+<section id="about" class="reveal-on-scroll" style="background:var(--white); padding:80px 25px; transition: background 0.3s;">
     <div class="container">
         <div class="section-title">
             <h2 class="text-xs font-bold uppercase tracking-widest text-brand-600 mb-2" style="font-size:14px; color:var(--blue2);">About Our Agency</h2>
-            <p style="font-size:32px; font-weight:800; color:var(--navy); margin-bottom:10px;">Building Stronger Workforces Across Industries</p>
-            <div class="w-16 h-1 bg-brand-600 mx-auto mt-4 rounded-full" style="width:60px; height:4px; background:var(--blue); margin:15px auto 0;"></div>
+            <p style="font-size:32px; font-weight:800; color:var(--text); margin-bottom:10px;">Building Stronger Workforces Across Industries</p>
+            <div style="width:60px; height:4px; background:var(--blue); margin:15px auto 0;"></div>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center" style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;" class="about-grid">
             <div class="space-y-6">
                 <p style="color:var(--muted); line-height:1.7; margin-bottom:15px;">
                     Founded with a mission to streamline human capital management, <strong>Elite Workforce Solutions</strong> has evolved into a premier staffing and HR services agency in the UAE. We specialize in providing end-to-end recruitment, contract staffing, technical manpower, and legal compliance support.
@@ -256,21 +291,21 @@ textarea{min-height:115px;resize:vertical}
                     Whether you are a multinational enterprise expanding operations or an energetic startup assembling a high-performance team, our tailor-made human resource solutions ensure operational efficiency and sustainable growth.
                 </p>
 
-                <div class="grid sm:grid-cols-2 gap-4 pt-4" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #e2e8f0;">
-                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-3 text-lg font-bold" style="font-size:18px; color:var(--blue); margin-bottom:8px;"><i class="fa-solid fa-bullseye"></i></div>
-                        <h3 style="font-weight:bold; color:var(--navy); margin-bottom:5px;">Our Mission</h3>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div class="hover-card-effect" style="background:var(--light); padding:20px; border-radius:10px; border:1px solid var(--border-color);">
+                        <div style="font-size:18px; color:var(--blue); margin-bottom:8px;"><i class="fa-solid fa-bullseye"></i></div>
+                        <h3 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Our Mission</h3>
                         <p style="font-size:12px; color:var(--muted); line-height:1.5;">To deliver vetted, reliable talent quickly while safeguarding business compliance and fostering career advancement.</p>
                     </div>
-                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #e2e8f0;">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center mb-3 text-lg font-bold" style="font-size:18px; color:#4f46e5; margin-bottom:8px;"><i class="fa-solid fa-eye"></i></div>
-                        <h3 style="font-weight:bold; color:var(--navy); margin-bottom:5px;">Our Vision</h3>
+                    <div class="hover-card-effect" style="background:var(--light); padding:20px; border-radius:10px; border:1px solid var(--border-color);">
+                        <div style="font-size:18px; color:#4f46e5; margin-bottom:8px;"><i class="fa-solid fa-eye"></i></div>
+                        <h3 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Our Vision</h3>
                         <p style="font-size:12px; color:var(--muted); line-height:1.5;">To be the global standard for workforce reliability, HR transparency, and ethical recruitment practices.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
                 <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Team meeting" style="border-radius:12px; width:100%; height:250px; object-fit:cover; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
                 <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" alt="HR Professional" style="border-radius:12px; width:100%; height:250px; object-fit:cover; margin-top:25px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
             </div>
@@ -279,7 +314,7 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- WHY CHOOSE US SECTION -->
-<section id="why-choose-us" style="background:var(--navy); color:#fff; padding:80px 25px;">
+<section id="why-choose-us" class="reveal-on-scroll" style="background:var(--navy); color:#fff; padding:80px 25px;">
     <div class="container">
         <div class="section-title" style="text-align:center; margin-bottom:45px;">
             <span style="color:var(--gold); font-weight:800; font-size:13px; letter-spacing:1px; text-transform:uppercase;">Our Advantage</span>
@@ -288,22 +323,22 @@ textarea{min-height:115px;resize:vertical}
         </div>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:25px;">
-            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
+            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
                 <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-user-check"></i></div>
                 <h3 style="font-size:18px; margin-bottom:10px;">Vetted Candidates</h3>
                 <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Rigorous background verification, trade tests, and document authentication before deployment.</p>
             </div>
-            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
+            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
                 <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-bolt"></i></div>
                 <h3 style="font-size:18px; margin-bottom:10px;">Fast Turnaround</h3>
                 <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Fulfill urgent technical and contractual manpower requirements within 24 to 48 hours.</p>
             </div>
-            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
+            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
                 <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-scale-balanced"></i></div>
                 <h3 style="font-size:18px; margin-bottom:10px;">100% Legal Compliance</h3>
                 <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Complete management of UAE labor laws, visa processing, and statutory compliance.</p>
             </div>
-            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
+            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
                 <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-headset"></i></div>
                 <h3 style="font-size:18px; margin-bottom:10px;">Dedicated Support</h3>
                 <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Single-point account managers available round-the-clock for seamless operations.</p>
@@ -313,7 +348,7 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- REQUIREMENTS SECTION -->
-<section class="requirement-section" id="requirements">
+<section class="requirement-section reveal-on-scroll" id="requirements">
   <div class="container">
     <div class="section-title">
       <h2>Post Company Requirement</h2>
@@ -356,7 +391,7 @@ textarea{min-height:115px;resize:vertical}
         <!-- Document / PDF Upload Field for Company -->
         <div class="form-group">
           <label>Upload Company Trade License / Profile (PDF format)</label>
-          <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: #fafafa;">
+          <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: var(--light);">
         </div>
         <button type="submit" class="submit-btn" id="comp_btn">Submit Requirement</button>
       </form>
@@ -365,7 +400,7 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- SUPPLIERS SECTION -->
-<section class="requirement-section" id="suppliers" style="background:#fff;">
+<section class="requirement-section reveal-on-scroll" id="suppliers" style="background:var(--white);">
   <div class="container">
     <div class="section-title">
       <h2>Join as Manpower Supplier</h2>
@@ -408,7 +443,7 @@ textarea{min-height:115px;resize:vertical}
         <!-- Document / PDF Upload Field for Supplier (Original Documents) -->
         <div class="form-group">
           <label>Upload Original Documents (Trade License, Establishment Card - PDF)</label>
-          <input type="file" id="supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
+          <input type="file" id="supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
         </div>
         <button type="submit" class="submit-btn" id="supp_btn">Register as Supplier</button>
       </form>
@@ -417,7 +452,7 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- AZAD VISA WORKER SECTION -->
-<section class="requirement-section" id="azad-visa">
+<section class="requirement-section reveal-on-scroll" id="azad-visa">
   <div class="container">
     <div class="section-title">
       <h2>🇦🇪 Azad / Freelance Visa Worker Registration</h2>
@@ -467,7 +502,7 @@ textarea{min-height:115px;resize:vertical}
         <!-- Document / PDF Upload Field for Azad Worker (Experience & ID) -->
         <div class="form-group">
           <label>Upload Experience & Emirates ID (PDF format)</label>
-          <input type="file" id="azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
+          <input type="file" id="azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
         </div>
         <button type="submit" class="submit-btn" id="azad_btn" style="background:var(--emerald2);">Register as Freelance Worker</button>
       </form>
@@ -476,11 +511,11 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- CAREERS & PDF RESUME UPLOAD SECTION -->
-<section id="careers" class="py-20 bg-slate-900 text-white" style="background:#0f172a; color:#fff; padding:80px 25px;">
+<section id="careers" class="reveal-on-scroll" style="background:#0f172a; color:#fff; padding:80px 25px;">
     <div class="container">
         <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:40px; align-items:center;" class="careers-grid">
             <div class="space-y-6">
-                <span class="text-xs font-bold uppercase tracking-widest text-brand-400" style="color:var(--gold); font-size:12px; letter-spacing:1px;">Join Our Talent Pool</span>
+                <span style="color:var(--gold); font-size:12px; letter-spacing:1px; font-weight:700; text-transform:uppercase;">Join Our Talent Pool</span>
                 <h2 style="font-size:36px; margin:10px 0 15px;">Looking For Your Next Career Opportunity?</h2>
                 <p style="color:#cbd5e1; font-size:15px; line-height:1.6;">Submit your details and upload your PDF Resume. Our recruitment specialists match your qualification with active vacancies across top multinational companies.</p>
                 <div style="margin-top:20px;">
@@ -539,24 +574,24 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <!-- CONTACT & GOOGLE MAPS SECTION -->
-<section class="requirement-section" id="contact" style="background:#fff; padding:80px 25px;">
+<section class="requirement-section reveal-on-scroll" id="contact" style="background:var(--white); padding:80px 25px;">
   <div class="container">
     <div class="section-title">
       <h2>Get In Touch & Location</h2>
       <p>Send us a message for general inquiries or visit our headquarters.</p>
     </div>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="contact-grid">
         <div style="display:flex; flex-direction:column; gap:20px;">
-            <div style="background:#f8fafc; padding:25px; border-radius:12px; border:1px solid #e2e8f0; display:flex; gap:15px; align-items:flex-start;">
+            <div style="background:var(--light); padding:25px; border-radius:12px; border:1px solid var(--border-color); display:flex; gap:15px; align-items:flex-start;">
                 <div style="width:45px; height:45px; background:var(--blue); color:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;"><i class="fa-solid fa-location-dot"></i></div>
                 <div>
-                    <h4 style="font-weight:bold; color:var(--navy); margin-bottom:5px;">Headquarters Address</h4>
+                    <h4 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Headquarters Address</h4>
                     <p style="font-size:13px; color:var(--muted);">Level 12, Elite Tower, Business Bay, Dubai, United Arab Emirates</p>
                 </div>
             </div>
 
-            <div style="background:#fff; padding:5px; border-radius:12px; border:1px solid #e2e8f0; overflow:hidden; height:280px;">
+            <div style="background:var(--card-bg); padding:5px; border-radius:12px; border:1px solid var(--border-color); overflow:hidden; height:280px;">
                 <iframe title="Office Location Map" style="width:100%; height:100%; border:0; border-radius:10px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1786541819777!2d55.2721877150094!3d25.18880398390069!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682def2893d9%3A0xe349f7831f13b632!2sBusiness%20Bay%2C%20Dubai!5e0!3m2!1sen!2sae!4v1650000000000" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
@@ -607,7 +642,7 @@ textarea{min-height:115px;resize:vertical}
 </section>
 
 <footer>
-  <div class="copyright" style="text-align:center; padding:25px; font-size:14px; color:var(--muted); background:#020617;">
+  <div class="copyright" style="text-align:center; padding:25px; font-size:14px; color:var(--muted); background:var(--navy);">
     &copy; 2026 Elite Workforce Solutions. All rights reserved.
   </div>
 </footer>
@@ -655,7 +690,7 @@ textarea{min-height:115px;resize:vertical}
       <!-- Document / PDF Upload Field for Supplier Modal -->
       <div class="form-group">
         <label>Upload Original Documents (PDF format)</label>
-        <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
+        <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
       </div>
       <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
     </form>
@@ -702,7 +737,7 @@ textarea{min-height:115px;resize:vertical}
       <!-- Document / PDF Upload Field for Azad Modal -->
       <div class="form-group">
         <label>Upload Experience & Emirates ID (PDF format)</label>
-        <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: #fafafa;">
+        <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
       </div>
       <button type="submit" class="submit-btn" id="m_azad_btn" style="background:var(--emerald2);">Submit Azad Worker Details</button>
     </form>
@@ -711,9 +746,9 @@ textarea{min-height:115px;resize:vertical}
 
 <!-- SUCCESS POPUP MODAL (Done ✅) -->
 <div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3); animation: scaleUp 0.3s ease-out;">
+    <div style="background:var(--card-bg); border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
         <div style="font-size:36px; font-weight:bold; color:#16a34a; margin-bottom:10px;">Done ✅</div>
-        <p style="color:#334155; font-size:15px; font-weight:600; margin-bottom:20px;" id="popupMessage">Aapki information successfully database mein save ho gayi hai!</p>
+        <p style="color:var(--text); font-size:15px; font-weight:600; margin-bottom:20px;" id="popupMessage">Aapki information successfully database mein save ho gayi hai!</p>
         <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:16px;">
             OK
         </button>
@@ -731,6 +766,47 @@ textarea{min-height:115px;resize:vertical}
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
 
+  // Dark / Light Mode Logic
+  function toggleDarkMode() {
+    const htmlEl = document.documentElement;
+    const iconEl = document.getElementById('themeIcon');
+    
+    if (htmlEl.classList.contains('dark')) {
+      htmlEl.classList.remove('dark');
+      localStorage.setItem('ews_theme', 'light');
+      iconEl.className = 'fa-solid fa-moon';
+    } else {
+      htmlEl.classList.add('dark');
+      localStorage.setItem('ews_theme', 'dark');
+      iconEl.className = 'fa-solid fa-sun';
+    }
+  }
+
+  // Load saved theme preference on startup
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('ews_theme');
+    const iconEl = document.getElementById('themeIcon');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      if(iconEl) iconEl.className = 'fa-solid fa-sun';
+    }
+
+    // Scroll reveal observer animation setup
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(section => {
+      observer.observe(section);
+    });
+
+    loadPublicLeaderboard();
+  });
+
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
 
@@ -746,7 +822,6 @@ textarea{min-height:115px;resize:vertical}
   function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
       const popup = document.getElementById('successPopup');
       const msgElement = document.getElementById('popupMessage');
-      
       msgElement.innerText = customMessage;
       popup.style.display = 'flex';
   }
@@ -998,7 +1073,6 @@ textarea{min-height:115px;resize:vertical}
     btn.disabled = false; btn.innerText = 'Register as Supplier';
   }
 
-  // Modal Supplier Form Submit
   async function submitModalSupplier(e) {
     e.preventDefault();
     const btn = document.getElementById('m_supp_btn');
@@ -1183,8 +1257,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  window.addEventListener('DOMContentLoaded', async () => {
-    loadPublicLeaderboard();
+  window.addEventListener('load', async () => {
     const session = await _supabase.auth.getSession();
     if (session.data.session) {
       document.getElementById('admin').style.display = 'block';
