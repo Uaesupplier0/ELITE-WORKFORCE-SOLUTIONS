@@ -204,9 +204,9 @@ textarea{min-height:115px;resize:vertical}
       <p class="hero-lead">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
       <div class="hero-buttons">
         <a href="#requirements" class="btn btn-primary">Post Requirement</a>
-        <!-- Updated to open supplier modal -->
+        <!-- Supplier Modal Button -->
         <button onclick="openSupplierModal()" class="btn btn-outline"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
-        <!-- Updated to open azad modal -->
+        <!-- Azad Worker Modal Button -->
         <button onclick="openAzadModal()" class="btn btn-azad-hero"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
       </div>
     </div>
@@ -398,7 +398,6 @@ textarea{min-height:115px;resize:vertical}
           <label>Requirement Details</label>
           <textarea id="comp_details" required placeholder="Specify needed roles, number of workers, duration, etc."></textarea>
         </div>
-        <!-- Document / PDF Upload Field for Company -->
         <div class="form-group">
           <label>Upload Company Trade License / Profile (PDF format)</label>
           <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: var(--light);">
@@ -450,7 +449,6 @@ textarea{min-height:115px;resize:vertical}
           <label>Total Workers Available</label>
           <input type="number" id="supp_workers" min="1" placeholder="e.g. 25">
         </div>
-        <!-- Document / PDF Upload Field for Supplier (Original Documents) -->
         <div class="form-group">
           <label>Upload Original Documents (Trade License, Establishment Card - PDF)</label>
           <input type="file" id="supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -509,7 +507,6 @@ textarea{min-height:115px;resize:vertical}
           <label>Expected Daily / Hourly Rate (AED)</label>
           <input type="number" id="azad_rate" placeholder="e.g. 100 AED/Day or 12 AED/Hour">
         </div>
-        <!-- Document / PDF Upload Field for Azad Worker (Experience & ID) -->
         <div class="form-group">
           <label>Upload Experience & Emirates ID (PDF format)</label>
           <input type="file" id="azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -657,39 +654,26 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
-<!-- SUPPLIER POPUP MODAL -->
+<!-- DEDICATED SUPPLIER POPUP MODAL -->
 <div class="azad-modal" id="supplierModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
-    <h3 style="color:var(--blue);margin-bottom:10px;">🚚 Quick Registration: Manpower Supplier / Company / Azad Worker</h3>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register.</p>
+    <h3 style="color:var(--blue);margin-bottom:10px;">🚚 Quick Registration: Manpower Supplier</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register as a supplier.</p>
     
     <form onsubmit="submitModalSupplier(event)">
-      <!-- Dynamic Entry Type Selection -->
       <div class="form-group">
-        <label>Entry Type</label>
-        <select id="modal_entryType" class="w-full border border-gray-300 rounded-md p-2 text-sm" onchange="updatePhotoLabel()">
-          <option value="supplier">Supplier</option>
-          <option value="company">Company</option>
-          <option value="worker">Azad Worker</option>
-        </select>
-      </div>
-
-      <!-- Smart Dynamic Photo / Logo Selection Box -->
-      <div class="form-group">
-        <label id="modal_photoLabel" class="block text-sm font-medium text-gray-700 mb-1">Supplier Logo / Photo</label>
-        <div class="flex items-center space-x-4" style="display: flex; align-items: center; gap: 12px;">
-          <!-- Preview Box -->
-          <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-100 border border-gray-300 flex items-center justify-center" style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #f3f4f6; flex-shrink: 0;">
-            <img id="modal_photoPreview" src="https://via.placeholder.com/48?text=Img" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+        <label>Supplier Logo / Photo</label>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #f3f4f6; border: 1px solid #d1d5db; flex-shrink: 0;">
+            <img id="modal_supp_preview" src="https://via.placeholder.com/48?text=Logo" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
-          <!-- File Input -->
-          <input type="file" id="modal_dynamicPhotoInput" accept="image/*" class="block w-full text-sm text-gray-500" onchange="previewImage(event)">
+          <input type="file" id="modal_supp_logo_file" accept="image/*" style="font-size: 13px;" onchange="previewSupplierImage(event)">
         </div>
       </div>
 
       <div class="form-group">
-        <label>Supplier / Company / Worker Name</label>
+        <label>Supplier / Company Name</label>
         <input type="text" id="m_supp_name" required placeholder="e.g. Gulf Manpower Services">
       </div>
       <div class="form-group">
@@ -716,17 +700,16 @@ textarea{min-height:115px;resize:vertical}
         <label>Total Workers Available</label>
         <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
       </div>
-      <!-- Document / PDF Upload Field for Supplier Modal -->
       <div class="form-group">
         <label>Upload Original Documents (PDF format)</label>
         <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
       </div>
-      <button type="submit" class="submit-btn" id="m_supp_btn">Submit Details</button>
+      <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
     </form>
   </div>
 </div>
 
-<!-- AZAD VISA POPUP MODAL -->
+<!-- DEDICATED AZAD VISA POPUP MODAL -->
 <div class="azad-modal" id="azadModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeAzadModal()">&times;</span>
@@ -734,6 +717,16 @@ textarea{min-height:115px;resize:vertical}
     <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to get instant daily/hourly site work leads.</p>
     
     <form onsubmit="submitModalAzadWorker(event)">
+      <div class="form-group">
+        <label>Worker Photo</label>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #f3f4f6; border: 1px solid #d1d5db; flex-shrink: 0;">
+            <img id="modal_azad_preview" src="https://via.placeholder.com/48?text=Photo" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <input type="file" id="modal_azad_photo_file" accept="image/*" style="font-size: 13px;" onchange="previewAzadImage(event)">
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Full Name</label>
         <input type="text" id="m_azad_name" required placeholder="Your Name">
@@ -745,6 +738,7 @@ textarea{min-height:115px;resize:vertical}
       <div class="form-group">
         <label>Trade / Skill</label>
         <select id="m_azad_trade" required>
+          <option value="">Select Skill</option>
           <option value="Electrician">Electrician</option>
           <option value="Plumber">Plumber</option>
           <option value="Mason">Mason</option>
@@ -761,9 +755,13 @@ textarea{min-height:115px;resize:vertical}
           <option value="Abu Dhabi">Abu Dhabi</option>
           <option value="Sharjah">Sharjah</option>
           <option value="Ajman">Ajman</option>
+          <option value="Ras Al Khaimah">Ras Al Khaimah</option>
         </select>
       </div>
-      <!-- Document / PDF Upload Field for Azad Modal -->
+      <div class="form-group">
+        <label>Expected Daily / Hourly Rate (AED)</label>
+        <input type="number" id="m_azad_rate" placeholder="e.g. 100 AED/Day">
+      </div>
       <div class="form-group">
         <label>Upload Experience & Emirates ID (PDF format)</label>
         <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -796,25 +794,22 @@ textarea{min-height:115px;resize:vertical}
   let currentPublicTab = 'companies';
   let rawPublicData = []; // Cached for live filtering
 
-  // Dynamic Photo Label and Preview Functions for Popup Modal
-  function updatePhotoLabel() {
-      const type = document.getElementById('modal_entryType').value;
-      const label = document.getElementById('modal_photoLabel');
-      
-      if (type === 'company') {
-          label.innerText = 'Company Logo / Photo';
-      } else if (type === 'supplier') {
-          label.innerText = 'Supplier Logo / Photo';
-      } else {
-          label.innerText = 'Azad Worker Photo';
+  // Image preview helper for Supplier Modal
+  function previewSupplierImage(event) {
+      const reader = new FileReader();
+      reader.onload = function(){
+          document.getElementById('modal_supp_preview').src = reader.result;
+      };
+      if(event.target.files[0]) {
+          reader.readAsDataURL(event.target.files[0]);
       }
   }
 
-  function previewImage(event) {
+  // Image preview helper for Azad Worker Modal
+  function previewAzadImage(event) {
       const reader = new FileReader();
       reader.onload = function(){
-          const output = document.getElementById('modal_photoPreview');
-          output.src = reader.result;
+          document.getElementById('modal_azad_preview').src = reader.result;
       };
       if(event.target.files[0]) {
           reader.readAsDataURL(event.target.files[0]);
@@ -837,7 +832,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Load saved theme preference on startup
   window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('ews_theme');
     const iconEl = document.getElementById('themeIcon');
@@ -846,7 +840,6 @@ textarea{min-height:115px;resize:vertical}
       if(iconEl) iconEl.className = 'fa-solid fa-sun';
     }
 
-    // Scroll reveal observer animation setup
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -876,14 +869,12 @@ textarea{min-height:115px;resize:vertical}
   // Success Popup Functions
   function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
       const popup = document.getElementById('successPopup');
-      const msgElement = document.getElementById('popupMessage');
-      msgElement.innerText = customMessage;
+      document.getElementById('popupMessage').innerText = customMessage;
       popup.style.display = 'flex';
   }
 
   function closeSuccessPopup() {
-      const popup = document.getElementById('successPopup');
-      popup.style.display = 'none';
+      document.getElementById('successPopup').style.display = 'none';
   }
 
   function showToast(msg, type = 'success') {
@@ -937,7 +928,7 @@ textarea{min-height:115px;resize:vertical}
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('publicSearchInput').value = ''; // Reset search on tab switch
+    document.getElementById('publicSearchInput').value = '';
     loadPublicLeaderboard();
   }
 
@@ -985,7 +976,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Render public table dynamically based on active tab and filter query
   function renderPublicTable(dataList) {
     const container = document.getElementById('public-table-container');
     if (!dataList || dataList.length === 0) {
@@ -1073,7 +1063,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Live filter function for the search bar
   function filterPublicTable() {
     const query = document.getElementById('publicSearchInput').value.toLowerCase().trim();
     if (!query) {
@@ -1198,11 +1187,11 @@ textarea{min-height:115px;resize:vertical}
     if (error) { showToast('Error: ' + error.message, 'error'); } 
     else {
       closeSupplierModal();
-      showSuccessPopup('Done ✅ - Details successfully database mein save ho gaye hain!');
+      showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
-    btn.disabled = false; btn.innerText = 'Submit Details';
+    btn.disabled = false; btn.innerText = 'Submit Supplier Details';
   }
 
   async function submitAzadWorkerForm(e) {
@@ -1235,12 +1224,13 @@ textarea{min-height:115px;resize:vertical}
     const btn = document.getElementById('m_azad_btn');
     btn.disabled = true; btn.innerText = 'Registering...';
 
+    const rawRate = document.getElementById('m_azad_rate').value;
     const payload = {
       full_name: document.getElementById('m_azad_name').value.trim(),
       phone_number: document.getElementById('m_azad_phone').value.trim(),
       trade: document.getElementById('m_azad_trade').value,
       location: document.getElementById('m_azad_location').value,
-      expected_daily_rate: 0
+      expected_daily_rate: rawRate ? parseFloat(rawRate) : 0
     };
 
     const { error } = await _supabase.from('azad_workers').insert([payload]);
