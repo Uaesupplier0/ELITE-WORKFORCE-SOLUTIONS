@@ -395,6 +395,7 @@ textarea{min-height:115px;resize:vertical}
           <label>Requirement Details</label>
           <textarea id="comp_details" required placeholder="Specify needed roles, number of workers, duration, etc."></textarea>
         </div>
+        <!-- Document / PDF Upload Field for Company -->
         <div class="form-group">
           <label>Upload Company Trade License / Profile (PDF format)</label>
           <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: var(--light);">
@@ -446,6 +447,7 @@ textarea{min-height:115px;resize:vertical}
           <label>Total Workers Available</label>
           <input type="number" id="supp_workers" min="1" placeholder="e.g. 25">
         </div>
+        <!-- Document / PDF Upload Field for Supplier (Original Documents) -->
         <div class="form-group">
           <label>Upload Original Documents (Trade License, Establishment Card - PDF)</label>
           <input type="file" id="supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -633,6 +635,7 @@ textarea{min-height:115px;resize:vertical}
         <label>Total Workers Available</label>
         <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
       </div>
+      <!-- Document / PDF Upload Field for Supplier Modal -->
       <div class="form-group">
         <label>Upload Original Documents (PDF format)</label>
         <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -679,6 +682,7 @@ textarea{min-height:115px;resize:vertical}
           <option value="Ajman">Ajman</option>
         </select>
       </div>
+      <!-- Document / PDF Upload Field for Azad Modal -->
       <div class="form-group">
         <label>Upload Experience & Emirates ID (PDF format)</label>
         <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
@@ -727,6 +731,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
+  // Load saved theme preference on startup
   window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('ews_theme');
     const iconEl = document.getElementById('themeIcon');
@@ -735,6 +740,7 @@ textarea{min-height:115px;resize:vertical}
       if(iconEl) iconEl.className = 'fa-solid fa-sun';
     }
 
+    // Scroll reveal observer animation setup
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -825,7 +831,7 @@ textarea{min-height:115px;resize:vertical}
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('publicSearchInput').value = '';
+    document.getElementById('publicSearchInput').value = ''; // Reset search on tab switch
     loadPublicLeaderboard();
   }
 
@@ -873,6 +879,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
+  // Render public table dynamically based on active tab and filter query
   function renderPublicTable(dataList) {
     const container = document.getElementById('public-table-container');
     if (!dataList || dataList.length === 0) {
@@ -960,6 +967,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
+  // Live filter function for the search bar
   function filterPublicTable() {
     const query = document.getElementById('publicSearchInput').value.toLowerCase().trim();
     if (!query) {
