@@ -592,7 +592,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- AZAD VISA POPUP MODAL -->
+<!-- AZAD VISA POPUP MODAL (UPDATED WITH EMAIL & PHOTO SELECT) -->
 <div class="azad-modal" id="azadModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeAzadModal()">&times;</span>
@@ -603,6 +603,10 @@ textarea{min-height:115px;resize:vertical}
       <div class="form-group">
         <label>Full Name</label>
         <input type="text" id="m_azad_name" required placeholder="Your Name">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="m_azad_email" required placeholder="yourname@gmail.com">
       </div>
       <div class="form-group">
         <label>WhatsApp / Phone</label>
@@ -628,6 +632,11 @@ textarea{min-height:115px;resize:vertical}
           <option value="Sharjah">Sharjah</option>
           <option value="Ajman">Ajman</option>
         </select>
+      </div>
+      <!-- Select Photo Option -->
+      <div class="form-group">
+        <label>Select Profile Photo (Image format)</label>
+        <input type="file" id="m_azad_photo" accept="image/*" required style="padding: 9px; background: var(--light);">
       </div>
       <!-- Document / PDF Upload Field for Azad Modal -->
       <div class="form-group">
@@ -813,7 +822,7 @@ textarea{min-height:115px;resize:vertical}
       container.innerHTML = '<p style="padding:20px;text-align:center;">Loading available workers...</p>';
       const { data, error } = await _supabase
         .from('azad_workers')
-        .select('created_at, full_name, trade, location, expected_daily_rate, phone_number')
+        .select('created_at, full_name, email, trade, location, expected_daily_rate, phone_number')
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
@@ -892,6 +901,7 @@ textarea{min-height:115px;resize:vertical}
           <tr>
             <th>Date</th>
             <th>Name</th>
+            <th>Email</th>
             <th>Skill / Trade</th>
             <th>Location</th>
             <th>Rate</th>
@@ -904,6 +914,7 @@ textarea{min-height:115px;resize:vertical}
         html += `<tr>
           <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
           <td><b>${i.full_name}</b></td>
+          <td>${i.email || 'N/A'}</td>
           <td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td>
           <td>${i.location}</td>
           <td><b>${i.expected_daily_rate ? i.expected_daily_rate + ' AED' : 'Negotiable'}</b></td>
@@ -932,6 +943,7 @@ textarea{min-height:115px;resize:vertical}
                (item.manpower_types && item.manpower_types.toLowerCase().includes(query));
       } else if (currentPublicTab === 'azad_workers') {
         return (item.full_name && item.full_name.toLowerCase().includes(query)) ||
+               (item.email && item.email.toLowerCase().includes(query)) ||
                (item.trade && item.trade.toLowerCase().includes(query)) ||
                (item.location && item.location.toLowerCase().includes(query));
       }
@@ -1026,6 +1038,7 @@ textarea{min-height:115px;resize:vertical}
 
     const payload = {
       full_name: document.getElementById('m_azad_name').value.trim(),
+      email: document.getElementById('m_azad_email').value.trim(),
       phone_number: document.getElementById('m_azad_phone').value.trim(),
       trade: document.getElementById('m_azad_trade').value,
       location: document.getElementById('m_azad_location').value,
@@ -1116,9 +1129,9 @@ textarea{min-height:115px;resize:vertical}
     if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
     if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No Azad workers registered yet.</p>'; return; }
 
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Trade</th><th>Location</th><th>Expected Rate</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.full_name}</b></td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><b>${i.expected_daily_rate ? i.expected_daily_rate + ' AED' : 'N/A'}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.full_name}</b></td><td>${i.email || 'N/A'}</td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
     container.innerHTML = html + '</tbody></table>';
   }
