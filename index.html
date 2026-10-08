@@ -371,8 +371,8 @@ textarea{min-height:115px;resize:vertical}
           <input type="text" id="comp_license" required placeholder="e.g. UAE-CN-123456">
         </div>
         <div class="form-group">
-          <label>Company Logo Image URL</label>
-          <input type="url" id="comp_logo" placeholder="https://example.com/logo.png">
+          <label>Company Logo Image File</label>
+          <input type="file" id="comp_logo_file" accept="image/*" style="padding: 9px; background: var(--light);">
         </div>
         <div class="form-group">
           <label>Contact Person</label>
@@ -542,7 +542,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
-<!-- SUPPLIER POPUP MODAL (LOGO URL REMOVED) -->
+<!-- SUPPLIER POPUP MODAL -->
 <div class="azad-modal" id="supplierModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
@@ -822,7 +822,7 @@ textarea{min-height:115px;resize:vertical}
       container.innerHTML = '<p style="padding:20px;text-align:center;">Loading available workers...</p>';
       const { data, error } = await _supabase
         .from('azad_workers')
-        .select('created_at, full_name, email, trade, location, expected_daily_rate, phone_number')
+        .select('created_at, full_name, email, trade, location, expected_daily_rate, phone_number, file_uri')
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
@@ -884,9 +884,10 @@ textarea{min-height:115px;resize:vertical}
       dataList.forEach(i => {
         const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
         const tradeLic = i.trade_license || 'UAE-SUPP-Verified';
+        const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
 
         html += `<tr>
-          <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div> <b>${i.company_name}</b></div></td>
+          <td><div style="display:flex;align-items:center;gap:10px;">${logoImg} <b>${i.company_name}</b></div></td>
           <td><span style="font-family:monospace;color:var(--blue);font-weight:bold;"><i class="fa-solid fa-file-shield"></i> ${tradeLic}</span></td>
           <td>${i.email || 'N/A'}</td>
           <td>${i.manpower_types || 'General Manpower'}</td>
@@ -901,24 +902,25 @@ textarea{min-height:115px;resize:vertical}
         <thead>
           <tr>
             <th>Date</th>
+            <th>Photo</th>
             <th>Name</th>
             <th>Email</th>
             <th>Skill / Trade</th>
             <th>Location</th>
-            <th>Rate</th>
             <th>Connect</th>
           </tr>
         </thead><tbody>`;
       dataList.forEach(i => {
         const cleanPhone = i.phone_number ? i.phone_number.replace(/[^0-9]/g, '') : '';
+        const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:bold;color:#475569;">${i.full_name.charAt(0)}</div>`;
 
         html += `<tr>
           <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
+          <td>${workerPhoto}</td>
           <td><b>${i.full_name}</b></td>
           <td>${i.email || 'N/A'}</td>
           <td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td>
           <td>${i.location}</td>
-          <td><b>${i.expected_daily_rate ? i.expected_daily_rate + ' AED' : 'Negotiable'}</b></td>
           <td><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Hire Worker</a></td>
         </tr>`;
       });
@@ -978,84 +980,186 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('file-name-label').style.color = "#e2e8f0";
   }
 
+  // 1. COMPANY FORM WITH LOGO UPLOAD TO SUPABASE STORAGE
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
-    btn.disabled = true; btn.innerText = 'Submitting...';
+    btn.disabled = true; 
+    btn.innerText = 'Uploading & Submitting...';
 
-    const payload = {
-      company_name: document.getElementById('comp_name').value.trim(),
-      trade_license: document.getElementById('comp_license').value.trim(),
-      logo_url: document.getElementById('comp_logo').value.trim(),
-      contact_person: document.getElementById('comp_person').value.trim(),
-      email: document.getElementById('comp_email').value.trim(),
-      phone: document.getElementById('comp_phone').value.trim(),
-      location: document.getElementById('comp_location').value.trim(),
-      requirement_details: document.getElementById('comp_details').value.trim()
-    };
+    try {
+      const companyName = document.getElementById('comp_name').value.trim();
+      const tradeLicense = document.getElementById('comp_license').value.trim();
+      const contactPerson = document.getElementById('comp_person').value.trim();
+      const email = document.getElementById('comp_email').value.trim();
+      const phone = document.getElementById('comp_phone').value.trim();
+      const location = document.getElementById('comp_location').value.trim();
+      const requirementDetails = document.getElementById('comp_details').value.trim();
+      
+      const logoFile = document.getElementById('comp_logo_file').files[0];
+      let logoUrl = '';
 
-    const { error } = await _supabase.from('companies').insert([payload]);
-    if (error) { showToast('Error: ' + error.message, 'error'); } 
-    else {
+      if (logoFile) {
+        const fileName = `comp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
+        const { data: uploadData, error: uploadError } = await _supabase.storage
+          .from('worker-photos') // Using same bucket or create separate if needed
+          .upload(fileName, logoFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicUrlData } = _supabase.storage
+          .from('worker-photos')
+          .getPublicUrl(fileName);
+        
+        logoUrl = publicUrlData.publicUrl;
+      }
+
+      const payload = {
+        company_name: companyName,
+        trade_license: tradeLicense,
+        logo_url: logoUrl,
+        contact_person: contactPerson,
+        email: email,
+        phone: phone,
+        location: location,
+        requirement_details: requirementDetails
+      };
+
+      const { error } = await _supabase.from('companies').insert([payload]);
+      if (error) throw error;
+
       showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
       document.getElementById('companyForm').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+
+    } catch (error) {
+      showToast('Error: ' + error.message, 'error');
+    } finally {
+      btn.disabled = false; 
+      btn.innerText = 'Submit Requirement';
     }
-    btn.disabled = false; btn.innerText = 'Submit Requirement';
   }
 
+  // 2. SUPPLIER FORM WITH LOGO UPLOAD TO SUPABASE STORAGE
   async function submitModalSupplier(e) {
     e.preventDefault();
     const btn = document.getElementById('m_supp_btn');
-    btn.disabled = true; btn.innerText = 'Registering...';
+    btn.disabled = true; 
+    btn.innerText = 'Uploading & Registering...';
 
-    const rawWorkers = document.getElementById('m_supp_workers').value;
-    const payload = {
-      company_name: document.getElementById('m_supp_name').value.trim(),
-      trade_license: document.getElementById('m_supp_license').value.trim(),
-      email: document.getElementById('m_supp_email_field').value.trim(),
-      logo_url: '',
-      contact_person: document.getElementById('m_supp_person').value.trim(),
-      phone: document.getElementById('m_supp_phone').value.trim(),
-      manpower_types: document.getElementById('m_supp_types').value.trim(),
-      workers_available: rawWorkers ? parseInt(rawWorkers, 10) : 0
-    };
+    try {
+      const suppName = document.getElementById('m_supp_name').value.trim();
+      const suppLicense = document.getElementById('m_supp_license').value.trim();
+      const suppEmail = document.getElementById('m_supp_email_field').value.trim();
+      const suppPerson = document.getElementById('m_supp_person').value.trim();
+      const suppPhone = document.getElementById('m_supp_phone').value.trim();
+      const suppTypes = document.getElementById('m_supp_types').value.trim();
+      const rawWorkers = document.getElementById('m_supp_workers').value;
 
-    const { error } = await _supabase.from('suppliers').insert([payload]);
-    if (error) { showToast('Error: ' + error.message, 'error'); } 
-    else {
+      const logoFile = document.getElementById('m_supp_photo').files[0];
+      let logoUrl = '';
+
+      if (logoFile) {
+        const fileName = `supp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
+        const { data: uploadData, error: uploadError } = await _supabase.storage
+          .from('worker-photos')
+          .upload(fileName, logoFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicUrlData } = _supabase.storage
+          .from('worker-photos')
+          .getPublicUrl(fileName);
+        
+        logoUrl = publicUrlData.publicUrl;
+      }
+
+      const payload = {
+        company_name: suppName,
+        trade_license: suppLicense,
+        email: suppEmail,
+        logo_url: logoUrl,
+        contact_person: suppPerson,
+        phone: suppPhone,
+        manpower_types: suppTypes,
+        workers_available: rawWorkers ? parseInt(rawWorkers, 10) : 0
+      };
+
+      const { error } = await _supabase.from('suppliers').insert([payload]);
+      if (error) throw error;
+
       closeSupplierModal();
       showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
+      document.getElementById('supplierModal').querySelector('form').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+
+    } catch (error) {
+      showToast('Error: ' + error.message, 'error');
+    } finally {
+      btn.disabled = false; 
+      btn.innerText = 'Submit Supplier Details';
     }
-    btn.disabled = false; btn.innerText = 'Submit Supplier Details';
   }
 
+  // 3. AZAD WORKER REGISTRATION WITH PHOTO UPLOAD TO SUPABASE STORAGE
   async function submitModalAzadWorker(e) {
     e.preventDefault();
     const btn = document.getElementById('m_azad_btn');
-    btn.disabled = true; btn.innerText = 'Registering...';
+    btn.disabled = true; 
+    btn.innerText = 'Uploading Photo & Registering...';
 
-    const payload = {
-      full_name: document.getElementById('m_azad_name').value.trim(),
-      email: document.getElementById('m_azad_email').value.trim(),
-      phone_number: document.getElementById('m_azad_phone').value.trim(),
-      trade: document.getElementById('m_azad_trade').value,
-      location: document.getElementById('m_azad_location').value,
-      expected_daily_rate: 0
-    };
+    try {
+      const fullName = document.getElementById('m_azad_name').value.trim();
+      const email = document.getElementById('m_azad_email').value.trim();
+      const phone = document.getElementById('m_azad_phone').value.trim();
+      const trade = document.getElementById('m_azad_trade').value;
+      const location = document.getElementById('m_azad_location').value;
+      
+      const photoFile = document.getElementById('m_azad_photo').files[0];
+      let photoUrl = '';
 
-    const { error } = await _supabase.from('azad_workers').insert([payload]);
-    if (error) { showToast('Error: ' + error.message, 'error'); } 
-    else {
+      if (photoFile) {
+        const fileName = `worker_${Date.now()}_${photoFile.name.replace(/\s+/g, '_')}`;
+        const { data: uploadData, error: uploadError } = await _supabase.storage
+          .from('worker-photos')
+          .upload(fileName, photoFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicUrlData } = _supabase.storage
+          .from('worker-photos')
+          .getPublicUrl(fileName);
+        
+        photoUrl = publicUrlData.publicUrl;
+      }
+
+      const payload = {
+        full_name: fullName,
+        email: email,
+        phone_number: phone,
+        trade: trade,
+        location: location,
+        expected_daily_rate: 0,
+        file_uri: photoUrl
+      };
+
+      const { error } = await _supabase.from('azad_workers').insert([payload]);
+      if (error) throw error;
+
       closeAzadModal();
-      showSuccessPopup('Done ✅ - Azad worker registration successful.');
+      showSuccessPopup('Done ✅ - Azad worker registration & photo upload successful.');
+      document.getElementById('azadModal').querySelector('form').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+
+    } catch (error) {
+      showToast('Error: ' + error.message, 'error');
+    } finally {
+      btn.disabled = false; 
+      btn.innerText = 'Submit Azad Worker Details';
     }
-    btn.disabled = false; btn.innerText = 'Submit Azad Worker Details';
   }
 
   async function submitContactForm(e) {
@@ -1101,9 +1205,10 @@ textarea{min-height:115px;resize:vertical}
     if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
     if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No company requirements posted yet.</p>'; return; }
 
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
     container.innerHTML = html + '</tbody></table>';
   }
@@ -1116,9 +1221,10 @@ textarea{min-height:115px;resize:vertical}
     if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
     if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>'; return; }
 
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email || 'N/A'}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email || 'N/A'}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
     container.innerHTML = html + '</tbody></table>';
   }
@@ -1131,9 +1237,10 @@ textarea{min-height:115px;resize:vertical}
     if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
     if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No Azad workers registered yet.</p>'; return; }
 
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Photo</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.full_name}</b></td><td>${i.email || 'N/A'}</td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+      const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Photo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${workerPhoto}</td><td><b>${i.full_name}</b></td><td>${i.email || 'N/A'}</td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
     container.innerHTML = html + '</tbody></table>';
   }
