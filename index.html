@@ -980,7 +980,7 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('file-name-label').style.color = "#e2e8f0";
   }
 
-  // 1. COMPANY FORM WITH LOGO UPLOAD TO SUPABASE STORAGE
+  // 1. COMPANY FORM WITH LOGO UPLOAD TO 'photos' BUCKET
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
@@ -1002,13 +1002,13 @@ textarea{min-height:115px;resize:vertical}
       if (logoFile) {
         const fileName = `comp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
         const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('worker-photos') // Using same bucket or create separate if needed
+          .from('photos')
           .upload(fileName, logoFile);
 
         if (uploadError) throw uploadError;
 
         const { data: publicUrlData } = _supabase.storage
-          .from('worker-photos')
+          .from('photos')
           .getPublicUrl(fileName);
         
         logoUrl = publicUrlData.publicUrl;
@@ -1041,7 +1041,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // 2. SUPPLIER FORM WITH LOGO UPLOAD TO SUPABASE STORAGE
+  // 2. SUPPLIER FORM WITH LOGO UPLOAD TO 'photos' BUCKET
   async function submitModalSupplier(e) {
     e.preventDefault();
     const btn = document.getElementById('m_supp_btn');
@@ -1063,13 +1063,13 @@ textarea{min-height:115px;resize:vertical}
       if (logoFile) {
         const fileName = `supp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
         const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('worker-photos')
+          .from('photos')
           .upload(fileName, logoFile);
 
         if (uploadError) throw uploadError;
 
         const { data: publicUrlData } = _supabase.storage
-          .from('worker-photos')
+          .from('photos')
           .getPublicUrl(fileName);
         
         logoUrl = publicUrlData.publicUrl;
@@ -1103,7 +1103,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // 3. AZAD WORKER REGISTRATION WITH PHOTO UPLOAD TO SUPABASE STORAGE
+  // 3. AZAD WORKER REGISTRATION WITH PHOTO UPLOAD TO 'photos' BUCKET
   async function submitModalAzadWorker(e) {
     e.preventDefault();
     const btn = document.getElementById('m_azad_btn');
@@ -1123,13 +1123,13 @@ textarea{min-height:115px;resize:vertical}
       if (photoFile) {
         const fileName = `worker_${Date.now()}_${photoFile.name.replace(/\s+/g, '_')}`;
         const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('worker-photos')
+          .from('photos')
           .upload(fileName, photoFile);
 
         if (uploadError) throw uploadError;
 
         const { data: publicUrlData } = _supabase.storage
-          .from('worker-photos')
+          .from('photos')
           .getPublicUrl(fileName);
         
         photoUrl = publicUrlData.publicUrl;
