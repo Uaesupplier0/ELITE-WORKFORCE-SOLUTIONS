@@ -538,6 +538,8 @@ textarea{min-height:115px;resize:vertical}
       <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
       <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
       <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
+      <!-- Targeted Bulk Email Button -->
+      <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
     </div>
 
     <div class="admin-table-wrap" id="admin-table-container">
@@ -1294,6 +1296,84 @@ textarea{min-height:115px;resize:vertical}
         loadActiveTabData(); 
         loadPublicLeaderboard(); 
       }
+    }
+  }
+
+  // Targeted Bulk Email Function Added Here
+  async function triggerBulkEmail() {
+    const targetType = prompt(
+      "Kise email bhejna hai?\n\n" +
+      "1: Sirf Azad Workers ko\n" +
+      "2: Sirf Suppliers ko\n" +
+      "3: Sirf Companies ko\n" +
+      "4: Sabhi (All Database) ko ek sath\n\n" +
+      "Number enter karein (1, 2, 3 ya 4):", "4"
+    );
+
+    if (!targetType) return;
+
+    let selectedTable = '';
+    let targetName = '';
+
+    if (targetType === '1') {
+      selectedTable = 'azad_workers';
+      targetName = 'Azad Workers';
+    } else if (targetType === '2') {
+      selectedTable = 'suppliers';
+      targetName = 'Suppliers';
+    } else if (targetType === '3') {
+      selectedTable = 'companies';
+      targetName = 'Companies';
+    } else if (targetType === '4') {
+      selectedTable = 'all';
+      targetName = 'All Users & Companies';
+    } else {
+      showToast("Galat choice select ki gayi!", "error");
+      return;
+    }
+
+    showToast(`${targetName} ke emails fetch kiye ja rahe hain...`);
+
+    try {
+      let allEmails = [];
+
+      if (selectedTable === 'all') {
+        const { data: comps } = await _supabase.from('companies').select('email');
+        const { data: supps } = await _supabase.from('suppliers').select('email');
+        const { data: workers } = await _supabase.from('azad_workers').select('email');
+        const { data: msgs } = await _supabase.from('contact_messages').select('email');
+
+        if (comps) comps.forEach(i => i.email && allEmails.push(i.email));
+        if (supps) supps.forEach(i => i.email && allEmails.push(i.email));
+        if (workers) workers.forEach(i => i.email && allEmails.push(i.email));
+        if (msgs) msgs.forEach(i => i.email && allEmails.push(i.email));
+      } else {
+        const { data, error } = await _supabase.from(selectedTable).select('email');
+        if (error) throw error;
+        if (data) data.forEach(i => i.email && allEmails.push(i.email));
+      }
+
+      let uniqueEmails = [...new Set(allEmails)].filter(e => e && e !== 'N/A' && e.includes('@'));
+
+      if (uniqueEmails.length === 0) {
+        showToast(`${targetName} mein koi valid email address nahi mila!`, "error");
+        return;
+      }
+
+      const subject = prompt(`[${targetName}] Total ${uniqueEmails.length} emails mil gaye hain.\nEmail ka Subject enter karein:`, "Urgent Requirement Update from Elite Workforce");
+      if (!subject) return;
+
+      const body = prompt(`[${targetName}] Email ka Message enter karein:`, "Hello, we have urgent site requirements available. Please check...");
+      if (!body) return;
+
+      const bccList = uniqueEmails.join(',');
+      const mailtoLink = `mailto:?bcc=${encodeURIComponent(bccList)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      window.location.href = mailtoLink;
+      showToast(`Email client open ho gaya (${uniqueEmails.length} ${targetName} recipients ke sath)!`);
+
+    } catch (error) {
+      showToast("Error fetching emails: " + error.message, "error");
     }
   }
 
