@@ -98,7 +98,7 @@ textarea{min-height:115px;resize:vertical}
 .submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:7px;font-weight:800;transition:background 0.2s}
 .submit-btn:hover{background:var(--blue2)}
 
-/* Admin Tabs/Tables */
+/* Admin Tabs/Tables & Clickable Public Rows */
 .admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 20px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:6px;font-weight:bold;cursor:pointer;color:var(--text);transition:0.2s}
@@ -107,6 +107,16 @@ textarea{min-height:115px;resize:vertical}
 .admin-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px;min-width:600px;}
 .admin-table th{background:var(--light);padding:12px;border-bottom:2px solid var(--border-color);color:var(--muted)}
 .admin-table td{padding:12px;border-bottom:1px solid var(--border-color);color:var(--text)}
+
+/* Clickable table rows hover styling */
+#public-table-container tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+#public-table-container tbody tr:hover {
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
 .admin-badge{background:rgba(37,99,235,0.1);color:var(--blue2);padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold}
 .admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px}
 .admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px}
@@ -822,7 +832,7 @@ textarea{min-height:115px;resize:vertical}
       container.innerHTML = '<p style="padding:20px;text-align:center;">Loading available workers...</p>';
       const { data, error } = await _supabase
         .from('azad_workers')
-        .select('created_at, full_name, email, trade, location, expected_daily_rate, phone_number, file_uri')
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
@@ -835,7 +845,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Render public table dynamically based on active tab and filter query
+  // Render public table dynamically and attach click events to rows
   function renderPublicTable(dataList) {
     const container = document.getElementById('public-table-container');
     if (!dataList || dataList.length === 0) {
@@ -853,18 +863,18 @@ textarea{min-height:115px;resize:vertical}
             <th>Requirement Details</th>
             <th>Contact</th>
           </tr>
-        </thead><tbody>`;
-      dataList.forEach(i => {
+        </thead><tbody id="publicTableBody">`;
+      dataList.forEach((i, index) => {
         const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
         const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
         const tradeLic = i.trade_license || 'UAE-LIC-Verified';
 
-        html += `<tr>
+        html += `<tr data-index="${index}">
           <td><div style="display:flex;align-items:center;gap:10px;">${logoImg} <b>${i.company_name}</b></div></td>
           <td><span style="font-family:monospace;color:var(--blue);font-weight:bold;"><i class="fa-solid fa-file-shield"></i> ${tradeLic}</span></td>
           <td>${i.location || 'UAE'}</td>
           <td>${i.requirement_details}</td>
-          <td><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></td>
+          <td><a href="https://wa.me/${cleanPhone}" target="_blank" onclick="event.stopPropagation()" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></td>
         </tr>`;
       });
       container.innerHTML = html + '</tbody></table>';
@@ -880,19 +890,19 @@ textarea{min-height:115px;resize:vertical}
             <th>Available Workers</th>
             <th>Connect</th>
           </tr>
-        </thead><tbody>`;
-      dataList.forEach(i => {
+        </thead><tbody id="publicTableBody">`;
+      dataList.forEach((i, index) => {
         const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
         const tradeLic = i.trade_license || 'UAE-SUPP-Verified';
         const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
 
-        html += `<tr>
+        html += `<tr data-index="${index}">
           <td><div style="display:flex;align-items:center;gap:10px;">${logoImg} <b>${i.company_name}</b></div></td>
           <td><span style="font-family:monospace;color:var(--blue);font-weight:bold;"><i class="fa-solid fa-file-shield"></i> ${tradeLic}</span></td>
           <td>${i.email || 'N/A'}</td>
           <td>${i.manpower_types || 'General Manpower'}</td>
           <td><b>${i.workers_available || 'Multiple'} Workers</b></td>
-          <td><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Contact Supplier</a></td>
+          <td><a href="https://wa.me/${cleanPhone}" target="_blank" onclick="event.stopPropagation()" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Contact Supplier</a></td>
         </tr>`;
       });
       container.innerHTML = html + '</tbody></table>';
@@ -909,23 +919,38 @@ textarea{min-height:115px;resize:vertical}
             <th>Location</th>
             <th>Connect</th>
           </tr>
-        </thead><tbody>`;
-      dataList.forEach(i => {
+        </thead><tbody id="publicTableBody">`;
+      dataList.forEach((i, index) => {
         const cleanPhone = i.phone_number ? i.phone_number.replace(/[^0-9]/g, '') : '';
         const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:bold;color:#475569;">${i.full_name.charAt(0)}</div>`;
 
-        html += `<tr>
+        html += `<tr data-index="${index}">
           <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
           <td>${workerPhoto}</td>
           <td><b>${i.full_name}</b></td>
           <td>${i.email || 'N/A'}</td>
           <td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td>
           <td>${i.location}</td>
-          <td><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Hire Worker</a></td>
+          <td><a href="https://wa.me/${cleanPhone}" target="_blank" onclick="event.stopPropagation()" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Hire Worker</a></td>
         </tr>`;
       });
       container.innerHTML = html + '</tbody></table>';
     }
+
+    // Attach click event listeners to rows to open profile page
+    document.querySelectorAll('#publicTableBody tr').forEach(row => {
+      row.addEventListener('click', () => {
+        const idx = row.getAttribute('data-index');
+        const selectedItem = dataList[idx];
+        
+        // Save selected item details to localStorage to read on worker-profile.html
+        localStorage.setItem('selected_profile_type', currentPublicTab);
+        localStorage.setItem('selected_profile_data', JSON.stringify(selectedItem));
+
+        // Open profile details page
+        window.location.href = `worker-profile.html?type=${currentPublicTab}`;
+      });
+    });
   }
 
   // Live filter function for the search bar
