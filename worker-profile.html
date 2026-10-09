@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,42 +6,70 @@
   <title>Profile Details - Elite Workforce Solutions</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Custom Font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+    body { font-family: 'Inter', sans-serif; background: #f1f5f9; }
+    /* Color Palette Variables based on your main site theme */
+    :root {
+      --navy: #0b132b;
+      --blue: #1d4ed8; /* Tailwind blue-600 */
+      --gold: #f59e0b; /* Tailwind amber-500 */
+      --emerald: #10b981; /* Tailwind emerald-500 */
+      --muted: #94a3b8; /* Tailwind slate-400 */
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <header class="bg-white shadow-sm py-4 px-6 flex justify-between items-center">
-    <a href="index.html" class="text-blue-900 font-bold text-lg">ELITE <b>WORKFORCE</b></a>
-    <a href="index.html" class="text-sm font-semibold text-blue-600 hover:underline"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+  <!-- Header (Colorful Navy with Gold Tones) -->
+  <header style="background-color: var(--navy);" class="text-white shadow-md py-4 px-6 flex justify-between items-center border-b-4 border-amber-500">
+    <a href="index.html" class="font-extrabold text-lg flex items-center gap-2">
+      <i class="fa-solid fa-briefcase" style="color: var(--gold);"></i> ELITE <b style="color: var(--gold);">WORKFORCE</b>
+    </a>
+    <a href="index.html" class="text-xs font-bold text-navy bg-amber-400 px-4 py-2 rounded-full hover:bg-amber-300 transition flex items-center gap-1.5 shadow-md">
+      <i class="fa-solid fa-arrow-left"></i> Back to Home
+    </a>
   </header>
 
-  <main class="container mx-auto max-w-2xl p-6 my-auto">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
-        <div id="profileAvatar" class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl font-bold overflow-hidden">
-          <!-- Logo or Initials -->
+  <!-- Main Card Container -->
+  <main class="container mx-auto max-w-lg px-4 py-10 my-auto">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 md:p-9 overflow-hidden relative">
+      
+      <!-- Decorative Gradient Header -->
+      <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-navy via-blue-900 to-navy"></div>
+
+      <!-- Profile Header / Avatar (Square with subtle rounded corners) -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-8 pb-8 border-b-2 border-slate-100 mt-3">
+        <div id="profileAvatar" class="w-24 h-24 rounded-2xl bg-slate-100 flex items-center justify-center text-4xl font-black overflow-hidden shadow-lg border-4 border-white ring-2 ring-slate-200 flex-shrink-0 text-blue-700">
+          <!-- Image or Initial -->
         </div>
-        <div>
-          <h1 id="profileTitle" class="text-2xl font-extrabold text-slate-900">Loading...</h1>
-          <p id="profileSubtitle" class="text-sm text-slate-500">Profile Details & Information</p>
+        <div class="flex-1 w-full">
+          <h1 id="profileTitle" class="text-3xl font-black text-navy tracking-tight">Loading...</h1>
+          <p id="profileSubtitle" class="text-xs font-bold uppercase tracking-widest mt-1.5" style="color: var(--blue);">Profile Details</p>
         </div>
       </div>
 
-      <div id="profileDetails" class="space-y-4 text-sm">
-        <!-- Dynamic content injected here -->
+      <!-- Details List (Colorful Highlights) -->
+      <div id="profileDetails" class="space-y-5 text-sm">
+        <!-- Dynamic rows injected here with color classes -->
       </div>
 
-      <div class="mt-8 pt-6 border-t border-slate-100 flex gap-4">
-        <a id="whatsappBtn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-center transition flex items-center justify-center gap-2">
-          <i class="fa-brands fa-whatsapp text-lg"></i> Direct WhatsApp
+      <!-- Action Buttons -->
+      <div class="mt-10 pt-8 border-t-2 border-slate-100 flex flex-col sm:flex-row gap-4">
+        <a id="whatsappBtn" href="#" target="_blank" class="flex-1 text-white font-bold py-4 px-6 rounded-2xl text-center shadow-xl transition flex items-center justify-center gap-2.5 text-base hover:scale-105" style="background-color: var(--emerald);">
+          <i class="fa-brands fa-whatsapp text-2xl"></i> Connect on WhatsApp
         </a>
-        <a href="index.html" class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-center transition">
+        <a href="index.html" class="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-center transition text-base">
           Close
         </a>
       </div>
+
     </div>
   </main>
 
-  <footer class="text-center py-4 text-xs text-slate-400">
+  <!-- Footer (Subtle) -->
+  <footer class="text-center py-8 text-xs text-muted border-t border-slate-200 bg-white mt-6">
     &copy; 2026 Elite Workforce Solutions. All rights reserved.
   </footer>
 
@@ -50,9 +77,19 @@
     const type = new URLSearchParams(window.location.search).get('type');
     const rawData = localStorage.getItem('selected_profile_data');
 
+    // Define common detail row template for consistency
+    const createRow = (label, value, isLink = false, valueClass = "font-semibold text-slate-700") => `
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 py-3 border-b border-slate-50 last:border-b-0">
+        <span class="font-medium text-muted text-xs uppercase tracking-wider">${label}</span> 
+        <span class="${isLink ? 'font-semibold text-blue-700 hover:underline' : valueClass}">${value}</span>
+      </div>
+    `;
+
     if (!rawData) {
       document.getElementById('profileTitle').innerText = "No Data Found";
-      document.getElementById('profileDetails').innerHTML = "<p>Please go back and select a valid record from the table.</p>";
+      document.getElementById('profileDetails').innerHTML = "<p class='text-center text-muted py-8'>Please go back and select a valid record from the table.</p>";
+      document.getElementById('whatsappBtn').style.display = 'none';
+      document.getElementById('profileSubtitle').style.display = 'none';
     } else {
       const data = JSON.parse(rawData);
       const avatarContainer = document.getElementById('profileAvatar');
@@ -71,51 +108,56 @@
         }
 
         detailsEl.innerHTML = `
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Email:</span> <span>${data.email || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Phone Number:</span> <span>${data.phone_number || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Trade / Skill:</span> <span class="font-bold text-blue-600">${data.trade}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Location / Emirate:</span> <span>${data.location}</span></div>
-          <div class="flex justify-between py-2"><span class="font-semibold text-slate-500">Registration Date:</span> <span>${new Date(data.created_at).toLocaleDateString()}</span></div>
+          ${createRow('Email Address', data.email || 'N/A')}
+          ${createRow('Contact Number', data.phone_number || 'N/A')}
+          ${createRow('Trade / Skill', `<span class="font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full text-xs">${data.trade}</span>`, false, '')}
+          ${createRow('Location', data.location || 'UAE')}
+          ${createRow('Registered On', new Date(data.created_at).toLocaleDateString())}
         `;
         const phone = data.phone_number ? data.phone_number.replace(/[^0-9]/g, '') : '';
         waBtn.href = `https://wa.me/${phone}`;
 
       } else if (type === 'suppliers') {
         titleEl.innerText = data.company_name;
-        subtitleEl.innerText = `Manpower Supplier (Lic: ${data.trade_license || 'N/A'})`;
+        subtitleEl.innerText = `Manpower Supplier`;
         if (data.logo_url) {
-          avatarContainer.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain p-1">`;
+          avatarContainer.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain p-2">`;
         } else {
           avatarContainer.innerText = data.company_name.charAt(0);
         }
 
         detailsEl.innerHTML = `
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Contact Person:</span> <span>${data.contact_person || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Email:</span> <span>${data.email || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Phone / WhatsApp:</span> <span>${data.phone || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Manpower Categories:</span> <span class="font-bold text-blue-600">${data.manpower_types || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Available Workers:</span> <span class="font-bold">${data.workers_available || 'Multiple'}</span></div>
-          <div class="flex justify-between py-2"><span class="font-semibold text-slate-500">Registered On:</span> <span>${new Date(data.created_at).toLocaleDateString()}</span></div>
+          ${createRow('Trade License', data.trade_license || 'Verified', false, 'font-mono font-bold text-navy')}
+          ${createRow('Contact Person', data.contact_person || 'N/A')}
+          ${createRow('Email Address', data.email || 'N/A')}
+          ${createRow('Phone / WhatsApp', data.phone || 'N/A')}
+          ${createRow('Specializations', data.manpower_types || 'General', false, 'font-bold text-blue-700')}
+          ${createRow('Available Workers', `<span class="text-lg font-black text-navy">${data.workers_available || 'Multiple'}</span>`, false, '')}
         `;
         const phone = data.phone ? data.phone.replace(/[^0-9]/g, '') : '';
         waBtn.href = `https://wa.me/${phone}`;
 
       } else if (type === 'companies') {
         titleEl.innerText = data.company_name;
-        subtitleEl.innerText = `Active Requirement (Lic: ${data.trade_license || 'N/A'})`;
+        subtitleEl.innerText = `Active Requirement`;
         if (data.logo_url) {
-          avatarContainer.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain p-1">`;
+          avatarContainer.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain p-2">`;
         } else {
           avatarContainer.innerText = data.company_name.charAt(0);
         }
 
         detailsEl.innerHTML = `
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Contact Person:</span> <span>${data.contact_person || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Email:</span> <span>${data.email || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Phone / WhatsApp:</span> <span>${data.phone || 'N/A'}</span></div>
-          <div class="flex justify-between py-2 border-b border-slate-50"><span class="font-semibold text-slate-500">Location:</span> <span>${data.location || 'UAE'}</span></div>
-          <div class="py-2 border-b border-slate-50"><span class="font-semibold text-slate-500 block mb-1">Requirement Details:</span> <p class="bg-slate-50 p-3 rounded-lg text-slate-700">${data.requirement_details || 'N/A'}</p></div>
-          <div class="flex justify-between py-2"><span class="font-semibold text-slate-500">Posted On:</span> <span>${new Date(data.created_at).toLocaleDateString()}</span></div>
+          ${createRow('Trade License', data.trade_license || 'Verified', false, 'font-mono font-bold text-navy')}
+          ${createRow('Contact Person', data.contact_person || 'N/A')}
+          ${createRow('Email Address', data.email || 'N/A')}
+          ${createRow('Location', data.location || 'UAE')}
+          <div class="py-3 border-b border-slate-50">
+            <span class="font-medium text-muted text-xs uppercase tracking-wider block mb-2">Requirement Details</span>
+            <p class="bg-slate-50 p-5 rounded-xl text-slate-700 text-sm leading-relaxed border border-slate-100 shadow-inner">
+              ${data.requirement_details || 'N/A'}
+            </p>
+          </div>
+          ${createRow('Posted On', new Date(data.created_at).toLocaleDateString())}
         `;
         const phone = data.phone ? data.phone.replace(/[^0-9]/g, '') : '';
         waBtn.href = `https://wa.me/${phone}`;
