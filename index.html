@@ -71,13 +71,17 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   background: var(--light);
   border: 1px solid var(--border-color);
   color: var(--text);
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
+  padding: 1px 2px !important;
+  border-radius: 4px;
+  font-size: 9px !important;
+  font-weight: 700;
   cursor: pointer;
   outline: none;
+  height: 20px !important;
+  width: auto !important;
+  max-width: 50px !important;
 }
+
 
 /* Theme Toggle Button Style */
 .theme-toggle-btn{background:none;border:0;cursor:pointer;font-size:18px;color:var(--blue2);padding:6px;border-radius:50%;transition:0.2s;}
@@ -264,18 +268,18 @@ textarea{min-height:115px;resize:vertical}
     <div style="display: flex; align-items: center; gap: 10px;">
       <!-- Expanded Language Selector (10 Languages) -->
       <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
-        <option value="en">🌐 EN</option>
-        <option value="hi">🇮🇳 HI (Hindi)</option>
-        <option value="ar">🇦🇪 AR (Arabic)</option>
-        <option value="ml">🇮🇳 ML (Malayalam)</option>
-        <option value="ta">🇮🇳 TA (Tamil)</option>
-        <option value="kn">🇮🇳 KN (Kannada)</option>
-        <option value="bn">🇧🇩 BN (Bengali)</option>
-        <option value="rn">🇧🇮 RN (Kirundi)</option>
-        <option value="fil">🇵🇭 FIL (Filipino)</option>
-        <option value="ur">🇵🇰 UR (Urdu)</option>
+                <option value="en">EN</option>
+        <option value="hi">HI</option>
+        <option value="ar">AR</option>
+        <option value="ml">ML</option>
+        <option value="ta">TA</option>
+        <option value="kn">KN</option>
+        <option value="bn">BN</option>
+        <option value="rn">RN</option>
+        <option value="fil">FIL</option>
+        <option value="ur">UR</option>
       </select>
-
+        
       <!-- Dark / Light Mode Toggle Button -->
       <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
         <i class="fa-solid fa-moon" id="themeIcon"></i>
