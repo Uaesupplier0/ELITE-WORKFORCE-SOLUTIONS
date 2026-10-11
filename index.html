@@ -262,11 +262,18 @@ textarea{min-height:115px;resize:vertical}
     </a>
     
     <div style="display: flex; align-items: center; gap: 10px;">
-      <!-- Language Selector -->
+      <!-- Expanded Language Selector (10 Languages) -->
       <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
         <option value="en">🌐 EN</option>
-        <option value="hi">🇮🇳 HI</option>
-        <option value="ar">🇦🇪 AR</option>
+        <option value="hi">🇮🇳 HI (Hindi)</option>
+        <option value="ar">🇦🇪 AR (Arabic)</option>
+        <option value="ml">🇮🇳 ML (Malayalam)</option>
+        <option value="ta">🇮🇳 TA (Tamil)</option>
+        <option value="kn">🇮🇳 KN (Kannada)</option>
+        <option value="bn">🇧🇩 BN (Bengali)</option>
+        <option value="rn">🇧🇮 RN (Kirundi)</option>
+        <option value="fil">🇵🇭 FIL (Filipino)</option>
+        <option value="ur">🇵🇰 UR (Urdu)</option>
       </select>
 
       <!-- Dark / Light Mode Toggle Button -->
@@ -683,6 +690,7 @@ textarea{min-height:115px;resize:vertical}
       <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
       <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
       <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
+      <!-- Targeted Bulk Email Button -->
       <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
     </div>
 
@@ -829,7 +837,7 @@ textarea{min-height:115px;resize:vertical}
   let currentPublicTab = 'companies';
   let rawPublicData = []; 
 
-  // Translations Object for Multi-Language Support
+  // Translations Dictionary for 10 Languages
   const translations = {
     en: {
       nav_home: "Home", nav_about: "About Us", nav_board: "Public Board", nav_post: "Post Requirement", nav_careers: "Careers", nav_faq: "FAQ", nav_contact: "Contact", nav_staffing: "Get Staffing",
@@ -851,6 +859,55 @@ textarea{min-height:115px;resize:vertical}
       hero_title: 'ربط الشركات بـ <span style="color:var(--gold)">العمالة الماهرة</span>',
       hero_desc: "تضمن لك إيليت وورك فورس توفير العمالة الماهرة والشركاء المعتمدين لمشاريعك.",
       btn_post: "نشر طلب عمل", btn_supplier: "الانضمام كمورد", btn_azad: "تأشيرة حرة"
+    },
+    ml: {
+      nav_home: "ഹോം", nav_about: "ഞങ്ങളെ കുറിച്ച്", nav_board: "പബ്ലിക് ബോർഡ്", nav_post: "ആവശ്യം പോസ്റ്റ് ചെയ്യുക", nav_careers: "കരിയർ", nav_faq: "ചോദ്യങ്ങൾ", nav_contact: "ബന്ധപ്പെടുക", nav_staffing: "തൊഴിലാളികളെ നേടുക",
+      hero_eyebrow: "യു.എ.ഇ വർക്ക്ഫോഴ്സ് നെറ്റ്‌വർക്ക്",
+      hero_title: 'കമ്പനികളെ <span style="color:var(--gold)">വിദഗ്ദ്ധ തൊഴിലാളികളുമായി</span> ബന്ധിപ്പിക്കുന്നു',
+      hero_desc: "എലൈറ്റ് വർക്ക്ഫോഴ്സ് സൊല്യൂഷൻസ് യു.എ.ഇ കമ്പനികളെ മാൻപവർ സപ്ലയർമാരുമായും വിദഗ്ദ്ധ തൊഴിലാളികളുമായും ബന്ധിപ്പിക്കുന്നു.",
+      btn_post: "ആവശ്യം സമർപ്പിക്കുക", btn_supplier: "സപ്ലയറായി ചേരുക", btn_azad: "ആസാദ് വിസ വർക്കർ"
+    },
+    ta: {
+      nav_home: "முகப்பு", nav_about: "எங்களைப் பற்றி", nav_board: "பொது போர்டு", nav_post: "தேவையைப் பதிவுசெய்", nav_careers: "வேலைவாய்ப்பு", nav_faq: "கேள்விகள்", nav_contact: "தொடர்பு கொள்ள", nav_staffing: "ஆட்களைப் பெறுக",
+      hero_eyebrow: "யுஏஇ பணியாளர் நெட்வொர்க்",
+      hero_title: 'நிறுவனங்களை <span style="color:var(--gold)">திறமையான பணியாளர்களுடன்</span> இணைக்கிறது',
+      hero_desc: "எலைட் வொர்க்ஃபோர்ஸ் சொல்யூஷன்ஸ் யுஏஇ நிறுவனங்களை ஆள்சேர்ப்பு விநியோகஸ்தர்கள் மற்றும் திறமையான பணியாளர்களுடன் இணைக்கிறது.",
+      btn_post: "தேவையை இடுகையிடவும்", btn_supplier: "சப்ளையராக இணையவும்", btn_azad: "ஆசாத் விசா தொழிலாளி"
+    },
+    kn: {
+      nav_home: "ಮುಖಪುಟ", nav_about: "ನಮ್ಮ ಬಗ್ಗೆ", nav_board: "ಸಾರ್ವಜನಿಕ ಬೋರ್ಡ್", nav_post: "ಅಗತ್ಯತೆಯನ್ನು ಪೋಸ್ಟ್ ಮಾಡಿ", nav_careers: "ವೃತ್ತಿಜೀವನ", nav_faq: "ಪ್ರಶ್ನೆಗಳು", nav_contact: "ಸಂಪರ್ಕಿಸಿ", nav_staffing: "ಸಿಬ್ಬಂದಿ ಪಡೆಯಿರಿ",
+      hero_eyebrow: "ಯುಎಇ ಕಾರ್ಯಪಡೆ ನೆಟ್‌ವರ್ಕ್",
+      hero_title: 'ಕಂಪನಿಗಳನ್ನು <span style="color:var(--gold)">ಕುಶಲ ಕಾರ್ಮಿಕರೊಂದಿಗೆ</span> ಜೋಡಿಸುವುದು',
+      hero_desc: "ಎಲೈಟ್ ವರ್ಕ್‌ಫೋರ್ಸ್ ಸೊಲ್ಯೂಷನ್ಸ್ ಯುಎಇ ಕಂಪನಿಗಳನ್ನು ಮ್ಯಾನ್‌ಪವರ್ ಪೂರೈಕೆದಾರರು ಮತ್ತು ಪರಿಣಿತ ಕಾರ್ಮಿಕರೊಂದಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ.",
+      btn_post: "ಅಗತ್ಯತೆ ಪೋಸ್ಟ್ ಮಾಡಿ", btn_supplier: "ಪೂರೈಕೆದಾರರಾಗಿ ಸೇರಿ", btn_azad: "ಆಜಾದ್ ವೀಸಾ ಕಾರ್ಮಿಕ"
+    },
+    bn: {
+      nav_home: "হোম", nav_about: "আমাদের সম্পর্কে", nav_board: "পাবলিক বোর্ড", nav_post: "প্রয়োজন পোস্ট করুন", nav_careers: "ক্যারিয়ার", nav_faq: "প্রশ্নাবলী", nav_contact: "যোগাযোগ", nav_staffing: "কর্মী পান",
+      hero_eyebrow: "সংযুক্ত আরব আমিরাত ওয়ার্কফোর্স নেটওয়ার্ক",
+      hero_title: 'কোম্পানিগুলোকে <span style="color:var(--gold)">দক্ষ কর্মীদের</span> সাথে সংযুক্ত করা',
+      hero_desc: "এলিট ওয়ার্কফোর্স সলিউশনস ইউএই কোম্পানিগুলোকে ম্যানপাওয়ার সাপ্লাইয়ার এবং দক্ষ কর্মীদের সাথে যুক্ত করে।",
+      btn_post: "রিকোয়ারমেন্ট পোস্ট করুন", btn_supplier: "সরবরাহকারী হিসাবে যোগ দিন", btn_azad: "আজাদ ভিসা কর্মী"
+    },
+    rn: {
+      nav_home: "Ahabanza", nav_about: "Ibitwerekeye", nav_board: "Urubuga rwose", nav_post: "Saba abakozi", nav_careers: "Akazi", nav_faq: "Ibibazo", nav_contact: "Tuja inama", nav_staffing: "Rona abakozi",
+      hero_eyebrow: "INETIWARI Y'ABAKOZI MU UAE",
+      hero_title: 'Guhuza amasosiyete n\'<span style="color:var(--gold)">abakozi b\'abahanga</span>',
+      hero_desc: "Elite Workforce Solutions ihuza amasosiyete yo mu UAE n'abatanzi b'abakozi b'abahanga ku bwa gahunda zitandukanye.",
+      btn_post: "Andikisha icyo ukeneye", btn_supplier: "Injira nk'umutanzi", btn_azad: "Umukozi wa Azad Visa"
+    },
+    fil: {
+      nav_home: "Tahanan", nav_about: "Tungkol sa Amin", nav_board: "Pampublikong Lupon", nav_post: "Mag-post ng Kailangan", nav_careers: "Mga Trabaho", nav_faq: "Mga Tanong", nav_contact: "Makipag-ugnayan", nav_staffing: "Kumuha ng Manggagawa",
+      hero_eyebrow: "UAE WORKFORCE NETWORK",
+      hero_title: 'Ipinagdurugtong ang mga Kompanya sa <span style="color:var(--gold)">Skilled Workers</span>',
+      hero_desc: "Inuugnay ng Elite Workforce Solutions ang mga kompanya sa UAE sa mga manpower supplier at bihasang manggagawa.",
+      btn_post: "Mag-post ng Kailangan", btn_supplier: "Sali bilang Supplier", btn_azad: "Azad Visa Worker"
+    },
+    ur: {
+      nav_home: "ہوم", nav_about: "ہمارے بارے میں", nav_board: "پبلک بورڈ", nav_post: "ضرورت پوسٹ کریں", nav_careers: "کیریئر", nav_faq: "سوالات", nav_contact: "رابطہ کریں", nav_staffing: "اسٹاف حاصل کریں",
+      hero_eyebrow: "یو اے ای ورک فورس نیٹ ورک",
+      hero_title: 'کمپنیوں کو <span style="color:var(--gold)">ماہر افرادی قوت</span> سے جوڑنا',
+      hero_desc: "ایلیٹ ورک فورس سلوشنز یو اے ای کی کمپنیوں کو مین پاور سپلائرز اور ہنر مند کارکنوں سے جوڑتا ہے۔",
+      btn_post: "ضرورت پوسٹ کریں", btn_supplier: "بطور سپلائر شامل ہوں", btn_azad: "آزاد ویزا ورکر"
     }
   };
 
@@ -860,7 +917,7 @@ textarea{min-height:115px;resize:vertical}
       const key = el.getAttribute('data-i18n');
       if (t[key]) el.innerHTML = t[key];
     });
-    if (lang === 'ar') document.body.style.direction = 'rtl';
+    if (lang === 'ar' || lang === 'ur') document.body.style.direction = 'rtl';
     else document.body.style.direction = 'ltr';
   }
 
