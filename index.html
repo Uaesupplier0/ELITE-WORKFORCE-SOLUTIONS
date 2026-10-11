@@ -1060,17 +1060,17 @@ textarea{min-height:115px;resize:vertical}
       if (error) throw error;
 
       // 2. Send to Google Sheets & Email Notification via Apps Script
-      const sheetFormData = new URLSearchParams();
-      sheetFormData.append('companyName', companyName);
-      sheetFormData.append('contactPerson', contactPerson);
-      sheetFormData.append('email', email);
-      sheetFormData.append('phone', phone);
-      sheetFormData.append('requirement', requirementDetails);
+      const sheetData = new URLSearchParams();
+      sheetData.append('companyName', companyName);
+      sheetData.append('contactPerson', contactPerson);
+      sheetData.append('email', email);
+      sheetData.append('phone', phone);
+      sheetData.append('requirement', requirementDetails);
 
       fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        body: sheetFormData
+        body: sheetData
       }).catch(err => console.log('Google Sheet sync note:', err));
 
       showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
