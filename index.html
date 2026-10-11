@@ -679,6 +679,9 @@ textarea{min-height:115px;resize:vertical}
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // Google Apps Script Web App URL for Google Sheets & Email Notifications
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz42x7pNc1qqtiSqjtafusXsKuixNOeTBN6s06hzRGlglBrvU8LZVNtZ70_eSCİY50';
+
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
   let rawPublicData = []; // Cached for live filtering
@@ -1007,7 +1010,7 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('file-name-label').style.color = "#e2e8f0";
   }
 
-  // 1. COMPANY FORM WITH LOGO UPLOAD TO 'photos' BUCKET
+  // 1. COMPANY FORM WITH LOGO UPLOAD TO 'photos' BUCKET & GOOGLE SHEETS INTEGRATION
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
@@ -1052,8 +1055,23 @@ textarea{min-height:115px;resize:vertical}
         requirement_details: requirementDetails
       };
 
+      // 1. Save to Supabase
       const { error } = await _supabase.from('companies').insert([payload]);
       if (error) throw error;
+
+      // 2. Send to Google Sheets & Email Notification via Apps Script
+      const sheetFormData = new URLSearchParams();
+      sheetFormData.append('companyName', companyName);
+      sheetFormData.append('contactPerson', contactPerson);
+      sheetFormData.append('email', email);
+      sheetFormData.append('phone', phone);
+      sheetFormData.append('requirement', requirementDetails);
+
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: sheetFormData
+      }).catch(err => console.log('Google Sheet sync note:', err));
 
       showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
       document.getElementById('companyForm').reset();
