@@ -66,6 +66,19 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .nav-btn{background:var(--blue);color:#fff!important;padding:10px 16px;border-radius:7px;transition:0.3s}.nav-btn:hover{background:var(--blue2)}
 .menu-btn{display:none;font-size:24px;cursor:pointer;color:var(--blue)}
 
+/* Language Select Dropdown */
+.lang-select {
+  background: var(--light);
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
 /* Theme Toggle Button Style */
 .theme-toggle-btn{background:none;border:0;cursor:pointer;font-size:18px;color:var(--blue2);padding:6px;border-radius:50%;transition:0.2s;}
 .theme-toggle-btn:hover{background:rgba(0,0,0,0.05);}
@@ -98,6 +111,41 @@ textarea{min-height:115px;resize:vertical}
 .submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:7px;font-weight:800;transition:all 0.3s}
 .submit-btn:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 6px 15px rgba(37,99,235,0.3)}
 
+/* FAQ Accordion Style */
+.faq-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.faq-question {
+  padding: 18px 20px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  color: var(--muted);
+  font-size: 14px;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding: 0 20px 18px 20px;
+}
+.faq-item.active .faq-question i {
+  transform: rotate(180deg);
+}
+
 /* Admin Tabs/Tables & Clickable Public Rows */
 .admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 20px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
@@ -125,6 +173,8 @@ textarea{min-height:115px;resize:vertical}
 .admin-logout:hover{filter:brightness(1.1)}
 .admin-del-btn{background:#ef4444;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:0.2s}
 .admin-del-btn:hover{filter:brightness(1.1)}
+.view-pdf-btn{background:var(--blue2);color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:bold;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+.view-pdf-btn:hover{background:var(--blue);}
 
 /* Modal Styling with Glassmorphism / Scale Animation */
 .azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px;backdrop-filter:blur(5px);animation: fadeIn 0.3s ease;}
@@ -211,7 +261,14 @@ textarea{min-height:115px;resize:vertical}
       <span>ELITE <b>WORKFORCE</b> <em>SOLUTIONS</em></span>
     </a>
     
-    <div style="display: flex; align-items: center; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <!-- Language Selector -->
+      <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
+        <option value="en">🌐 EN</option>
+        <option value="hi">🇮🇳 HI</option>
+        <option value="ar">🇦🇪 AR</option>
+      </select>
+
       <!-- Dark / Light Mode Toggle Button -->
       <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
         <i class="fa-solid fa-moon" id="themeIcon"></i>
@@ -220,13 +277,14 @@ textarea{min-height:115px;resize:vertical}
     </div>
 
     <ul class="nav-links" id="navLinks">
-      <li><a href="#home" onclick="closeMenu()">Home</a></li>
-      <li><a href="#about" onclick="closeMenu()">About Us</a></li>
-      <li><a href="#leaderboard" onclick="closeMenu()">Public Board</a></li>
-      <li><a href="#requirements" onclick="closeMenu()">Post Requirement</a></li>
-      <li><a href="#careers" onclick="closeMenu()">Careers</a></li>
-      <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
-      <li><a href="#contact" class="nav-btn" onclick="closeMenu()">Get Staffing</a></li>
+      <li><a href="#home" onclick="closeMenu()" data-i18n="nav_home">Home</a></li>
+      <li><a href="#about" onclick="closeMenu()" data-i18n="nav_about">About Us</a></li>
+      <li><a href="#leaderboard" onclick="closeMenu()" data-i18n="nav_board">Public Board</a></li>
+      <li><a href="#requirements" onclick="closeMenu()" data-i18n="nav_post">Post Requirement</a></li>
+      <li><a href="#careers" onclick="closeMenu()" data-i18n="nav_careers">Careers</a></li>
+      <li><a href="#faq" onclick="closeMenu()" data-i18n="nav_faq">FAQ</a></li>
+      <li><a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a></li>
+      <li><a href="#contact" class="nav-btn" onclick="closeMenu()" data-i18n="nav_staffing">Get Staffing</a></li>
       <li><a href="javascript:void(0)" onclick="unlockAdminPanel()" style="color:var(--gold2);"><i class="fa-solid fa-lock"></i> Admin</a></li>
     </ul>
   </nav>
@@ -244,13 +302,13 @@ textarea{min-height:115px;resize:vertical}
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <div class="eyebrow">UAE WORKFORCE NETWORK</div>
-      <h1>Connecting Companies With <span>Skilled Workforce</span></h1>
-      <p class="hero-lead">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
+      <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
+      <h1 data-i18n="hero_title">Connecting Companies With <span>Skilled Workforce</span></h1>
+      <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
       <div class="hero-buttons">
-        <a href="#requirements" class="btn btn-primary">Post Requirement</a>
-        <button onclick="openSupplierModal()" class="btn btn-outline"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
-        <button onclick="openAzadModal()" class="btn btn-azad-hero"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
+        <a href="#requirements" class="btn btn-primary" data-i18n="btn_post">Post Requirement</a>
+        <button onclick="openSupplierModal()" class="btn btn-outline" data-i18n="btn_supplier"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
+        <button onclick="openAzadModal()" class="btn btn-azad-hero" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
       </div>
     </div>
   </div>
@@ -515,8 +573,58 @@ textarea{min-height:115px;resize:vertical}
     </div>
 </section>
 
+<!-- FAQ SECTION (ACCORDION) -->
+<section id="faq" class="reveal-on-scroll" style="background:var(--white); padding:80px 20px;">
+  <div class="container" style="max-width:800px;">
+    <div class="section-title">
+      <span style="font-size:12px; color:var(--blue2); font-weight:800; letter-spacing:1px; text-transform:uppercase;">Help & Questions</span>
+      <h2 style="font-size:32px; font-weight:800; color:var(--text); margin-top:5px;">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>1. How fast can Elite Workforce deploy manpower for site projects?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+      <div class="faq-answer">
+        We maintain a live pool of pre-vetted technicians and workers across UAE emirates. Standard deployment takes between 24 to 48 hours after requirement verification.
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>2. Are all manpower suppliers on this platform licensed?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+      <div class="faq-answer">
+        Yes, all suppliers listed on our Public Board undergo trade license authentication and document checks to ensure 100% legal compliance with UAE labor standards.
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>3. How can Azad Visa workers get daily or hourly site leads?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+      <div class="faq-answer">
+        Azad Visa holders can fill out the quick registration form by clicking the "Azad Visa Worker" button. Once verified, their skills are published on the public board for direct company contact.
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>4. Is there any fee for companies to post job requirements?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+      <div class="faq-answer">
+        No, posting requirements on Elite Workforce Solutions is completely free for registered UAE companies and hiring partners.
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT & GOOGLE MAPS SECTION -->
-<section class="requirement-section reveal-on-scroll" id="contact" style="background:var(--white); padding:80px 20px;">
+<section class="requirement-section reveal-on-scroll" id="contact" style="background:var(--light); padding:80px 20px;">
   <div class="container">
     <div class="section-title">
       <h2>Get In Touch & Location</h2>
@@ -525,7 +633,7 @@ textarea{min-height:115px;resize:vertical}
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="contact-grid">
         <div style="display:flex; flex-direction:column; gap:20px;">
-            <div style="background:var(--light); padding:25px; border-radius:12px; border:1px solid var(--border-color); display:flex; gap:15px; align-items:flex-start;">
+            <div style="background:var(--card-bg); padding:25px; border-radius:12px; border:1px solid var(--border-color); display:flex; gap:15px; align-items:flex-start;">
                 <div style="width:45px; height:45px; background:var(--blue); color:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;"><i class="fa-solid fa-location-dot"></i></div>
                 <div>
                     <h4 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Headquarters Address</h4>
@@ -575,7 +683,6 @@ textarea{min-height:115px;resize:vertical}
       <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
       <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
       <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
-      <!-- Targeted Bulk Email Button -->
       <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
     </div>
 
@@ -716,12 +823,55 @@ textarea{min-height:115px;resize:vertical}
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Google Apps Script Web App URL for Google Sheets & Email Notifications
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKz6idXSfDwJWQpVUbONMXY1ihY6oU1hB7yyDnZZgsngnOqQIWigdhCjlQJIancHAZ/exec';
 
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
-  let rawPublicData = []; // Cached for live filtering
+  let rawPublicData = []; 
+
+  // Translations Object for Multi-Language Support
+  const translations = {
+    en: {
+      nav_home: "Home", nav_about: "About Us", nav_board: "Public Board", nav_post: "Post Requirement", nav_careers: "Careers", nav_faq: "FAQ", nav_contact: "Contact", nav_staffing: "Get Staffing",
+      hero_eyebrow: "UAE WORKFORCE NETWORK",
+      hero_title: 'Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span>',
+      hero_desc: "Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project requirements.",
+      btn_post: "Post Requirement", btn_supplier: "Join as Supplier", btn_azad: "Azad Visa Worker"
+    },
+    hi: {
+      nav_home: "होम", nav_about: "हमारे बारे में", nav_board: "पब्लिक बोर्ड", nav_post: "आवश्यकता पोस्ट करें", nav_careers: "करियर", nav_faq: "प्रश्न", nav_contact: "संपर्क करें", nav_staffing: "स्टाफ पाएं",
+      hero_eyebrow: "यूएई वर्कफोर्स नेटवर्क",
+      hero_title: 'कंपनियों को <span style="color:var(--gold)">कुशल कारीगरों</span> से जोड़ें',
+      hero_desc: "एलीट वर्कफोर्स सॉल्यूशंस यूएई की कंपनियों को मैनपावर सप्लायर्स और कुशल वर्करों से जोड़ता है।",
+      btn_post: "रिक्वायरमेंट पोस्ट करें", btn_supplier: "सप्लायर के रूप में जुड़ें", btn_azad: "आज़ाद वीज़ा वर्कर"
+    },
+    ar: {
+      nav_home: "الرئيسية", nav_about: "عن الشركة", nav_board: "اللوحة العامة", nav_post: "إنشاء طلب", nav_careers: "الوظائف", nav_faq: "الأسئلة", nav_contact: "اتصل بنا", nav_staffing: "طلب العمالة",
+      hero_eyebrow: "شبكة القوى العاملة بالإمارات",
+      hero_title: 'ربط الشركات بـ <span style="color:var(--gold)">العمالة الماهرة</span>',
+      hero_desc: "تضمن لك إيليت وورك فورس توفير العمالة الماهرة والشركاء المعتمدين لمشاريعك.",
+      btn_post: "نشر طلب عمل", btn_supplier: "الانضمام كمورد", btn_azad: "تأشيرة حرة"
+    }
+  };
+
+  function changeLanguage(lang) {
+    const t = translations[lang] || translations.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.innerHTML = t[key];
+    });
+    if (lang === 'ar') document.body.style.direction = 'rtl';
+    else document.body.style.direction = 'ltr';
+  }
+
+  function toggleFaq(item) {
+    item.classList.toggle('active');
+  }
+
+  function renderPdfButton(fileUrl) {
+    if (!fileUrl) return '<span style="color:#aaa;">No Doc</span>';
+    return `<a href="${fileUrl}" target="_blank" class="view-pdf-btn"><i class="fa-solid fa-file-pdf"></i> View PDF</a>`;
+  }
 
   // Dark / Light Mode Logic
   function toggleDarkMode() {
@@ -739,7 +889,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Load saved theme preference on startup
   window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('ews_theme');
     const iconEl = document.getElementById('themeIcon');
@@ -748,7 +897,6 @@ textarea{min-height:115px;resize:vertical}
       if(iconEl) iconEl.className = 'fa-solid fa-sun';
     }
 
-    // Scroll reveal observer animation setup
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -767,15 +915,12 @@ textarea{min-height:115px;resize:vertical}
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
 
-  // Supplier Modal Functions
   function openSupplierModal() { document.getElementById('supplierModal').style.display = 'flex'; }
   function closeSupplierModal() { document.getElementById('supplierModal').style.display = 'none'; }
 
-  // Azad Modal Functions
   function openAzadModal() { document.getElementById('azadModal').style.display = 'flex'; }
   function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
 
-  // Success Popup Functions
   function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
       const popup = document.getElementById('successPopup');
       const msgElement = document.getElementById('popupMessage');
@@ -839,7 +984,7 @@ textarea{min-height:115px;resize:vertical}
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('publicSearchInput').value = ''; // Reset search on tab switch
+    document.getElementById('publicSearchInput').value = ''; 
     loadPublicLeaderboard();
   }
 
@@ -887,7 +1032,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Render public table dynamically and attach click events to rows
   function renderPublicTable(dataList) {
     const container = document.getElementById('public-table-container');
     if (!dataList || dataList.length === 0) {
@@ -979,23 +1123,17 @@ textarea{min-height:115px;resize:vertical}
       container.innerHTML = html + '</tbody></table>';
     }
 
-    // Attach click event listeners to rows to open profile page
     document.querySelectorAll('#publicTableBody tr').forEach(row => {
       row.addEventListener('click', () => {
         const idx = row.getAttribute('data-index');
         const selectedItem = dataList[idx];
-        
-        // Save selected item details to localStorage to read on worker-profile.html
         localStorage.setItem('selected_profile_type', currentPublicTab);
         localStorage.setItem('selected_profile_data', JSON.stringify(selectedItem));
-
-        // Open profile details page
         window.location.href = `worker-profile.html?type=${currentPublicTab}`;
       });
     });
   }
 
-  // Live filter function for the search bar
   function filterPublicTable() {
     const query = document.getElementById('publicSearchInput').value.toLowerCase().trim();
     if (!query) {
@@ -1047,7 +1185,6 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('file-name-label').style.color = "#e2e8f0";
   }
 
-  // 1. COMPANY FORM WITH LOGO UPLOAD TO 'photos' BUCKET & GOOGLE SHEETS INTEGRATION
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
@@ -1092,11 +1229,9 @@ textarea{min-height:115px;resize:vertical}
         requirement_details: requirementDetails
       };
 
-      // 1. Save to Supabase
       const { error } = await _supabase.from('companies').insert([payload]);
       if (error) throw error;
 
-      // 2. Send to Google Sheets & Email Notification via Apps Script
       const sheetData = new URLSearchParams();
       sheetData.append('companyName', companyName);
       sheetData.append('contactPerson', contactPerson);
@@ -1123,7 +1258,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // 2. SUPPLIER FORM WITH LOGO UPLOAD TO 'photos' BUCKET
   async function submitModalSupplier(e) {
     e.preventDefault();
     const btn = document.getElementById('m_supp_btn');
@@ -1185,7 +1319,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // 3. AZAD WORKER REGISTRATION WITH PHOTO UPLOAD TO 'photos' BUCKET
   async function submitModalAzadWorker(e) {
     e.preventDefault();
     const btn = document.getElementById('m_azad_btn');
@@ -1354,7 +1487,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  // Targeted Bulk Email Function Added Here
   async function triggerBulkEmail() {
     const targetType = prompt(
       "Kise email bhejna hai?\n\n" +
