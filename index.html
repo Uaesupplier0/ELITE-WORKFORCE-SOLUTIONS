@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=yes">
@@ -83,26 +83,26 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .hero h1{font-size:48px;line-height:1.1;margin-bottom:22px}.hero h1 span{color:var(--gold)}
 .hero-lead{font-size:17px;color:#e2eaf5;max-width:650px;margin-bottom:30px}
 .hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
-.btn{display:inline-block;padding:14px 22px;border-radius:8px;font-weight:800;transition:.25s;border:0;cursor:pointer;text-align:center;}
-.btn-primary{background:var(--gold2);color:#111827}.btn-primary:hover{transform:translateY(-2px);background:var(--gold)}
-.btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue)}
-.btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-2px)}
+.btn{display:inline-block;padding:14px 22px;border-radius:8px;font-weight:800;transition:.3s;border:0;cursor:pointer;text-align:center;}
+.btn-primary{background:var(--gold2);color:#111827}.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 20px rgba(245,158,11,0.4);background:var(--gold)}
+.btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
+.btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
 /* Forms & Tables Section */
 .requirement-section{background:var(--light); transition: background 0.3s;}
 .requirement-card{background:var(--card-bg);border-radius:16px;padding:30px;box-shadow:0 8px 28px rgba(0,0,0,.06);border:1px solid var(--border-color);max-width:700px;width:100%;margin:auto; transition: background 0.3s, border 0.3s;}
 .form-group{margin-bottom:16px}.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:14px}
-input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--border-color);border-radius:7px;outline:none;background:var(--card-bg);color:var(--text);transition:border-color 0.2s}
-input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,61,145,0.1)}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--border-color);border-radius:7px;outline:none;background:var(--card-bg);color:var(--text);transition:border-color 0.2s, box-shadow 0.2s}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,61,145,0.15)}
 textarea{min-height:115px;resize:vertical}
-.submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:7px;font-weight:800;transition:background 0.2s}
-.submit-btn:hover{background:var(--blue2)}
+.submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:7px;font-weight:800;transition:all 0.3s}
+.submit-btn:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 6px 15px rgba(37,99,235,0.3)}
 
 /* Admin Tabs/Tables & Clickable Public Rows */
 .admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 20px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:6px;font-weight:bold;cursor:pointer;color:var(--text);transition:0.2s}
-.admin-tab-btn.active{background:var(--blue);color:#fff}
+.admin-tab-btn.active{background:var(--blue);color:#fff;transform:translateY(-1px)}
 .admin-table-wrap{overflow-x:auto;background:var(--card-bg);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border:1px solid var(--border-color);width:100%;}
 .admin-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px;min-width:600px;}
 .admin-table th{background:var(--light);padding:12px;border-bottom:2px solid var(--border-color);color:var(--muted)}
@@ -111,27 +111,36 @@ textarea{min-height:115px;resize:vertical}
 /* Clickable table rows hover styling */
 #public-table-container tbody tr {
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.25s ease;
 }
 #public-table-container tbody tr:hover {
-  background-color: rgba(37, 99, 235, 0.05);
+  background-color: rgba(37, 99, 235, 0.08);
+  transform: scale(1.002);
 }
 
 .admin-badge{background:rgba(37,99,235,0.1);color:var(--blue2);padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold}
-.admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px}
-.admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px}
-.admin-del-btn{background:#ef4444;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px}
+.admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;transition:0.2s}
+.admin-refresh:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px;transition:0.2s}
+.admin-logout:hover{filter:brightness(1.1)}
+.admin-del-btn{background:#ef4444;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:0.2s}
+.admin-del-btn:hover{filter:brightness(1.1)}
 
-/* Modal Styling */
-.azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px}
-.azad-modal-content{background:var(--card-bg);border-radius:12px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:25px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-.azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted)}
+/* Modal Styling with Glassmorphism / Scale Animation */
+.azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px;backdrop-filter:blur(5px);animation: fadeIn 0.3s ease;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Animations & Modern Hover Effects */
+.azad-modal-content{background:var(--card-bg);border-radius:16px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:25px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.4);border:1px solid var(--border-color);animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+@keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s}
+.azad-close-btn:hover{color:var(--text)}
+
+/* UI Animations & Modern Hover Effects */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(25px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-on-scroll.revealed {
   opacity: 1;
@@ -139,17 +148,40 @@ textarea{min-height:115px;resize:vertical}
 }
 
 .hover-card-effect {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .hover-card-effect:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 35px rgba(0,0,0,0.15);
+}
+
+/* Floating WhatsApp Quick Contact Button */
+.floating-whatsapp {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #25d366;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  z-index: 1005;
+  transition: transform 0.3s ease, background-color 0.3s;
+}
+.floating-whatsapp:hover {
+  transform: scale(1.1) rotate(10deg);
+  background-color: #20ba5a;
 }
 
 /* Toast Notifications */
-#toast-container{position:fixed;bottom:20px;right:20px;z-index:9999}
-.toast{background:var(--navy);color:#fff;padding:14px 20px;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.2);margin-top:10px;font-size:14px;display:flex;align-items:center;gap:10px;animation:slideIn 0.3s ease-out}
-@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+#toast-container{position:fixed;bottom:90px;right:20px;z-index:9999}
+.toast{background:var(--navy);color:#fff;padding:14px 20px;border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,0.25);margin-top:10px;font-size:14px;display:flex;align-items:center;gap:12px;animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);border:1px solid rgba(255,255,255,0.1)}
+@keyframes slideIn{from{transform:translateX(100%); opacity:0;}to{transform:translateX(0); opacity:1;}}
 
 /* Responsive Navigation Styles */
 @media(max-width:992px){
@@ -166,6 +198,11 @@ textarea{min-height:115px;resize:vertical}
 <link rel="icon" type="image/png" sizes="48x48" href="logo.png">
 </head>
 <body class="">
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/971500000000" target="_blank" class="floating-whatsapp" title="Chat with us on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
 
 <header>
   <nav class="navbar">
@@ -293,8 +330,8 @@ textarea{min-height:115px;resize:vertical}
 <section id="about" class="reveal-on-scroll" style="background:var(--white); padding:80px 20px; transition: background 0.3s;">
     <div class="container">
         <div class="section-title">
-            <h2 class="text-xs font-bold uppercase tracking-widest text-brand-600 mb-2" style="font-size:14px; color:var(--blue2);">About Our Agency</h2>
-            <p style="font-size:32px; font-weight:800; color:var(--text); margin-bottom:10px;">Building Stronger Workforces Across Industries</p>
+            <span style="font-size:14px; color:var(--blue2); font-weight:800; letter-spacing:1px; text-transform:uppercase;">About Our Agency</span>
+            <h2 style="font-size:32px; font-weight:800; color:var(--text); margin-top:5px; margin-bottom:10px;">Building Stronger Workforces Across Industries</h2>
             <div style="width:60px; height:4px; background:var(--blue); margin:15px auto 0;"></div>
         </div>
 
