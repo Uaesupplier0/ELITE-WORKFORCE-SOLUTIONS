@@ -104,42 +104,51 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
-/* Top-Left Rectangle Box for Timesheet Button inside Hero Section */
-.hero-top-left-wrapper {
-  position: absolute;
-  top: 25px;
-  left: 25px;
-  z-index: 10;
-}
+/* Rectangle Box for Timesheet Button on Left Side of Hero Section */
 .hero-timesheet-box {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(8px);
-  padding: 8px 12px;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 .btn-hero-timesheet {
   background: var(--gold2);
   color: #111827;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   font-weight: 800;
   font-size: 13px;
   border: 0;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
   transition: all 0.3s ease;
+  text-align: left;
 }
 .btn-hero-timesheet:hover {
   background: var(--gold);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.5);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+.btn-hero-timesheet .time-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.btn-hero-timesheet .live-time-text {
+  font-size: 13px;
+  font-weight: 800;
+}
+.btn-hero-timesheet .live-date-text {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.85;
 }
 
 /* Timesheet Modal Panel Styling */
@@ -309,7 +318,6 @@ textarea{min-height:115px;resize:vertical}
   .nav-links.active{display:flex}
   .about-grid, .careers-grid, .contact-grid {grid-template-columns: 1fr !important;}
   .hero h1 {font-size: 36px;}
-  .hero-top-left-wrapper { position: relative; top: auto; left: auto; margin-bottom: 20px; display: inline-block; }
 }
 </style>
 <link rel="icon" type="image/png" sizes="48x48" href="logo.png">
@@ -372,19 +380,21 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH TOP-LEFT RECTANGLE BOX FOR TIMESHEET BUTTON -->
+<!-- HERO SECTION WITH RECTANGLE BOX FOR TIMESHEET BUTTON -->
 <section class="hero" id="home">
-  <!-- TOP LEFT RECTANGLE BOX CONTAINING TIMESHEET BUTTON -->
-  <div class="hero-top-left-wrapper">
-    <div class="hero-timesheet-box">
-      <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
-        <i class="fa-solid fa-clock"></i> Timesheet
-      </button>
-    </div>
-  </div>
-
   <div class="hero-container">
     <div>
+      <!-- RECTANGLE BOX CONTAINING TIMESHEET BUTTON WITH LIVE TIME & DATE -->
+      <div class="hero-timesheet-box">
+        <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
+          <i class="fa-solid fa-clock" style="font-size: 18px;"></i>
+          <div class="time-info">
+            <span class="live-time-text" id="heroLiveClock">--:--:--</span>
+            <span class="live-date-text" id="heroLiveDate">Loading...</span>
+          </div>
+        </button>
+      </div>
+
       <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
       <h1 data-i18n="hero_title">Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span></h1>
       <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
@@ -1800,14 +1810,24 @@ textarea{min-height:115px;resize:vertical}
       $('tsCheckIn').disabled=false; $('tsCheckOut').disabled=true;
     }
     function update(){
-      if(!$('tsClock')) return;
       const now=new Date();
-      $('tsClock').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);$('tsDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'2-digit',month:'short',year:'numeric'}).format(now)+' · UAE time (UTC+4)';
-      const duration=active?Math.max(0,now-new Date(active.checkInAt)):0;
-      $('tsElapsed').textContent=fmtDuration(duration);$('tsOvertime').textContent=fmtDuration(Math.max(0,duration-8*60*60*1000));
-      if($('tsCheckIn'))$('tsCheckIn').disabled=!!active;
-      if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
-      if(active){ renderLocation(active.location); }
+      
+      // Hero Timesheet Button Live Time & Date Updater
+      const heroClock = $('heroLiveClock');
+      const heroDate = $('heroLiveDate');
+      if(heroClock && heroDate) {
+        heroClock.textContent = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
+        heroDate.textContent = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',day:'2-digit',month:'short',year:'numeric'}).format(now);
+      }
+
+      if($('tsClock')){
+        $('tsClock').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);$('tsDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'2-digit',month:'short',year:'numeric'}).format(now)+' · UAE time (UTC+4)';
+        const duration=active?Math.max(0,now-new Date(active.checkInAt)):0;
+        $('tsElapsed').textContent=fmtDuration(duration);$('tsOvertime').textContent=fmtDuration(Math.max(0,duration-8*60*60*1000));
+        if($('tsCheckIn'))$('tsCheckIn').disabled=!!active;
+        if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
+        if(active){ renderLocation(active.location); }
+      }
     }
     function renderHistory(){
       const box=$('tsHistory');
