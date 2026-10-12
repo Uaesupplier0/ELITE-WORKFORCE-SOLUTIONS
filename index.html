@@ -112,7 +112,8 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   z-index: 10;
 }
 .hero-timesheet-box {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(8px);
@@ -123,38 +124,22 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-hero-timesheet {
   background: var(--gold2);
   color: #111827;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 6px;
   font-weight: 800;
   font-size: 13px;
   border: 0;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
   transition: all 0.3s ease;
-  width: 100%;
-  text-align: left;
 }
 .btn-hero-timesheet:hover {
   background: var(--gold);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(245, 158, 11, 0.5);
-}
-.btn-hero-timesheet .time-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-.btn-hero-timesheet .live-time-text {
-  font-size: 13px;
-  font-weight: 800;
-}
-.btn-hero-timesheet .live-date-text {
-  font-size: 10px;
-  font-weight: 600;
-  opacity: 0.85;
 }
 
 /* Timesheet Modal Panel Styling */
@@ -389,15 +374,11 @@ textarea{min-height:115px;resize:vertical}
 
 <!-- HERO SECTION WITH TOP-LEFT RECTANGLE BOX FOR TIMESHEET BUTTON -->
 <section class="hero" id="home">
-  <!-- TOP LEFT RECTANGLE BOX CONTAINING TIMESHEET BUTTON WITH LIVE TIME & DATE -->
+  <!-- TOP LEFT RECTANGLE BOX CONTAINING TIMESHEET BUTTON -->
   <div class="hero-top-left-wrapper">
     <div class="hero-timesheet-box">
       <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
-        <i class="fa-solid fa-clock" style="font-size: 18px;"></i>
-        <div class="time-info">
-          <span class="live-time-text" id="heroLiveClock">--:--:--</span>
-          <span class="live-date-text" id="heroLiveDate">Loading...</span>
-        </div>
+        <i class="fa-solid fa-clock"></i> Timesheet
       </button>
     </div>
   </div>
@@ -1819,24 +1800,14 @@ textarea{min-height:115px;resize:vertical}
       $('tsCheckIn').disabled=false; $('tsCheckOut').disabled=true;
     }
     function update(){
+      if(!$('tsClock')) return;
       const now=new Date();
-      
-      // Hero Button Live Time & Date Updater
-      const heroClock = $('heroLiveClock');
-      const heroDate = $('heroLiveDate');
-      if(heroClock && heroDate) {
-        heroClock.textContent = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
-        heroDate.textContent = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',day:'2-digit',month:'short',year:'numeric'}).format(now);
-      }
-
-      if($('tsClock')){
-        $('tsClock.textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);$('tsDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'2-digit',month:'short',year:'numeric'}).format(now)+' · UAE time (UTC+4)';
-        const duration=active?Math.max(0,now-new Date(active.checkInAt)):0;
-        $('tsElapsed').textContent=fmtDuration(duration);$('tsOvertime').textContent=fmtDuration(Math.max(0,duration-8*60*60*1000));
-        if($('tsCheckIn'))$('tsCheckIn').disabled=!!active;
-        if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
-        if(active){ renderLocation(active.location); }
-      }
+      $('tsClock').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);$('tsDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'2-digit',month:'short',year:'numeric'}).format(now)+' · UAE time (UTC+4)';
+      const duration=active?Math.max(0,now-new Date(active.checkInAt)):0;
+      $('tsElapsed').textContent=fmtDuration(duration);$('tsOvertime').textContent=fmtDuration(Math.max(0,duration-8*60*60*1000));
+      if($('tsCheckIn'))$('tsCheckIn').disabled=!!active;
+      if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
+      if(active){ renderLocation(active.location); }
     }
     function renderHistory(){
       const box=$('tsHistory');
