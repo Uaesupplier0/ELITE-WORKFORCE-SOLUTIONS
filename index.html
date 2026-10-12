@@ -58,33 +58,50 @@ a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}
 .container{max-width:1200px;margin:auto;width:100%;padding:0 15px;}section{padding:80px 20px}
 .section-title{text-align:center;margin-bottom:45px}.section-title h2{font-size:38px;color:var(--blue);margin-bottom:10px}.section-title p{color:var(--muted);max-width:720px;margin:auto}
 
+/* Global Interactive Elements Styling (Enhances ALL Click Options) */
+button, a, select, input[type="file"], summary, .faq-question, .admin-tab-btn, .ts-btn-checkin, .ts-btn-checkout, .theme-toggle-btn, .menu-btn {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer;
+}
+
+button:active, a:active, .admin-tab-btn:active {
+  transform: scale(0.96) !important;
+}
+
 /* Header & Mobile Navbar */
 header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow:0 2px 18px rgba(0,0,0,.08);z-index:1000;transition:background 0.3s;}
 .navbar{max-width:1200px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-.brand-logo{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:18px;font-weight:900;letter-spacing:.3px}.brand-logo img{width:42px;height:42px;object-fit:contain;border-radius:6px}.brand-logo span{white-space:nowrap}.brand-logo b{color:var(--gold2)}.brand-logo em{font-style:normal;color:var(--blue)}
-.nav-links{display:flex;gap:18px;align-items:center;list-style:none}.nav-links a{font-size:13px;font-weight:700;transition:color 0.2s}.nav-links a:hover{color:var(--blue2)}
-.nav-btn{background:var(--blue);color:#fff!important;padding:10px 16px;border-radius:7px;transition:0.3s}.nav-btn:hover{background:var(--blue2)}
-.menu-btn{display:none;font-size:24px;cursor:pointer;color:var(--blue)}
+.brand-logo{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:18px;font-weight:900;letter-spacing:.3px; transition: transform 0.2s;}.brand-logo img{width:42px;height:42px;object-fit:contain;border-radius:6px}.brand-logo span{white-space:nowrap}.brand-logo b{color:var(--gold2)}.brand-logo em{font-style:normal;color:var(--blue)}
+.brand-logo:hover { transform: translateY(-1px); }
+
+.nav-links{display:flex;gap:18px;align-items:center;list-style:none}.nav-links a{font-size:13px;font-weight:700;transition:color 0.2s, transform 0.2s; display:inline-block;}.nav-links a:hover{color:var(--blue2); transform: translateY(-2px);}
+.nav-btn{background:var(--blue);color:#fff!important;padding:10px 16px;border-radius:7px;transition:0.3s; box-shadow: 0 4px 12px rgba(11,61,145,0.25);}.nav-btn:hover{background:var(--blue2); transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 18px rgba(11,61,145,0.4);}
+.menu-btn{display:none;font-size:24px;cursor:pointer;color:var(--blue); padding: 5px; border-radius: 6px;}.menu-btn:hover{background: rgba(11,61,145,0.08);}
 
 /* Language Select Dropdown */
 .lang-select {
   background: var(--light);
   border: 1px solid var(--border-color);
   color: var(--text);
-  padding: 1px 2px !important;
-  border-radius: 4px;
-  font-size: 9px !important;
+  padding: 1px 4px !important;
+  border-radius: 6px;
+  font-size: 10px !important;
   font-weight: 700;
   cursor: pointer;
   outline: none;
-  height: 20px !important;
+  height: 24px !important;
   width: auto !important;
-  max-width: 50px !important;
+  max-width: 65px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.lang-select:hover, .lang-select:focus {
+  border-color: var(--blue2);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
 }
 
 /* Theme Toggle Button Style */
-.theme-toggle-btn{background:none;border:0;cursor:pointer;font-size:18px;color:var(--blue2);padding:6px;border-radius:50%;transition:0.2s;}
-.theme-toggle-btn:hover{background:rgba(0,0,0,0.05);}
+.theme-toggle-btn{background:none;border:0;cursor:pointer;font-size:18px;color:var(--blue2);padding:6px 10px;border-radius:50%;transition:0.2s;}
+.theme-toggle-btn:hover{background:rgba(0,0,0,0.08); transform: rotate(15deg) scale(1.1);}
 
 /* Ticker */
 .ticker-wrap{width:100%;background:var(--gold2);color:#000;overflow:hidden;padding:10px 0;font-weight:bold;font-size:14px;margin-top:68px}
@@ -100,18 +117,21 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .hero h1{font-size:48px;line-height:1.1;margin-bottom:22px}.hero h1 span{color:var(--gold)}
 .hero-lead{font-size:17px;color:#e2eaf5;max-width:650px;margin-bottom:30px}
 .hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
-.btn{display:inline-block;padding:14px 22px;border-radius:8px;font-weight:800;transition:.3s;border:0;cursor:pointer;text-align:center;}
-.btn-primary{background:var(--gold2);color:#111827}.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 20px rgba(245,158,11,0.4);background:var(--gold)}
-.btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
-.btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
-/* Top Left Corner Widgets Container (Timesheet + Currency) */
+/* Common Button Styles Across Platform */
+.btn{display:inline-block;padding:12px 20px;border-radius:8px;font-weight:800;transition:.3s;border:0;cursor:pointer;text-align:center;}
+.btn-primary{background:var(--gold2);color:#111827; box-shadow:0 4px 12px rgba(245,158,11,0.3);}.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 22px rgba(245,158,11,0.5);background:var(--gold)}
+.btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff; backdrop-filter: blur(4px);}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px); box-shadow: 0 8px 20px rgba(255,255,255,0.3);}
+.btn-azad-hero{background:var(--emerald);color:#fff; box-shadow:0 4px 12px rgba(16,185,129,0.3);}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 22px rgba(16,185,129,0.5)}
+
+/* Top Left Corner & Hero Widgets Glassmorphism Rectangle Boxes */
 .hero-widgets-container {
   display: flex;
-  gap: 130px;
+  gap: 20px;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 300px;
+  margin-bottom: 20px;
+  margin-top: -15px !important;
 }
 .hero-timesheet-box {
   display: inline-block;
@@ -119,15 +139,23 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(8px);
   padding: 6px 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-      margin-right: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  margin-right: 15px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.hero-timesheet-box:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
 .btn-hero-timesheet {
   background: var(--gold2);
   color: #111827;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 800;
   font-size: 13px;
   border: 0;
@@ -142,7 +170,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-hero-timesheet:hover {
   background: var(--gold);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.5);
+  box-shadow: 0 5px 18px rgba(245, 158, 11, 0.6);
 }
 .btn-hero-timesheet .time-info {
   display: flex;
@@ -164,7 +192,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   background: #0284c7;
   color: #ffffff;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 800;
   font-size: 13px;
   border: 0;
@@ -179,7 +207,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-hero-currency:hover {
   background: #0369a1;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(2, 132, 199, 0.5);
+  box-shadow: 0 5px 18px rgba(2, 132, 199, 0.6);
 }
 .btn-hero-currency .curr-info {
   display: flex;
@@ -276,6 +304,10 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .ts-location-card a {
   color: #fde68a;
   text-decoration: underline;
+  transition: color 0.2s;
+}
+.ts-location-card a:hover {
+  color: #ffffff;
 }
 .ts-action-buttons {
   display: flex;
@@ -296,10 +328,13 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  transition: all 0.25s ease;
 }
 .ts-btn-checkin:hover {
   background: #fbbf24;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.5);
 }
 .ts-btn-checkout {
   background: #64748b;
@@ -324,6 +359,12 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   color: #ffffff;
   cursor: pointer;
   margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+}
+.ts-history-toggle summary:hover {
+  background: rgba(255,255,255,0.12);
 }
 .ts-history-item-detailed {
   padding: 8px;
@@ -353,11 +394,11 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .requirement-section{background:var(--light); transition: background 0.3s;}
 .requirement-card{background:var(--card-bg);border-radius:16px;padding:30px;box-shadow:0 8px 28px rgba(0,0,0,.06);border:1px solid var(--border-color);max-width:700px;width:100%;margin:auto; transition: background 0.3s, border 0.3s;}
 .form-group{margin-bottom:16px}.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:14px}
-input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--border-color);border-radius:7px;outline:none;background:var(--card-bg);color:var(--text);transition:border-color 0.2s, box-shadow 0.2s}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid var(--border-color);border-radius:8px;outline:none;background:var(--card-bg);color:var(--text);transition:border-color 0.2s, box-shadow 0.2s}
 input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,61,145,0.15)}
 textarea{min-height:115px;resize:vertical}
-.submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:7px;font-weight:800;transition:all 0.3s}
-.submit-btn:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 6px 15px rgba(37,99,235,0.3)}
+.submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:8px;font-weight:800;box-shadow: 0 4px 14px rgba(11,61,145,0.3);transition:all 0.3s}
+.submit-btn:hover{background:var(--blue2);transform:translateY(-3px) scale(1.01);box-shadow:0 8px 22px rgba(37,99,235,0.45)}
 
 /* FAQ Accordion Style */
 .faq-item {
@@ -368,6 +409,10 @@ textarea{min-height:115px;resize:vertical}
   overflow: hidden;
   transition: all 0.3s ease;
 }
+.faq-item:hover {
+  border-color: var(--blue2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
 .faq-question {
   padding: 18px 20px;
   font-weight: bold;
@@ -377,6 +422,10 @@ textarea{min-height:115px;resize:vertical}
   justify-content: space-between;
   align-items: center;
   color: var(--text);
+  transition: background 0.2s;
+}
+.faq-question:hover {
+  background: rgba(37,99,235,0.04);
 }
 .faq-answer {
   max-height: 0;
@@ -397,9 +446,10 @@ textarea{min-height:115px;resize:vertical}
 /* Admin Tabs/Tables & Clickable Public Rows */
 .admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 20px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:6px;font-weight:bold;cursor:pointer;color:var(--text);transition:0.2s}
-.admin-tab-btn.active{background:var(--blue);color:#fff;transform:translateY(-1px)}
-.admin-table-wrap{overflow-x:auto;background:var(--card-bg);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border:1px solid var(--border-color);width:100%;}
+.admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;color:var(--text);transition:all 0.25s;}
+.admin-tab-btn:hover { background: var(--blue2); color:#fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+.admin-tab-btn.active{background:var(--blue);color:#fff;transform:translateY(-1px); box-shadow: 0 4px 14px rgba(11,61,145,0.35);}
+.admin-table-wrap{overflow-x:auto;background:var(--card-bg);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border:1px solid var(--border-color);width:100%;}
 .admin-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px;min-width:600px;}
 .admin-table th{background:var(--light);padding:12px;border-bottom:2px solid var(--border-color);color:var(--muted)}
 .admin-table td{padding:12px;border-bottom:1px solid var(--border-color);color:var(--text)}
@@ -414,14 +464,14 @@ textarea{min-height:115px;resize:vertical}
 }
 
 .admin-badge{background:rgba(37,99,235,0.1);color:var(--blue2);padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold}
-.admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;transition:0.2s}
-.admin-refresh:hover{filter:brightness(1.1);transform:translateY(-1px)}
-.admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px;transition:0.2s}
-.admin-logout:hover{filter:brightness(1.1)}
-.admin-del-btn{background:#ef4444;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;transition:0.2s}
-.admin-del-btn:hover{filter:brightness(1.1)}
-.view-pdf-btn{background:var(--blue2);color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:bold;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
-.view-pdf-btn:hover{background:var(--blue);}
+.admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;box-shadow: 0 3px 10px rgba(245,158,11,0.3);transition:0.25s}
+.admin-refresh:hover{filter:brightness(1.1);transform:translateY(-2px); box-shadow: 0 6px 16px rgba(245,158,11,0.5);}
+.admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px;box-shadow: 0 3px 10px rgba(239,68,68,0.3);transition:0.25s}
+.admin-logout:hover{filter:brightness(1.1); transform:translateY(-2px); box-shadow: 0 6px 16px rgba(239,68,68,0.5);}
+.admin-del-btn{background:#ef4444;color:#fff;border:0;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;transition:0.2s}
+.admin-del-btn:hover{filter:brightness(1.1); transform: scale(1.08);}
+.view-pdf-btn{background:var(--blue2);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:bold;text-decoration:none;display:inline-flex;align-items:center;gap:6px; box-shadow: 0 2px 8px rgba(37,99,235,0.3); transition: all 0.25s;}
+.view-pdf-btn:hover{background:var(--blue); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(11,61,145,0.5);}
 
 /* Modal Styling with Glassmorphism / Scale Animation */
 .azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px;backdrop-filter:blur(5px);animation: fadeIn 0.3s ease;}
@@ -430,8 +480,8 @@ textarea{min-height:115px;resize:vertical}
 .azad-modal-content{background:var(--card-bg);border-radius:16px;max-width:550px;width:100%;max-height:90vh;overflow-y:auto;padding:25px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.4);border:1px solid var(--border-color);animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
 @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-.azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s}
-.azad-close-btn:hover{color:var(--text)}
+.azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s; padding:2px 8px; border-radius:50%;}
+.azad-close-btn:hover{color:var(--text); background: rgba(0,0,0,0.08); transform: rotate(90deg);}
 
 /* UI Animations & Modern Hover Effects */
 .reveal-on-scroll {
@@ -468,11 +518,12 @@ textarea{min-height:115px;resize:vertical}
   font-size: 32px;
   box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
   z-index: 1005;
-  transition: transform 0.3s ease, background-color 0.3s;
+  transition: transform 0.3s ease, background-color 0.3s, box-shadow 0.3s;
 }
 .floating-whatsapp:hover {
-  transform: scale(1.1) rotate(10deg);
+  transform: scale(1.15) rotate(12deg);
   background-color: #20ba5a;
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
 }
 
 /* Toast Notifications */
@@ -552,7 +603,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH TIMESHEET & MULTI-COUNTRY CURRENCY PAIR BUTTON -->
+<!-- HERO SECTION WITH ALL BUTTONS ENCLOSED IN GLASSMORPHISM BOXES -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
@@ -587,10 +638,18 @@ textarea{min-height:115px;resize:vertical}
 
       <h1 data-i18n="hero_title">Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span></h1>
       <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
+      
+      <!-- ALL HERO ACTION BUTTONS WRAPPED IN GLASSMORPHISM RECTANGLE BOXES -->
       <div class="hero-buttons">
-        <a href="#requirements" class="btn btn-primary" data-i18n="btn_post">Post Requirement</a>
-        <button onclick="openSupplierModal()" class="btn btn-outline" data-i18n="btn_supplier"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
-        <button onclick="openAzadModal()" class="btn btn-azad-hero" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
+        <div class="hero-timesheet-box">
+          <a href="#requirements" class="btn btn-primary" style="padding: 10px 16px;" data-i18n="btn_post">Post Requirement</a>
+        </div>
+        <div class="hero-timesheet-box">
+          <button onclick="openSupplierModal()" class="btn btn-outline" style="padding: 10px 16px;" data-i18n="btn_supplier"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
+        </div>
+        <div class="hero-timesheet-box">
+          <button onclick="openAzadModal()" class="btn btn-azad-hero" style="padding: 10px 16px;" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
+        </div>
       </div>
     </div>
   </div>
@@ -838,13 +897,13 @@ textarea{min-height:115px;resize:vertical}
                         </div>
                         <div>
                             <label style="display:block; font-size:12px; font-weight:600; color:#cbd5e1; margin-bottom:5px;">Upload Resume (PDF format) *</label>
-                            <div style="border:2px dashed #475569; border-radius:8px; padding:20px; text-align:center; background:#0f172a; position:relative; cursor:pointer;">
+                            <div style="border:2px dashed #475569; border-radius:8px; padding:20px; text-align:center; background:#0f172a; position:relative; cursor:pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';" onmouseout="this.style.borderColor='#475569';">
                                 <input type="file" id="resume-file" accept=".pdf" required style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;" onchange="handleFileSelect(event)">
                                 <i class="fa-solid fa-file-pdf" style="font-size:28px; color:var(--gold); margin-bottom:5px;"></i>
                                 <p style="font-size:13px; font-weight:500; color:#e2e8f0;" id="file-name-label">Click or Drag & Drop PDF Resume Here</p>
                             </div>
                         </div>
-                        <button type="submit" style="background:var(--blue); color:#fff; border:0; padding:14px; border-radius:8px; font-weight:bold; cursor:pointer; transition:0.2s;">Submit Application</button>
+                        <button type="submit" style="background:var(--blue); color:#fff; border:0; padding:14px; border-radius:8px; font-weight:bold; cursor:pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.3); transition:0.25s;" onmouseover="this.style.background='var(--blue2)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--blue)'; this.style.transform='translateY(0)';">Submit Application</button>
                     </form>
                     <div id="career-success-msg" style="display:none; margin-top:15px; padding:12px; background:rgba(16,185,129,0.2); border:1px solid var(--emerald); border-radius:8px; color:#10b981; text-align:center; font-size:13px; font-weight:bold;">
                         <i class="fa-solid fa-circle-check mr-2"></i> Application and PDF Resume received successfully!
@@ -1016,7 +1075,7 @@ textarea{min-height:115px;resize:vertical}
 
       <!-- SWAP BUTTON -->
       <div style="text-align:center; margin:10px 0;">
-        <button onclick="swapCurrencies()" type="button" style="background:var(--blue); color:#fff; border:0; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer;">
+        <button onclick="swapCurrencies()" type="button" style="background:var(--blue); color:#fff; border:0; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer; box-shadow: 0 3px 10px rgba(11,61,145,0.3);" onmouseover="this.style.transform='scale(1.08)';" onmouseout="this.style.transform='scale(1)';">
           <i class="fa-solid fa-arrow-down-up-lock"></i> Swap Pair
         </button>
       </div>
@@ -1222,7 +1281,7 @@ textarea{min-height:115px;resize:vertical}
     <div style="background:var(--card-bg); border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
         <div style="font-size:36px; font-weight:bold; color:#16a34a; margin-bottom:10px;">Done ✅</div>
         <p style="color:var(--text); font-size:15px; font-weight:600; margin-bottom:20px;" id="popupMessage">Aapki information successfully database mein save ho gayi hai!</p>
-        <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:16px;">
+        <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:16px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
             OK
         </button>
     </div>
