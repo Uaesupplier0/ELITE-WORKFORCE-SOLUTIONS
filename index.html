@@ -104,7 +104,17 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
-/* Hero Section Left Timesheet Button Style */
+/* Rectangle Box for Timesheet Button on Left Side of Hero Section */
+.hero-timesheet-box {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 .btn-hero-timesheet {
   background: var(--gold2);
   color: #111827;
@@ -119,7 +129,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   gap: 8px;
   box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
   transition: all 0.3s ease;
-  margin-bottom: 20px;
 }
 .btn-hero-timesheet:hover {
   background: var(--gold);
@@ -356,19 +365,19 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH TOP-LEFT TIMESHEET BUTTON -->
+<!-- HERO SECTION WITH RECTANGLE BOX FOR TIMESHEET BUTTON -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- HERO TIMESHEET BUTTON ON TOP-LEFT -->
-      <div>
+      <!-- RECTANGLE BOX CONTAINING TIMESHEET BUTTON ON LEFT -->
+      <div class="hero-timesheet-box">
         <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
           <i class="fa-solid fa-clock"></i> Timesheet
         </button>
       </div>
 
       <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
-      <h1 data-i18n="hero_title">Connecting Companies With <span>Skilled Workforce</span></h1>
+      <h1 data-i18n="hero_title">Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span></h1>
       <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
       <div class="hero-buttons">
         <a href="#requirements" class="btn btn-primary" data-i18n="btn_post">Post Requirement</a>
