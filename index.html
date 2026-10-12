@@ -82,7 +82,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   max-width: 50px !important;
 }
 
-
 /* Theme Toggle Button Style */
 .theme-toggle-btn{background:none;border:0;cursor:pointer;font-size:18px;color:var(--blue2);padding:6px;border-radius:50%;transition:0.2s;}
 .theme-toggle-btn:hover{background:rgba(0,0,0,0.05);}
@@ -104,6 +103,55 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-primary{background:var(--gold2);color:#111827}.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 20px rgba(245,158,11,0.4);background:var(--gold)}
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
+
+/* Hero Section Left Timesheet Button Style */
+.btn-hero-timesheet {
+  background: var(--gold2);
+  color: #111827;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+.btn-hero-timesheet:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+
+/* Timesheet Modal Panel Styling */
+.timesheet-panel{margin-top:10px;padding:15px;background:rgba(3,15,35,.5);border:1px solid rgba(255,255,255,.15);border-radius:14px;color:#fff;}
+.timesheet-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.timesheet-heading h4{font-size:18px;color:#fff}
+.timesheet-live{font-size:10px;font-weight:800;letter-spacing:.7px;color:#a7f3d0;background:rgba(16,185,129,.16);padding:4px 8px;border-radius:99px}
+.ts-subtitle{font-size:11px;color:#dbeafe;margin-bottom:12px}
+.ts-clock{font-size:24px;font-weight:800;letter-spacing:.3px;color:var(--gold);line-height:1.2}
+.ts-date{font-size:11px;color:#dbeafe;margin:4px 0 12px}
+.ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.ts-stat{background:rgba(255,255,255,.08);border-radius:8px;padding:8px}
+.ts-stat span{display:block;color:#cbd5e1;font-size:10px}
+.ts-stat strong{display:block;color:#fff;font-size:14px;margin-top:2px;overflow-wrap:anywhere}
+.ts-location{font-size:11px;color:#e2e8f0;background:rgba(255,255,255,.06);padding:8px;border-radius:8px;margin-bottom:10px;overflow-wrap:anywhere}
+.ts-location a{color:#fde68a;text-decoration:underline}
+.ts-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ts-btn{border:0;border-radius:8px;padding:9px 12px;font-weight:800;font-size:11px;cursor:pointer;flex:1;min-width:100px}
+.ts-checkin{background:var(--gold);color:#172033}
+.ts-checkout{background:#e2e8f0;color:#172033}
+.ts-btn:disabled{opacity:.45;cursor:not-allowed}
+.ts-status{font-size:11px;color:#dbeafe;margin-top:8px;min-height:16px}
+.ts-history{margin-top:10px}
+.ts-history summary{font-size:11px;font-weight:800;color:#fff;cursor:pointer}
+.ts-history-list{max-height:110px;overflow:auto;margin-top:6px;font-size:10px;color:#e2e8f0}
+.ts-history-item{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.ts-note{font-size:9px;line-height:1.4;color:#cbd5e1;margin-top:10px}
 
 /* Forms & Tables Section */
 .requirement-section{background:var(--light); transition: background 0.3s;}
@@ -160,7 +208,6 @@ textarea{min-height:115px;resize:vertical}
 .admin-table th{background:var(--light);padding:12px;border-bottom:2px solid var(--border-color);color:var(--muted)}
 .admin-table td{padding:12px;border-bottom:1px solid var(--border-color);color:var(--text)}
 
-/* Clickable table rows hover styling */
 #public-table-container tbody tr {
   cursor: pointer;
   transition: all 0.25s ease;
@@ -184,7 +231,7 @@ textarea{min-height:115px;resize:vertical}
 .azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px;backdrop-filter:blur(5px);animation: fadeIn 0.3s ease;}
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.azad-modal-content{background:var(--card-bg);border-radius:16px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:25px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.4);border:1px solid var(--border-color);animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+.azad-modal-content{background:var(--card-bg);border-radius:16px;max-width:550px;width:100%;max-height:90vh;overflow-y:auto;padding:25px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.4);border:1px solid var(--border-color);animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
 @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 .azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s}
@@ -268,7 +315,7 @@ textarea{min-height:115px;resize:vertical}
     <div style="display: flex; align-items: center; gap: 10px;">
       <!-- Expanded Language Selector (10 Languages) -->
       <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
-                      <option value="en">🌐 EN</option>
+        <option value="en">🌐 EN</option>
         <option value="hi">🇮🇳 HI</option>
         <option value="ar">🇦🇪 AR</option>
         <option value="ml">🇮🇳 ML</option>
@@ -309,10 +356,17 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION -->
+<!-- HERO SECTION WITH TOP-LEFT TIMESHEET BUTTON -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
+      <!-- HERO TIMESHEET BUTTON ON TOP-LEFT -->
+      <div>
+        <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
+          <i class="fa-solid fa-clock"></i> Timesheet
+        </button>
+      </div>
+
       <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
       <h1 data-i18n="hero_title">Connecting Companies With <span>Skilled Workforce</span></h1>
       <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
@@ -710,6 +764,40 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
+<!-- TIMESHEET POPUP MODAL -->
+<div class="azad-modal" id="timesheetModal">
+  <div class="azad-modal-content">
+    <span class="azad-close-btn" onclick="closeTimesheetModal()">&times;</span>
+    <h3 style="color:var(--blue);margin-bottom:5px;"><i class="fa-solid fa-clock"></i> Timesheet & Attendance Portal</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Track duty hours, GPS check-in/check-out and live overtime calculation.</p>
+    
+    <div class="timesheet-panel">
+      <div class="timesheet-heading">
+        <h4>Live Attendance Tracker</h4>
+        <span class="timesheet-live">UAE LIVE</span>
+      </div>
+      <p class="ts-subtitle">GPS-assisted check-in, check-out and automatic duty-hour calculation.</p>
+      <div class="ts-clock" id="tsClock">--:--:--</div>
+      <div class="ts-date" id="tsDate">UAE time · loading…</div>
+      <div class="ts-grid">
+        <div class="ts-stat"><span>Today's duty time</span><strong id="tsElapsed">00:00:00</strong></div>
+        <div class="ts-stat"><span>Overtime (after 8h)</span><strong id="tsOvertime">00:00:00</strong></div>
+      </div>
+      <div class="ts-location" id="tsLocation">Location not captured yet. Allow location access when checking in.</div>
+      <div class="ts-actions">
+        <button class="ts-btn ts-checkin" id="tsCheckIn" type="button">📍 Check In</button>
+        <button class="ts-btn ts-checkout" id="tsCheckOut" type="button" disabled>Check Out</button>
+      </div>
+      <div class="ts-status" id="tsStatus">Ready to start attendance.</div>
+      <details class="ts-history">
+        <summary>View saved attendance history</summary>
+        <div class="ts-history-list" id="tsHistory">No attendance records yet.</div>
+      </details>
+      <p class="ts-note">Demo storage: records are saved in this browser on this device only.</p>
+    </div>
+  </div>
+</div>
+
 <!-- SUPPLIER POPUP MODAL -->
 <div class="azad-modal" id="supplierModal">
   <div class="azad-modal-content">
@@ -975,6 +1063,10 @@ textarea{min-height:115px;resize:vertical}
 
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
+
+  // Timesheet Modal Actions
+  function openTimesheetModal() { document.getElementById('timesheetModal').style.display = 'flex'; }
+  function closeTimesheetModal() { document.getElementById('timesheetModal').style.display = 'none'; }
 
   function openSupplierModal() { document.getElementById('supplierModal').style.display = 'flex'; }
   function closeSupplierModal() { document.getElementById('supplierModal').style.display = 'none'; }
@@ -1631,6 +1723,89 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('admin').style.display = 'block';
     }
   });
+
+  /* TIMESHEET & ATTENDANCE SCRIPT LOGIC */
+  (function initTimesheet(){
+    const KEY = 'elite_workforce_timesheet_v1';
+    const ACTIVE_KEY = 'elite_workforce_timesheet_active_v1';
+    const $ = id => document.getElementById(id);
+    if (!$('tsClock')) return;
+    let active = read(ACTIVE_KEY, null);
+    let history = read(KEY, []);
+    let latestLocation = null;
+    function read(key, fallback){ try { const v=localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; } }
+    function save(){ try { localStorage.setItem(KEY, JSON.stringify(history)); localStorage.setItem(ACTIVE_KEY, JSON.stringify(active)); } catch(e){ setStatus('Could not save to browser storage.'); } }
+    function fmtDuration(ms){
+      const total=Math.max(0,Math.floor(ms/1000));
+      const h=String(Math.floor(total/3600)).padStart(2,'0');
+      const m=String(Math.floor((total%3600)/60)).padStart(2,'0');
+      const sec=String(total%60).padStart(2,'0');
+      return `${h}:${m}:${sec}`;
+    }
+    function fmtDate(iso){ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',dateStyle:'medium',timeStyle:'short'}).format(new Date(iso))+' UAE'; }
+    function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; }
+    function renderLocation(loc){
+      const locBox=$('tsLocation');
+      if(!locBox) return;
+      if(!loc){ locBox.textContent='Location not captured yet. Allow location access when checking in.'; return; }
+      const coords=`${loc.latitude.toFixed(5)}, ${loc.longitude.toFixed(5)}`;
+      locBox.innerHTML=`📍 GPS coordinates: <strong>${coords}</strong><br><a href="https://www.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" rel="noopener">Open location in Google Maps</a>`;
+    }
+    function getLocation(){
+      return new Promise((resolve,reject)=>{
+        if(!navigator.geolocation){ reject(new Error('This browser does not support GPS location.')); return; }
+        navigator.geolocation.getCurrentPosition(pos=>resolve({latitude:pos.coords.latitude,longitude:pos.coords.longitude,accuracy:Math.round(pos.coords.accuracy)}),err=>{
+          const messages={1:'Location permission was denied.',2:'Location unavailable.',3:'Location request timed out.'};
+          reject(new Error(messages[err.code]||'Unable to get location.'));
+        },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+      });
+    }
+    async function checkIn(){
+      $('tsCheckIn').disabled=true; setStatus('Requesting GPS location…');
+      try{
+        const loc=await getLocation(); latestLocation=loc;
+        active={checkInAt:new Date().toISOString(),location:loc}; save(); renderLocation(loc);
+        setStatus('Checked in successfully. Duty timer has started.'); update();
+      }catch(e){ setStatus(e.message); }
+      finally{ $('tsCheckIn').disabled=!!active; $('tsCheckOut').disabled=!active; }
+    }
+    async function checkOut(){
+      if(!active) return;
+      $('tsCheckOut').disabled=true; setStatus('Capturing check-out location…');
+      let outLoc=null;
+      try{ outLoc=await getLocation(); latestLocation=outLoc; renderLocation(outLoc); }
+      catch(e){ setStatus(e.message+' Check-out was not saved.'); $('tsCheckOut').disabled=false; return; }
+      const end=new Date(); const start=new Date(active.checkInAt); const duration=Math.max(0,end-start);
+      history.unshift({checkInAt:active.checkInAt,checkOutAt:end.toISOString(),durationMs:duration,checkInLocation:active.location,checkOutLocation:outLoc});
+      history=history.slice(0,100); active=null; save(); update(); renderHistory();
+      setStatus('Checked out. Total duty time: '+fmtDuration(duration)+'.');
+      $('tsCheckIn').disabled=false; $('tsCheckOut').disabled=true;
+    }
+    function update(){
+      if(!$('tsClock')) return;
+      const now=new Date();
+      $('tsClock').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);$('tsDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'2-digit',month:'short',year:'numeric'}).format(now)+' · UAE time (UTC+4)';
+      const duration=active?Math.max(0,now-new Date(active.checkInAt)):0;
+      $('tsElapsed').textContent=fmtDuration(duration);$('tsOvertime').textContent=fmtDuration(Math.max(0,duration-8*60*60*1000));
+      if($('tsCheckIn'))$('tsCheckIn').disabled=!!active;
+      if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
+      if(active){ renderLocation(active.location); }
+    }
+    function renderHistory(){
+      const box=$('tsHistory');
+      if(!box) return;
+      if(!history.length){box.textContent='No attendance records yet.';return;}
+      box.replaceChildren();
+      history.forEach(item=>{
+        const div=document.createElement('div'); div.className='ts-history-item';
+        div.textContent=`${fmtDate(item.checkInAt)} → ${fmtDate(item.checkOutAt)} · Duty ${fmtDuration(item.durationMs)}`;
+        box.appendChild(div);
+      });
+    }
+    if($('tsCheckIn'))$('tsCheckIn').addEventListener('click',checkIn);
+    if($('tsCheckOut'))$('tsCheckOut').addEventListener('click',checkOut);
+    renderHistory(); update(); setInterval(update,1000);
+  })();
 </script>
 
 </body>
