@@ -93,9 +93,10 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .ticker-wrap:hover .ticker{animation-play-state:paused}
 
 /* Hero Section */
-.hero{min-height:85vh;padding:40px 20px 80px 20px;background:linear-gradient(135deg,var(--navy),var(--blue) 55%,var(--blue2));color:#fff;display:flex;align-items:center;position:relative;overflow:hidden}
-.hero-container{max-width:1200px;width:100%;margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:55px;align-items:center;position:relative;z-index:1}
-.eyebrow{display:inline-block;color:var(--gold);font-weight:800;letter-spacing:1.4px;font-size:13px;margin-bottom:18px}
+.hero{min-height:85vh;padding:20px 20px 80px 20px;background:linear-gradient(135deg,var(--navy),var(--blue) 55%,var(--blue2));color:#fff;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-container{max-width:1200px;width:100%;margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:35px;align-items:flex-start;position:relative;z-index:1}
+.eyebrow-row{display:flex;align-items:center;gap:15px;margin-bottom:18px;flex-wrap:wrap;}
+.eyebrow{color:var(--gold);font-weight:800;letter-spacing:1.4px;font-size:13px;}
 .hero h1{font-size:48px;line-height:1.1;margin-bottom:22px}.hero h1 span{color:var(--gold)}
 .hero-lead{font-size:17px;color:#e2eaf5;max-width:650px;margin-bottom:30px}
 .hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
@@ -104,23 +105,21 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
-/* Top-Left Rectangle Box for Timesheet Button inside Hero Section */
-.hero-top-left-wrapper {
-  margin-bottom: 20px;
-}
+/* Top Left Corner Timesheet Widget Box */
 .hero-timesheet-box {
   display: inline-block;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(8px);
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  margin-bottom: 12px;
 }
 .btn-hero-timesheet {
   background: var(--gold2);
   color: #111827;
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 6px;
   font-weight: 800;
   font-size: 13px;
@@ -131,7 +130,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   gap: 8px;
   box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
   transition: all 0.3s ease;
-  width: 100%;
   text-align: left;
 }
 .btn-hero-timesheet:hover {
@@ -142,7 +140,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-hero-timesheet .time-info {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 .btn-hero-timesheet .live-time-text {
   font-size: 13px;
@@ -313,15 +311,14 @@ textarea{min-height:115px;resize:vertical}
 
 /* Responsive Navigation Styles */
 @media(max-width:992px){
-  .hero-container{grid-template-columns:1fr;text-align:center}
-  .hero-lead{margin:0 auto 30px}
-  .hero-buttons{justify-content:center}
+  .hero-container{grid-template-columns:1fr;text-align:left}
+  .hero-lead{margin:0 0 30px 0}
+  .hero-buttons{justify-content:flex-start}
   .menu-btn{display:block}
   .nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:var(--white);flex-direction:column;padding:20px;box-shadow:0 10px 20px rgba(0,0,0,0.1);align-items:flex-start}
   .nav-links.active{display:flex}
   .about-grid, .careers-grid, .contact-grid {grid-template-columns: 1fr !important;}
-  .hero h1 {font-size: 36px;}
-  .hero-top-left-wrapper { display: inline-block; }
+  .hero h1 {font-size: 34px;}
 }
 </style>
 <link rel="icon" type="image/png" sizes="48x48" href="logo.png">
@@ -384,24 +381,25 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH TIMESHEET BUTTON PLACED AT THE TOP -->
+<!-- HERO SECTION WITH TIMESHEET BUTTON AT TOP-LEFT (MARKED SPOT) -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- TOP RECTANGLE BOX CONTAINING TIMESHEET BUTTON WITH LIVE TIME & DATE -->
-      <div class="hero-top-left-wrapper">
-        <div class="hero-timesheet-box">
-          <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
-            <i class="fa-solid fa-clock" style="font-size: 18px;"></i>
-            <div class="time-info">
-              <span class="live-time-text" id="heroLiveClock">--:--:--</span>
-              <span class="live-date-text" id="heroLiveDate">Loading...</span>
-            </div>
-          </button>
-        </div>
+      <!-- TOP-LEFT TIMESHEET BUTTON (As marked in image) -->
+      <div class="hero-timesheet-box">
+        <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
+          <i class="fa-solid fa-clock" style="font-size: 16px;"></i>
+          <div class="time-info">
+            <span class="live-time-text" id="heroLiveClock">--:--:--</span>
+            <span class="live-date-text" id="heroLiveDate">Loading...</span>
+          </div>
+        </button>
       </div>
 
-      <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
+      <div class="eyebrow-row">
+        <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
+      </div>
+
       <h1 data-i18n="hero_title">Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span></h1>
       <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
       <div class="hero-buttons">
@@ -1004,7 +1002,7 @@ textarea{min-height:115px;resize:vertical}
       nav_home: "ಮುಖಪುಟ", nav_about: "ನಮ್ಮ ಬಗ್ಗೆ", nav_board: "ಸಾರ್ವಜನಿಕ ಬೋರ್ಡ್", nav_post: "ಅಗತ್ಯತೆಯನ್ನು ಪೋಸ್ಟ್ ಮಾಡಿ", nav_careers: "ವೃತ್ತಿಜೀವನ", nav_faq: "ಪ್ರಶ್ನೆಗಳು", nav_contact: "ಸಂಪರ್ಕಿಸಿ", nav_staffing: "ಸಿಬ್ಬಂದಿ ಪಡೆಯಿರಿ",
       hero_eyebrow: "ಯುಎಇ ಕಾರ್ಯಪಡೆ ನೆಟ್‌ವರ್ಕ್",
       hero_title: 'ಕಂಪನಿಗಳನ್ನು <span style="color:var(--gold)">ಕುಶಲ ಕಾರ್ಮಿಕರೊಂದಿಗೆ</span> ಜೋಡಿಸುವುದು',
-      hero_desc: "ಎಲೈಟ್ ವರ್ಕ್‌ಫೋರ್ಸ್ ಸೊಲ್ಯೂಷನ್ಸ್ ಯುಎಇ ಕಂಪನಿಗಳನ್ನು ಮ್ಯಾನ್‌ಪವರ್ ಪೂರೈಕೆದಾರರು ಮತ್ತು ಪರಿಣಿತ ಕಾರ್ಮಿಕರೊಂದಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ.",
+      hero_desc: "ಎಲೈಟ್ ವರ್ಕ್‌ಫೋರ್ಸ್ ಸೊಲ್ಯೂಷನ್ಸ್ ಯುಎಇ ಕಂಪನಿಗಳನ್ನು ಮ್ಯಾನ್‌ಪವರ‍್ ಪೂರೈಕೆದಾರರು ಮತ್ತು ಪರಿಣಿತ ಕಾರ್ಮಿಕರೊಂದಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ.",
       btn_post: "ಅಗತ್ಯತೆ ಪೋಸ್ಟ್ ಮಾಡಿ", btn_supplier: "ಪೂರೈಕೆದಾರರಾಗಿ ಸೇರಿ", btn_azad: "ಆಜಾದ್ ವೀಸಾ ಕಾರ್ಮಿಕ"
     },
     bn: {
