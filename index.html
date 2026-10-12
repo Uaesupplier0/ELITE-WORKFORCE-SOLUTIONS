@@ -105,7 +105,14 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
-/* Top Left Corner Timesheet Widget Box */
+/* Top Left Corner Widgets Container (Timesheet + Currency) */
+.hero-widgets-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
 .hero-timesheet-box {
   display: inline-block;
   background: rgba(255, 255, 255, 0.08);
@@ -114,7 +121,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   padding: 6px 10px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  margin-bottom: 12px;
 }
 .btn-hero-timesheet {
   background: var(--gold2);
@@ -150,6 +156,34 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   font-size: 10px;
   font-weight: 600;
   opacity: 0.85;
+}
+
+/* Currency Rate Widget Button */
+.btn-hero-currency {
+  background: #0284c7;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 13px;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3);
+  transition: all 0.3s ease;
+  text-align: left;
+}
+.btn-hero-currency:hover {
+  background: #0369a1;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(2, 132, 199, 0.5);
+}
+.btn-hero-currency .curr-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
 }
 
 /* Updated Sleek Dark Timesheet Card Styling */
@@ -517,19 +551,33 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH TIMESHEET BUTTON AT TOP-LEFT -->
+<!-- HERO SECTION WITH TIMESHEET & MULTI-COUNTRY CURRENCY PAIR BUTTON -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- TOP-LEFT TIMESHEET BUTTON -->
-      <div class="hero-timesheet-box">
-        <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
-          <i class="fa-solid fa-clock" style="font-size: 16px;"></i>
-          <div class="time-info">
-            <span class="live-time-text" id="heroLiveClock">--:--:--</span>
-            <span class="live-date-text" id="heroLiveDate">Loading...</span>
-          </div>
-        </button>
+      <!-- TOP WIDGETS CONTAINER: TIMESHEET + LIVE CURRENCY RATE -->
+      <div class="hero-widgets-container">
+        <!-- Timesheet Button -->
+        <div class="hero-timesheet-box">
+          <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
+            <i class="fa-solid fa-clock" style="font-size: 16px;"></i>
+            <div class="time-info">
+              <span class="live-time-text" id="heroLiveClock">--:--:--</span>
+              <span class="live-date-text" id="heroLiveDate">Loading...</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Currency Pair Button -->
+        <div class="hero-timesheet-box">
+          <button onclick="openCurrencyModal()" class="btn-hero-currency">
+            <i class="fa-solid fa-coins" style="font-size: 16px;"></i>
+            <div class="curr-info">
+              <span style="font-size: 13px; font-weight: 800;" id="heroAedRate">1 AED = ₹26.05 INR</span>
+              <span style="font-size: 10px; font-weight: 600; opacity: 0.85;" id="heroCurrPairText">🇦🇪 AED ↔ 🇮🇳 INR</span>
+            </div>
+          </button>
+        </div>
       </div>
 
       <div class="eyebrow-row">
@@ -932,6 +980,78 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
+<!-- MULTI-COUNTRY CURRENCY CONVERTER POPUP MODAL -->
+<div class="azad-modal" id="currencyModal">
+  <div class="azad-modal-content">
+    <span class="azad-close-btn" onclick="closeCurrencyModal()">&times;</span>
+    <h3 style="color:var(--blue); margin-bottom:5px; font-weight:800;">🌐 Global Currency Converter Pair</h3>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Select any country currency pair for live exchange rate conversion.</p>
+
+    <div style="background:var(--light); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+      <!-- FROM CURRENCY SELECTION -->
+      <div class="form-group">
+        <label>From Currency (Base)</label>
+        <div style="display:flex; gap:10px;">
+          <select id="fromCurrency" onchange="onCurrencyPairChange()" style="flex:1; font-weight:bold;">
+            <option value="AED" selected>🇦🇪 AED - UAE Dirham</option>
+            <option value="INR">🇮🇳 INR - Indian Rupee</option>
+            <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>
+            <option value="BDT">🇧🇩 BDT - Bangladeshi Taka</option>
+            <option value="USD">🇺🇸 USD - US Dollar</option>
+            <option value="EUR">🇪🇺 EUR - Euro</option>
+            <option value="GBP">🇬🇧 GBP - British Pound</option>
+            <option value="NPR">🇳🇵 NPR - Nepalese Rupee</option>
+            <option value="LKR">🇱🇰 LKR - Sri Lankan Rupee</option>
+            <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
+            <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
+            <option value="QAR">🇶🇦 QAR - Qatari Riyal</option>
+            <option value="KWD">🇰🇼 KWD - Kuwaiti Dinar</option>
+            <option value="OMR">🇴🇲 OMR - Omani Rial</option>
+            <option value="BHD">🇧🇭 BHD - Bahraini Dinar</option>
+          </select>
+          <input type="number" id="inputFromAmount" value="100" oninput="convertFromTo()" placeholder="Amount" style="flex:1;">
+        </div>
+      </div>
+
+      <!-- SWAP BUTTON -->
+      <div style="text-align:center; margin:10px 0;">
+        <button onclick="swapCurrencies()" type="button" style="background:var(--blue); color:#fff; border:0; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer;">
+          <i class="fa-solid fa-arrow-down-up-lock"></i> Swap Pair
+        </button>
+      </div>
+
+      <!-- TO CURRENCY SELECTION -->
+      <div class="form-group">
+        <label>To Currency (Target)</label>
+        <div style="display:flex; gap:10px;">
+          <select id="toCurrency" onchange="onCurrencyPairChange()" style="flex:1; font-weight:bold;">
+            <option value="AED">🇦🇪 AED - UAE Dirham</option>
+            <option value="INR" selected>🇮🇳 INR - Indian Rupee</option>
+            <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>
+            <option value="BDT">🇧🇩 BDT - Bangladeshi Taka</option>
+            <option value="USD">🇺🇸 USD - US Dollar</option>
+            <option value="EUR">🇪🇺 EUR - Euro</option>
+            <option value="GBP">🇬🇧 GBP - British Pound</option>
+            <option value="NPR">🇳🇵 NPR - Nepalese Rupee</option>
+            <option value="LKR">🇱🇰 LKR - Sri Lankan Rupee</option>
+            <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
+            <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
+            <option value="QAR">🇶🇦 QAR - Qatari Riyal</option>
+            <option value="KWD">🇰🇼 KWD - Kuwaiti Dinar</option>
+            <option value="OMR">🇴🇲 OMR - Omani Rial</option>
+            <option value="BHD">🇧🇭 BHD - Bahraini Dinar</option>
+          </select>
+          <input type="number" id="inputToAmount" oninput="convertToFrom()" placeholder="Converted" style="flex:1;">
+        </div>
+      </div>
+
+      <div style="margin-top:15px; padding:12px; background:rgba(2,132,199,0.1); border-radius:8px; text-align:center; font-size:13px; font-weight:bold; color:#0284c7;" id="modalRateInfo">
+        Live Exchange Rate: Fetching...
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- UPDATED TIMESHEET POPUP MODAL WITH DETAILED HISTORY LOCATION -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
@@ -1120,6 +1240,7 @@ textarea{min-height:115px;resize:vertical}
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
   let rawPublicData = []; 
+  let currentPairExchangeRate = 26.05; // Dynamic rate for chosen currency pair
 
   // Translations Dictionary for 10 Languages
   const translations = {
@@ -1214,6 +1335,67 @@ textarea{min-height:115px;resize:vertical}
     return `<a href="${fileUrl}" target="_blank" class="view-pdf-btn"><i class="fa-solid fa-file-pdf"></i> View PDF</a>`;
   }
 
+  // Multi-Country Currency Modal Functions & Pair Logic
+  function openCurrencyModal() { 
+    document.getElementById('currencyModal').style.display = 'flex'; 
+    fetchDynamicPairRate();
+  }
+  function closeCurrencyModal() { document.getElementById('currencyModal').style.display = 'none'; }
+
+  function swapCurrencies() {
+    const fromSelect = document.getElementById('fromCurrency');
+    const toSelect = document.getElementById('toCurrency');
+    const temp = fromSelect.value;
+    fromSelect.value = toSelect.value;
+    toSelect.value = temp;
+    onCurrencyPairChange();
+  }
+
+  async function fetchDynamicPairRate() {
+    const fromCode = document.getElementById('fromCurrency').value;
+    const toCode = document.getElementById('toCurrency').value;
+    
+    document.getElementById('modalRateInfo').innerText = "Fetching live exchange rate...";
+
+    try {
+      const res = await fetch(`https://open.er-api.com/v6/latest/${fromCode}`);
+      const data = await res.json();
+      if (data && data.rates && data.rates[toCode]) {
+        currentPairExchangeRate = data.rates[toCode];
+        
+        document.getElementById('modalRateInfo').innerText = `Live Rate: 1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
+        
+        // Update Hero Section Widget text
+        if(fromCode === 'AED' && toCode === 'INR') {
+          document.getElementById('heroAedRate').innerText = `1 AED = ₹${currentPairExchangeRate.toFixed(2)} INR`;
+          document.getElementById('heroCurrPairText').innerText = `🇦🇪 AED ↔ 🇮🇳 INR`;
+        } else {
+          document.getElementById('heroAedRate').innerText = `1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
+          document.getElementById('heroCurrPairText').innerText = `🌐 ${fromCode} ↔ ${toCode}`;
+        }
+        
+        convertFromTo();
+      }
+    } catch(e) {
+      console.log('Error fetching pair exchange rate:', e);
+      document.getElementById('modalRateInfo').innerText = `Rate: 1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
+    }
+  }
+
+  function onCurrencyPairChange() {
+    fetchDynamicPairRate();
+  }
+
+  function convertFromTo() {
+    const fromVal = parseFloat(document.getElementById('inputFromAmount').value) || 0;
+    document.getElementById('inputToAmount').value = (fromVal * currentPairExchangeRate).toFixed(2);
+  }
+
+  function convertToFrom() {
+    const toVal = parseFloat(document.getElementById('inputToAmount').value) || 0;
+    document.getElementById('inputFromAmount').value = (toVal / currentPairExchangeRate).toFixed(2);
+  }
+
   // Dark / Light Mode Logic
   function toggleDarkMode() {
     const htmlEl = document.documentElement;
@@ -1251,6 +1433,7 @@ textarea{min-height:115px;resize:vertical}
     });
 
     loadPublicLeaderboard();
+    fetchDynamicPairRate();
   });
 
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
