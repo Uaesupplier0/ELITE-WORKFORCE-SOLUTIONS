@@ -93,7 +93,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .ticker-wrap:hover .ticker{animation-play-state:paused}
 
 /* Hero Section */
-.hero{min-height:85vh;padding:80px 20px;background:linear-gradient(135deg,var(--navy),var(--blue) 55%,var(--blue2));color:#fff;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero{min-height:85vh;padding:40px 20px 80px 20px;background:linear-gradient(135deg,var(--navy),var(--blue) 55%,var(--blue2));color:#fff;display:flex;align-items:center;position:relative;overflow:hidden}
 .hero-container{max-width:1200px;width:100%;margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:55px;align-items:center;position:relative;z-index:1}
 .eyebrow{display:inline-block;color:var(--gold);font-weight:800;letter-spacing:1.4px;font-size:13px;margin-bottom:18px}
 .hero h1{font-size:48px;line-height:1.1;margin-bottom:22px}.hero h1 span{color:var(--gold)}
@@ -104,37 +104,40 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-outline{border:1px solid rgba(255,255,255,.75);color:#fff}.btn-outline:hover{background:#fff;color:var(--blue);transform:translateY(-3px)}
 .btn-azad-hero{background:var(--emerald);color:#fff}.btn-azad-hero:hover{background:var(--emerald2);transform:translateY(-3px);box-shadow:0 8px 20px rgba(16,185,129,0.4)}
 
-/* Rectangle Box for Timesheet Button on Left Side of Hero Section */
+/* Top-Left Rectangle Box for Timesheet Button inside Hero Section */
+.hero-top-left-wrapper {
+  margin-bottom: 20px;
+}
 .hero-timesheet-box {
   display: inline-block;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(8px);
-  padding: 10px 14px;
-  border-radius: 12px;
-  margin-bottom: 22px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 .btn-hero-timesheet {
   background: var(--gold2);
   color: #111827;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 800;
   font-size: 13px;
   border: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  gap: 8px;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
   transition: all 0.3s ease;
+  width: 100%;
   text-align: left;
 }
 .btn-hero-timesheet:hover {
   background: var(--gold);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.5);
 }
 .btn-hero-timesheet .time-info {
   display: flex;
@@ -318,6 +321,7 @@ textarea{min-height:115px;resize:vertical}
   .nav-links.active{display:flex}
   .about-grid, .careers-grid, .contact-grid {grid-template-columns: 1fr !important;}
   .hero h1 {font-size: 36px;}
+  .hero-top-left-wrapper { display: inline-block; }
 }
 </style>
 <link rel="icon" type="image/png" sizes="48x48" href="logo.png">
@@ -380,19 +384,21 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH RECTANGLE BOX FOR TIMESHEET BUTTON -->
+<!-- HERO SECTION WITH TIMESHEET BUTTON PLACED AT THE TOP -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- RECTANGLE BOX CONTAINING TIMESHEET BUTTON WITH LIVE TIME & DATE -->
-      <div class="hero-timesheet-box">
-        <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
-          <i class="fa-solid fa-clock" style="font-size: 18px;"></i>
-          <div class="time-info">
-            <span class="live-time-text" id="heroLiveClock">--:--:--</span>
-            <span class="live-date-text" id="heroLiveDate">Loading...</span>
-          </div>
-        </button>
+      <!-- TOP RECTANGLE BOX CONTAINING TIMESHEET BUTTON WITH LIVE TIME & DATE -->
+      <div class="hero-top-left-wrapper">
+        <div class="hero-timesheet-box">
+          <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
+            <i class="fa-solid fa-clock" style="font-size: 18px;"></i>
+            <div class="time-info">
+              <span class="live-time-text" id="heroLiveClock">--:--:--</span>
+              <span class="live-date-text" id="heroLiveDate">Loading...</span>
+            </div>
+          </button>
+        </div>
       </div>
 
       <div class="eyebrow" data-i18n="hero_eyebrow">UAE WORKFORCE NETWORK</div>
