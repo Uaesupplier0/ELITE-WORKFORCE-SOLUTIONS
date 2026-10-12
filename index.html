@@ -152,31 +152,150 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   opacity: 0.85;
 }
 
-/* Timesheet Modal Panel Styling */
-.timesheet-panel{margin-top:10px;padding:15px;background:rgba(3,15,35,.5);border:1px solid rgba(255,255,255,.15);border-radius:14px;color:#fff;}
-.timesheet-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
-.timesheet-heading h4{font-size:18px;color:#fff}
-.timesheet-live{font-size:10px;font-weight:800;letter-spacing:.7px;color:#a7f3d0;background:rgba(16,185,129,.16);padding:4px 8px;border-radius:99px}
-.ts-subtitle{font-size:11px;color:#dbeafe;margin-bottom:12px}
-.ts-clock{font-size:24px;font-weight:800;letter-spacing:.3px;color:var(--gold);line-height:1.2}
-.ts-date{font-size:11px;color:#dbeafe;margin:4px 0 12px}
-.ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.ts-stat{background:rgba(255,255,255,.08);border-radius:8px;padding:8px}
-.ts-stat span{display:block;color:#cbd5e1;font-size:10px}
-.ts-stat strong{display:block;color:#fff;font-size:14px;margin-top:2px;overflow-wrap:anywhere}
-.ts-location{font-size:11px;color:#e2e8f0;background:rgba(255,255,255,.06);padding:8px;border-radius:8px;margin-bottom:10px;overflow-wrap:anywhere}
-.ts-location a{color:#fde68a;text-decoration:underline}
-.ts-actions{display:flex;gap:8px;flex-wrap:wrap}
-.ts-btn{border:0;border-radius:8px;padding:9px 12px;font-weight:800;font-size:11px;cursor:pointer;flex:1;min-width:100px}
-.ts-checkin{background:var(--gold);color:#172033}
-.ts-checkout{background:#e2e8f0;color:#172033}
-.ts-btn:disabled{opacity:.45;cursor:not-allowed}
-.ts-status{font-size:11px;color:#dbeafe;margin-top:8px;min-height:16px}
-.ts-history{margin-top:10px}
-.ts-history summary{font-size:11px;font-weight:800;color:#fff;cursor:pointer}
-.ts-history-list{max-height:110px;overflow:auto;margin-top:6px;font-size:10px;color:#e2e8f0}
-.ts-history-item{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-.ts-note{font-size:9px;line-height:1.4;color:#cbd5e1;margin-top:10px}
+/* Updated Sleek Dark Timesheet Card Styling (Matching Design) */
+.timesheet-panel-card {
+  background: #112347;
+  border-radius: 16px;
+  padding: 24px;
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.timesheet-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 8px;
+}
+.timesheet-title-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0;
+}
+.timesheet-badge-live {
+  background: #15454b;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.ts-subtitle-text {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.ts-clock-time {
+  font-size: 34px;
+  font-weight: 800;
+  color: #fbbf24;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.ts-date-sub {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 18px;
+}
+.ts-grid-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.ts-box-item {
+  background: #1e3a63;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.ts-box-item span {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ts-box-item strong {
+  display: block;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+.ts-location-card {
+  font-size: 13px;
+  color: #cbd5e1;
+  background: #1b3356;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+.ts-location-card a {
+  color: #fde68a;
+  text-decoration: underline;
+}
+.ts-action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.ts-btn-checkin {
+  background: #f59e0b;
+  color: #0f172a;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.ts-btn-checkin:hover {
+  background: #fbbf24;
+}
+.ts-btn-checkout {
+  background: #64748b;
+  color: #cbd5e1;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: not-allowed;
+  flex: 1;
+  opacity: 0.7;
+}
+.ts-status-info {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 14px;
+}
+.ts-history-toggle summary {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.ts-disclaimer-text {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #64748b;
+  margin-top: 14px;
+}
 
 /* Forms & Tables Section */
 .requirement-section{background:var(--light); transition: background 0.3s;}
@@ -381,11 +500,11 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH TIMESHEET BUTTON AT TOP-LEFT (MARKED SPOT) -->
+<!-- HERO SECTION WITH TIMESHEET BUTTON AT TOP-LEFT -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- TOP-LEFT TIMESHEET BUTTON (As marked in image) -->
+      <!-- TOP-LEFT TIMESHEET BUTTON -->
       <div class="hero-timesheet-box">
         <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
           <i class="fa-solid fa-clock" style="font-size: 16px;"></i>
@@ -796,37 +915,60 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
-<!-- TIMESHEET POPUP MODAL -->
+<!-- UPDATED TIMESHEET POPUP MODAL (MATCHING IMAGE DESIGN) -->
 <div class="azad-modal" id="timesheetModal">
-  <div class="azad-modal-content">
-    <span class="azad-close-btn" onclick="closeTimesheetModal()">&times;</span>
-    <h3 style="color:var(--blue);margin-bottom:5px;"><i class="fa-solid fa-clock"></i> Timesheet & Attendance Portal</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Track duty hours, GPS check-in/check-out and live overtime calculation.</p>
-    
-    <div class="timesheet-panel">
-      <div class="timesheet-heading">
-        <h4>Live Attendance Tracker</h4>
-        <span class="timesheet-live">UAE LIVE</span>
+  <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
+    <div class="timesheet-panel-card" style="position: relative;">
+      <span class="azad-close-btn" onclick="closeTimesheetModal()" style="color: #cbd5e1; top: 18px; right: 20px;">&times;</span>
+      
+      <div class="timesheet-heading-row">
+        <h3 class="timesheet-title-text">Timesheet &<br>Attendance</h3>
+        <div class="timesheet-badge-live">LIVE<br>CLOCK</div>
       </div>
-      <p class="ts-subtitle">GPS-assisted check-in, check-out and automatic duty-hour calculation.</p>
-      <div class="ts-clock" id="tsClock">--:--:--</div>
-      <div class="ts-date" id="tsDate">UAE time · loading…</div>
-      <div class="ts-grid">
-        <div class="ts-stat"><span>Today's duty time</span><strong id="tsElapsed">00:00:00</strong></div>
-        <!-- Overtime updated to after 10h -->
-        <div class="ts-stat"><span>Overtime (after 10h)</span><strong id="tsOvertime">00:00:00</strong></div>
+      
+      <p class="ts-subtitle-text">GPS-assisted check-in, check-out and automatic duty-hour calculation.</p>
+      
+      <div class="ts-clock-time" id="tsClock">13:08:10</div>
+      <div class="ts-date-sub" id="tsDate">Monday, 12 Oct 2026 · UAE time (UTC+4)</div>
+      
+      <div class="ts-grid-boxes">
+        <div class="ts-box-item">
+          <span>Today's duty time</span>
+          <strong id="tsElapsed">00:00:00</strong>
+        </div>
+        <div class="ts-box-item">
+          <span>Overtime (after 10h)</span>
+          <strong id="tsOvertime">00:00:00</strong>
+        </div>
       </div>
-      <div class="ts-location" id="tsLocation">Location not captured yet. Allow location access when checking in.</div>
-      <div class="ts-actions">
-        <button class="ts-btn ts-checkin" id="tsCheckIn" type="button">📍 Check In</button>
-        <button class="ts-btn ts-checkout" id="tsCheckOut" type="button" disabled>Check Out</button>
+      
+      <div class="ts-location-card" id="tsLocation">
+        Location not captured yet. Allow location access when checking in.
       </div>
-      <div class="ts-status" id="tsStatus">Ready to start attendance.</div>
-      <details class="ts-history">
-        <summary>View saved attendance history</summary>
-        <div class="ts-history-list" id="tsHistory">No attendance records yet.</div>
+      
+      <div class="ts-action-buttons">
+        <button class="ts-btn-checkin" id="tsCheckIn" type="button">
+          📍 Check In
+        </button>
+        <button class="ts-btn-checkout" id="tsCheckOut" type="button" disabled>
+          Check Out
+        </button>
+      </div>
+      
+      <div class="ts-status-info" id="tsStatus">
+        Ready to start attendance.
+      </div>
+      
+      <details class="ts-history-toggle">
+        <summary>▶ View saved attendance history</summary>
+        <div class="ts-history-list" id="tsHistory" style="max-height:110px; overflow:auto; margin-top:6px; font-size:11px; color:#cbd5e1;">
+          No attendance records yet.
+        </div>
       </details>
-      <p class="ts-note">Demo storage: records are saved in this browser on this device only.</p>
+      
+      <p class="ts-disclaimer-text">
+        Demo storage: records are saved in this browser on this device only. GPS needs permission and HTTPS. This version does not sync to Supabase or verify workplace boundaries.
+      </p>
     </div>
   </div>
 </div>
@@ -990,7 +1132,7 @@ textarea{min-height:115px;resize:vertical}
       hero_eyebrow: "യു.എ.ഇ വർക്ക്ഫോഴ്സ് നെറ്റ്‌വർക്ക്",
       hero_title: 'കമ്പനികളെ <span style="color:var(--gold)">വിദഗ്ദ്ധ തൊഴിലാളികളുമായി</span> ബന്ധിപ്പിക്കുന്നു',
       hero_desc: "എലൈറ്റ് വർക്ക്ഫോഴ്സ് സൊല്യൂഷൻസ് യു.എ.ഇ കമ്പനികളെ മാൻപവർ സപ്ലയർമാരുമായും വിദഗ്ദ്ധ തൊഴിലാളികളുമായും ബന്ധിപ്പിക്കുന്നു.",
-      btn_post: "ആവശ്യം സമർപ്പിക്കുക", btn_supplier: "സപ്ലയറായി ചേരുക", btn_azad: "ആസാദ് വിസ വർക്കර්"
+      btn_post: "ആവശ്യം സമർപ്പിക്കുക", btn_supplier: "സപ്ലയറായി ചേരുക", btn_azad: "ആസാദ് വിസ വർക്കർ"
     },
     ta: {
       nav_home: "முகப்பு", nav_about: "எங்களைப் பற்றி", nav_board: "பொது போர்டு", nav_post: "தேவையைப் பதிவுசெய்", nav_careers: "வேலைவாய்ப்பு", nav_faq: "கேள்விகள்", nav_contact: "தொடர்பு கொள்ள", nav_staffing: "ஆட்களைப் பெறுக",
