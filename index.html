@@ -813,7 +813,8 @@ textarea{min-height:115px;resize:vertical}
       <div class="ts-date" id="tsDate">UAE time · loading…</div>
       <div class="ts-grid">
         <div class="ts-stat"><span>Today's duty time</span><strong id="tsElapsed">00:00:00</strong></div>
-        <div class="ts-stat"><span>Overtime (after 8h)</span><strong id="tsOvertime">00:00:00</strong></div>
+        <!-- Overtime updated to after 10h -->
+        <div class="ts-stat"><span>Overtime (after 10h)</span><strong id="tsOvertime">00:00:00</strong></div>
       </div>
       <div class="ts-location" id="tsLocation">Location not captured yet. Allow location access when checking in.</div>
       <div class="ts-actions">
@@ -989,7 +990,7 @@ textarea{min-height:115px;resize:vertical}
       hero_eyebrow: "യു.എ.ഇ വർക്ക്ഫോഴ്സ് നെറ്റ്‌വർക്ക്",
       hero_title: 'കമ്പനികളെ <span style="color:var(--gold)">വിദഗ്ദ്ധ തൊഴിലാളികളുമായി</span> ബന്ധിപ്പിക്കുന്നു',
       hero_desc: "എലൈറ്റ് വർക്ക്ഫോഴ്സ് സൊല്യൂഷൻസ് യു.എ.ഇ കമ്പനികളെ മാൻപവർ സപ്ലയർമാരുമായും വിദഗ്ദ്ധ തൊഴിലാളികളുമായും ബന്ധിപ്പിക്കുന്നു.",
-      btn_post: "ആവശ്യം സമർപ്പിക്കുക", btn_supplier: "സപ്ലയറായി ചേരുക", btn_azad: "ആസാദ് വിസ വർക്കർ"
+      btn_post: "ആവശ്യം സമർപ്പിക്കുക", btn_supplier: "സപ്ലയറായി ചേരുക", btn_azad: "ആസാദ് വിസ വർക്കර්"
     },
     ta: {
       nav_home: "முகப்பு", nav_about: "எங்களைப் பற்றி", nav_board: "பொது போர்டு", nav_post: "தேவையைப் பதிவுசெய்", nav_careers: "வேலைவாய்ப்பு", nav_faq: "கேள்விகள்", nav_contact: "தொடர்பு கொள்ள", nav_staffing: "ஆட்களைப் பெறுக",
@@ -1756,7 +1757,7 @@ textarea{min-height:115px;resize:vertical}
     }
   });
 
-  /* TIMESHEET & ATTENDANCE SCRIPT LOGIC */
+  /* TIMESHEET & ATTENDANCE SCRIPT LOGIC (OVERTIME AFTER 10 HOURS) */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v1';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v1';
@@ -1827,7 +1828,12 @@ textarea{min-height:115px;resize:vertical}
       if($('tsClock')){
         $('tsClock').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);$('tsDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'2-digit',month:'short',year:'numeric'}).format(now)+' · UAE time (UTC+4)';
         const duration=active?Math.max(0,now-new Date(active.checkInAt)):0;
-        $('tsElapsed').textContent=fmtDuration(duration);$('tsOvertime').textContent=fmtDuration(Math.max(0,duration-8*60*60*1000));
+        $('tsElapsed').textContent=fmtDuration(duration);
+        
+        // OVERTIME AFTER 10 HOURS (10 * 3600 * 1000 ms)
+        const tenHoursMs = 10 * 60 * 60 * 1000;
+        $('tsOvertime').textContent=fmtDuration(Math.max(0, duration - tenHoursMs));
+        
         if($('tsCheckIn'))$('tsCheckIn').disabled=!!active;
         if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
         if(active){ renderLocation(active.location); }
