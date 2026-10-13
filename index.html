@@ -724,29 +724,6 @@ textarea{min-height:115px;resize:vertical}
         <button id="installBtn" class="shortcut-btn">
           <span>📱</span> Add App Shortcut to Home Screen
         </button>
-        
-        <!-- LIVE DUTY STATUS BADGE -->
-        <div id="dutyStatusBadge" style="margin-top:12px; padding:6px 12px; border-radius:8px; font-weight:800; font-size:12px; background:#ef4444; color:#fff; text-align:center;">
-          🔴 Status: OFF DUTY
-        </div>
-
-        <!-- ONE-TAP DIRECT PUNCH BUTTONS -->
-        <div style="display:flex; gap:10px; margin-top:10px;">
-          <button onclick="performDirectClock('Clock In')" style="background:#10b981; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:800; cursor:pointer; flex:1; font-size:12px;">
-            🟢 Direct Clock In
-          </button>
-          <button onclick="performDirectClock('Clock Out')" style="background:#ef4444; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:800; cursor:pointer; flex:1; font-size:12px;">
-            🔴 Direct Clock Out
-          </button>
-        </div>
-
-        <!-- WHATSAPP QUICK SHARE -->
-        <div style="margin-top:10px;">
-          <button onclick="shareAttendanceWhatsApp()" style="width:100%; background:#25d366; color:#fff; border:0; padding:8px; border-radius:8px; font-weight:800; cursor:pointer; font-size:12px;">
-            📱 Share Summary on WhatsApp
-          </button>
-        </div>
-
         <div class="instruction-box">
           <p>💡 <strong>Instruction:</strong> Click this button and select <strong>"Add" / "Install"</strong> in the prompt. This will save the website on your phone home screen like an app!</p>
         </div>
@@ -1213,7 +1190,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- TIMESHEET POPUP MODAL WITH GPS, AUTO-CHECKOUT & EXCEL EXPORT -->
+<!-- UPDATED TIMESHEET POPUP MODAL WITH GPS, AUTO-CHECKOUT & EXCEL EXPORT -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;">
@@ -1272,7 +1249,7 @@ textarea{min-height:115px;resize:vertical}
       </details>
       
       <p class="ts-disclaimer-text">
-        Features active: GPS Geofencing, One-Tap Direct Clock, WhatsApp Share, Browser Notifications, Auto-Checkout, and Supabase cloud sync.
+        Features active: GPS Geofencing, Browser Push Notifications, Auto-Checkout, and Supabase cloud sync.
       </p>
     </div>
   </div>
@@ -2215,7 +2192,7 @@ textarea{min-height:115px;resize:vertical}
       return;
     }
 
-    showToast(`${targetName} ke emails fetch kiye ja rahe ہیں...`);
+    showToast(`${targetName} ke emails fetch kiye ja rahe hain...`);
 
     try {
       let allEmails = [];
@@ -2294,10 +2271,10 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT (WITH ONE-TAP DIRECT PUNCH & WHATSAPP SHARE) */
+  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & EXCEL EXPORT) */
   (function initTimesheet(){
-    const KEY = 'elite_workforce_timesheet_v3';
-    const ACTIVE_KEY = 'elite_workforce_timesheet_active_v3';
+    const KEY = 'elite_workforce_timesheet_v2';
+    const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
     const $ = id => document.getElementById(id);
     if (!$('tsClock')) return;
     
@@ -2315,20 +2292,7 @@ document.addEventListener('click', async (e) => {
       return `${h}:${m}:${sec}`;
     }
     function fmtDate(iso){ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',dateStyle:'medium',timeStyle:'short'}).format(new Date(iso))+' UAE'; }
-    function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; updateBadgeState(); }
-
-    // Update Status Badge UI (Green/Red)
-    function updateBadgeState() {
-        const badge = $('dutyStatusBadge');
-        if (!badge) return;
-        if (active) {
-            badge.style.background = '#10b981';
-            badge.innerHTML = '🟢 Status: ON DUTY';
-        } else {
-            badge.style.background = '#ef4444';
-            badge.innerHTML = '🔴 Status: OFF DUTY';
-        }
-    }
+    function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; }
 
     // Browser Notification Setup
     function initNotifications() {
@@ -2346,6 +2310,9 @@ document.addEventListener('click', async (e) => {
 
     // Auto-Checkout Check (12 Hours rule)
     function checkAutoCheckout() {
+        if (history.length > 0 && !active) {
+            // Already closed
+        }
         if (active) {
             let checkInTime = new Date(active.checkInAt);
             let now = new Date();
@@ -2402,35 +2369,31 @@ document.addEventListener('click', async (e) => {
     }
 
     async function checkIn(){
-      if($('tsCheckIn'))$('tsCheckIn').disabled=true; 
-      setStatus('Capturing GPS location & Area name…');
+      $('tsCheckIn').disabled=true; setStatus('Capturing GPS location & Area name…');
       try{
         const loc=await getLocation();
         active={checkInAt:new Date().toISOString(),location:loc}; 
         save(); 
         renderLocation(loc);
         
+        // Sync to Supabase Cloud if available
         await saveToSupabase({ id: Date.now(), type: 'Clock In', time: active.checkInAt, location: loc.areaName });
+
         setStatus('Checked in successfully with GPS location!');
       }catch(e){ setStatus(e.message); }
-      finally{ 
-        if($('tsCheckIn'))$('tsCheckIn').disabled=!!active; 
-        if($('tsCheckOut'))$('tsCheckOut').disabled=!active; 
-        updateBadgeState();
-      }
+      finally{ $('tsCheckIn').disabled=!!active; $('tsCheckOut').disabled=!active; }
     }
 
     async function checkOut(){
       if(!active) return;
-      if($('tsCheckOut'))$('tsCheckOut').disabled=true; 
-      setStatus('Capturing check-out location…');
+      $('tsCheckOut').disabled=true; setStatus('Capturing check-out location…');
       let outLoc=null;
       try{ 
         outLoc=await getLocation(); 
         renderLocation(outLoc); 
       }catch(e){ 
         setStatus(e.message+' Check-out was not saved.'); 
-        if($('tsCheckOut'))$('tsCheckOut').disabled=false; 
+        $('tsCheckOut').disabled=false; 
         return; 
       }
 
@@ -2447,19 +2410,21 @@ document.addEventListener('click', async (e) => {
       });
       
       history=history.slice(0,100); 
+      let lastActiveCheckin = active.checkInAt;
       active=null; 
       save(); 
       update(); 
       renderHistory();
 
+      // Sync to Supabase Cloud
       await saveToSupabase({ id: Date.now(), type: 'Clock Out', time: end.toISOString(), location: outLoc.areaName });
 
       setStatus('Checked out. Total duty time: '+fmtDuration(duration)+'.');
-      if($('tsCheckIn'))$('tsCheckIn').disabled=false; 
-      if($('tsCheckOut'))$('tsCheckOut').disabled=true;
-      updateBadgeState();
+      $('tsCheckIn').disabled=false; 
+      $('tsCheckOut').disabled=true;
     }
 
+    // Supabase Cloud Sync Function
     async function saveToSupabase(recordData) {
         try {
             if (typeof _supabase !== 'undefined' && _supabase) {
@@ -2469,48 +2434,14 @@ document.addEventListener('click', async (e) => {
                     timestamp: recordData.time,
                     location: recordData.location
                 }]);
+                console.log('Synced to Supabase successfully.');
             }
         } catch (err) {
             console.log('Supabase sync note:', err.message);
         }
     }
 
-    // Direct One-Tap Clock Handler from Hero Section
-    window.performDirectClock = async function(type) {
-        if (type === 'Clock In') {
-            if (active) {
-                alert('You are already checked in!');
-                return;
-            }
-            showToast('Starting Direct Clock In with GPS...');
-            await checkIn();
-        } else {
-            if (!active) {
-                alert('You are not checked in yet!');
-                return;
-            }
-            showToast('Processing Direct Clock Out...');
-            await checkOut();
-        }
-    };
-
-    // WhatsApp Summary Share
-    window.shareAttendanceWhatsApp = function() {
-        if (history.length === 0 && !active) {
-            alert('No attendance data available to share yet!');
-            return;
-        }
-        let currentStatusText = active ? "🟢 Currently ON DUTY" : "🔴 Currently OFF DUTY";
-        let lastLoc = active && active.location ? active.location.areaName : (history.length > 0 && history[0].checkInLocation ? history[0].checkInLocation.areaName : 'UAE Site');
-        
-        let msg = `*Elite Workforce Attendance Report*%0A` +
-                  `📌 *Status:* ${currentStatusText}%0A` +
-                  `📍 *Site Location:* ${encodeURIComponent(lastLoc)}%0A` +
-                  `📅 *Date:* ${new Date().toLocaleDateString()}`;
-                  
-        window.open(`https://wa.me/?text=${msg}`, '_blank');
-    };
-
+    // Export to Excel (.CSV Format)
     window.exportToExcel = function() {
         if (history.length === 0) {
             alert('No attendance records found to export!');
@@ -2555,7 +2486,6 @@ document.addEventListener('click', async (e) => {
         if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
         if(active){ renderLocation(active.location); }
       }
-      updateBadgeState();
     }
 
     function renderHistory(){
