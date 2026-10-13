@@ -2237,39 +2237,32 @@ textarea{min-height:115px;resize:vertical}
     }
   });
 
-  /* PWA INSTALL PROMPT JAVASCRIPT LOGIC */
-  let deferredPrompt;
+/* PWA INSTALL PROMPT JAVASCRIPT LOGIC (ENGLISH) */
+let deferredPrompt;
+window.addEventListener('DOMContentLoaded', () => {
+    const shortcutContainer = document.getElementById('shortcutContainer');
+    if (shortcutContainer) shortcutContainer.style.display = 'block';
+});
 
-  // बटन और बॉक्स को हमेशा स्क्रीन पर Visible रखें
-  window.addEventListener('DOMContentLoaded', () => {
-      const shortcutContainer = document.getElementById('shortcutContainer');
-      if (shortcutContainer) {
-          shortcutContainer.style.display = 'block';
-      }
-  });
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
 
-  // ऑटोमैटिक इंस्टॉलेशन प्रॉम्प्ट कैच करें
-  window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-  });
-
-  // बटन पर क्लिक करने पर एक्शन
-  document.addEventListener('click', async (e) => {
-      if (e.target && e.target.closest('#installBtn')) {
-          if (deferredPrompt) {
-              deferredPrompt.prompt();
-              const { outcome } = await deferredPrompt.userChoice;
-              if (outcome === 'accepted') {
-                  showToast('शॉर्टकट होम स्क्रीन पर जोड़ लिया गया है!');
-              }
-              deferredPrompt = null;
-          } else {
-              // अगर ब्राउज़र ऑटो-प्रॉम्प्ट न दे, तो यूजर को 3-डॉट्स गाइड दिखाएं
-              alert('होम स्क्रीन पर ऐप की तरह जोड़ने के लिए:\n\n1. अपने ब्राउज़र के 3 डॉट्स (Menu) पर क्लिक करें।\n2. "Add to Home screen" या "Install app" का ऑप्शन चुनें।');
-          }
-      }
-  });
+document.addEventListener('click', async (e) => {
+    if (e.target && e.target.closest('#installBtn')) {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                showToast('Shortcut successfully added to home screen!');
+            }
+            deferredPrompt = null;
+        } else {
+            alert('To add this website to your home screen as an app:\n\n1. Tap the 3 dots (Menu) at the top right of your browser.\n2. Select "Add to Home screen" or "Install app".');
+        }
+    }
+});
 
   /* TIMESHEET & ATTENDANCE SCRIPT LOGIC (WITH REVERSE GEOCODING LOCATION NAME) */
   (function initTimesheet(){
