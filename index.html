@@ -11,6 +11,11 @@
 <meta property="og:description" content="Connecting UAE companies with manpower suppliers and skilled workforce.">
 <meta property="og:type" content="website">
 <title>Elite Workforce Solutions | Live Timesheet, Currency Converter & UAE Manpower</title>
+
+<!-- PWA Manifest Link (होम स्क्रीन शॉर्टकट के लिए जरूरी) -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b3d91">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -227,6 +232,54 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   display: flex;
   flex-direction: column;
   line-height: 1.1;
+}
+
+/* PWA Shortcut Hero Section Styles & Instruction Box */
+.shortcut-hero-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  margin-top: 20px;
+  max-width: 420px;
+}
+.shortcut-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  transition: transform 0.2s ease, background 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+.shortcut-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #059669, #047857);
+}
+.instruction-box {
+  background: rgba(15, 23, 42, 0.7);
+  border-left: 4px solid #fbbf24;
+  color: #f8fafc;
+  padding: 10px 14px;
+  margin-top: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.instruction-box p {
+  margin: 0;
 }
 
 /* Updated Sleek Dark Timesheet Card Styling */
@@ -665,6 +718,17 @@ textarea{min-height:115px;resize:vertical}
           <button onclick="openAzadModal()" class="btn btn-azad-hero" style="padding: 10px 16px;" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
         </div>
       </div>
+
+      <!-- HOME SCREEN PWA SHORTCUT INSTALL BUTTON & INSTRUCTION BOX -->
+      <div class="shortcut-hero-box" id="shortcutContainer" style="display: none;">
+        <button id="installBtn" class="shortcut-btn">
+          <span>📱</span> होम स्क्रीन पर शॉर्टकट जोड़ें (Add App)
+        </button>
+        <div class="instruction-box">
+          <p>💡 <strong>निर्देश:</strong> इस बटन को दबाएं और पॉप-अप में <strong>"Add" / "Install"</strong> चुनें। इससे यह वेबसाइट आपके फोन की होम स्क्रीन पर ऐप के लोगो की तरह सेव हो जाएगी!</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -2171,6 +2235,29 @@ textarea{min-height:115px;resize:vertical}
     if (session.data.session) {
       document.getElementById('admin').style.display = 'block';
     }
+  });
+
+  /* PWA INSTALL PROMPT JAVASCRIPT LOGIC */
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      const shortcutContainer = document.getElementById('shortcutContainer');
+      if (shortcutContainer) shortcutContainer.style.display = 'block';
+
+      const installBtn = document.getElementById('installBtn');
+      if (installBtn) {
+          installBtn.addEventListener('click', async () => {
+              deferredPrompt.prompt();
+              const { outcome } = await deferredPrompt.userChoice;
+              if (outcome === 'accepted') {
+                  console.log('User accepted the install prompt');
+                  if (shortcutContainer) shortcutContainer.style.display = 'none';
+              }
+              deferredPrompt = null;
+          });
+      }
   });
 
   /* TIMESHEET & ATTENDANCE SCRIPT LOGIC (WITH REVERSE GEOCODING LOCATION NAME) */
