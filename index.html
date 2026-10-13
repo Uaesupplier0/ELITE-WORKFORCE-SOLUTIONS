@@ -146,50 +146,44 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 /* Top Left Corner & Hero Widgets Glassmorphism Rectangle Boxes */
 .hero-widgets-container {
   display: flex;
-  gap: 135px;
+  gap: 15px;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 350px;
-  margin-top: -15px !important;
+  margin-bottom: 25px;
 }
+
 .hero-timesheet-box {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(8px);
-  padding: 6px 10px;
+  padding: 10px;
   border-radius: 12px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  margin-right: 15px !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 240px;
 }
 .hero-timesheet-box:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
   border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .btn-hero-timesheet {
-  background: var(--gold2);
-  color: #111827;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background: transparent;
+  color: #ffffff;
+  padding: 4px 0;
+  border-radius: 6px;
   font-weight: 800;
   font-size: 13px;
   border: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
-  transition: all 0.3s ease;
+  gap: 10px;
+  width: 100%;
   text-align: left;
-}
-.btn-hero-timesheet:hover {
-  background: var(--gold);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 18px rgba(245, 158, 11, 0.6);
 }
 .btn-hero-timesheet .time-info {
   display: flex;
@@ -197,8 +191,9 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   line-height: 1.1;
 }
 .btn-hero-timesheet .live-time-text {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
+  color: var(--gold);
 }
 .btn-hero-timesheet .live-date-text {
   font-size: 10px;
@@ -210,7 +205,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .btn-hero-currency {
   background: #0284c7;
   color: #ffffff;
-  padding: 6px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-weight: 800;
   font-size: 13px;
@@ -670,25 +665,47 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH ALL BUTTONS ENCLOSED IN GLASSMORPHISM BOXES -->
+<!-- HERO SECTION WITH INTEGRATED DIRECT CLOCK BUTTONS INSIDE TOP RECTANGLE BOX -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- TOP WIDGETS CONTAINER: TIMESHEET + LIVE CURRENCY RATE -->
+      <!-- TOP WIDGETS CONTAINER: TIMESHEET RECTANGLE BOX + LIVE CURRENCY RATE -->
       <div class="hero-widgets-container">
-        <!-- Timesheet Button -->
+        <!-- Timesheet Rectangle Box with Direct In/Out Buttons -->
         <div class="hero-timesheet-box">
-          <button onclick="openTimesheetModal()" class="btn-hero-timesheet">
-            <i class="fa-solid fa-clock" style="font-size: 16px;"></i>
-            <div class="time-info">
-              <span class="live-time-text" id="heroLiveClock">--:--:--</span>
-              <span class="live-date-text" id="heroLiveDate">Loading...</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <button onclick="openTimesheetModal()" class="btn-hero-timesheet" style="width:auto;">
+              <i class="fa-solid fa-clock" style="font-size: 15px; color:var(--gold);"></i>
+              <div class="time-info">
+                <span class="live-time-text" id="heroLiveClock">--:--:--</span>
+                <span class="live-date-text" id="heroLiveDate">Loading...</span>
+              </div>
+            </button>
+            <div id="dutyStatusBadge" style="padding:2px 8px; border-radius:12px; font-weight:800; font-size:10px; background:#ef4444; color:#fff;">
+              🔴 OFF
             </div>
-          </button>
+          </div>
+
+          <!-- DIRECT ONE-TAP CLOCK BUTTONS -->
+          <div style="display:flex; gap:6px; margin-top:6px;">
+            <button onclick="performDirectClock('Clock In')" style="background:#10b981; color:#fff; border:0; padding:6px 10px; border-radius:6px; font-weight:800; cursor:pointer; flex:1; font-size:11px; box-shadow:0 2px 6px rgba(16,185,129,0.3);">
+              🟢 Clock In
+            </button>
+            <button onclick="performDirectClock('Clock Out')" style="background:#ef4444; color:#fff; border:0; padding:6px 10px; border-radius:6px; font-weight:800; cursor:pointer; flex:1; font-size:11px; box-shadow:0 2px 6px rgba(239,68,68,0.3);">
+              🔴 Clock Out
+            </button>
+          </div>
+
+          <!-- WHATSAPP QUICK SHARE -->
+          <div style="margin-top:6px;">
+            <button onclick="shareAttendanceWhatsApp()" style="width:100%; background:#25d366; color:#fff; border:0; padding:5px; border-radius:6px; font-weight:800; cursor:pointer; font-size:10px;">
+              📱 Share Summary on WhatsApp
+            </button>
+          </div>
         </div>
 
         <!-- Currency Pair Button -->
-        <div class="hero-timesheet-box">
+        <div class="hero-timesheet-box" style="min-width: unset;">
           <button onclick="openCurrencyModal()" class="btn-hero-currency">
             <i class="fa-solid fa-coins" style="font-size: 16px;"></i>
             <div class="curr-info">
@@ -708,13 +725,13 @@ textarea{min-height:115px;resize:vertical}
       
       <!-- ALL HERO ACTION BUTTONS WRAPPED IN GLASSMORPHISM RECTANGLE BOXES -->
       <div class="hero-buttons">
-        <div class="hero-timesheet-box">
+        <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <a href="#requirements" class="btn btn-primary" style="padding: 10px 16px;" data-i18n="btn_post">Post Requirement</a>
         </div>
-        <div class="hero-timesheet-box">
+        <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <button onclick="openSupplierModal()" class="btn btn-outline" style="padding: 10px 16px;" data-i18n="btn_supplier"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
         </div>
-        <div class="hero-timesheet-box">
+        <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <button onclick="openAzadModal()" class="btn btn-azad-hero" style="padding: 10px 16px;" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
         </div>
       </div>
@@ -2276,7 +2293,6 @@ document.addEventListener('click', async (e) => {
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
     const $ = id => document.getElementById(id);
-    if (!$('tsClock')) return;
     
     let active = read(ACTIVE_KEY, null);
     let history = read(KEY, []);
@@ -2292,7 +2308,20 @@ document.addEventListener('click', async (e) => {
       return `${h}:${m}:${sec}`;
     }
     function fmtDate(iso){ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',dateStyle:'medium',timeStyle:'short'}).format(new Date(iso))+' UAE'; }
-    function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; }
+    function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; updateBadgeState(); }
+
+    // Update Status Badge UI (Green/Red)
+    function updateBadgeState() {
+        const badge = $('dutyStatusBadge');
+        if (!badge) return;
+        if (active) {
+            badge.style.background = '#10b981';
+            badge.innerHTML = '🟢 ON';
+        } else {
+            badge.style.background = '#ef4444';
+            badge.innerHTML = '🔴 OFF';
+        }
+    }
 
     // Browser Notification Setup
     function initNotifications() {
@@ -2310,9 +2339,6 @@ document.addEventListener('click', async (e) => {
 
     // Auto-Checkout Check (12 Hours rule)
     function checkAutoCheckout() {
-        if (history.length > 0 && !active) {
-            // Already closed
-        }
         if (active) {
             let checkInTime = new Date(active.checkInAt);
             let now = new Date();
@@ -2369,31 +2395,37 @@ document.addEventListener('click', async (e) => {
     }
 
     async function checkIn(){
-      $('tsCheckIn').disabled=true; setStatus('Capturing GPS location & Area name…');
+      setStatus('Capturing GPS location & Area name…');
       try{
         const loc=await getLocation();
         active={checkInAt:new Date().toISOString(),location:loc}; 
         save(); 
         renderLocation(loc);
         
-        // Sync to Supabase Cloud if available
         await saveToSupabase({ id: Date.now(), type: 'Clock In', time: active.checkInAt, location: loc.areaName });
 
         setStatus('Checked in successfully with GPS location!');
-      }catch(e){ setStatus(e.message); }
-      finally{ $('tsCheckIn').disabled=!!active; $('tsCheckOut').disabled=!active; }
+        showToast('🟢 Direct Clock-In Successful!');
+      }catch(e){ 
+        setStatus(e.message); 
+        showToast(e.message, 'error');
+      }
+      finally{ updateBadgeState(); }
     }
 
     async function checkOut(){
-      if(!active) return;
-      $('tsCheckOut').disabled=true; setStatus('Capturing check-out location…');
+      if(!active) {
+        alert('You are not checked in yet!');
+        return;
+      }
+      setStatus('Capturing check-out location…');
       let outLoc=null;
       try{ 
         outLoc=await getLocation(); 
         renderLocation(outLoc); 
       }catch(e){ 
         setStatus(e.message+' Check-out was not saved.'); 
-        $('tsCheckOut').disabled=false; 
+        showToast(e.message, 'error');
         return; 
       }
 
@@ -2410,21 +2442,48 @@ document.addEventListener('click', async (e) => {
       });
       
       history=history.slice(0,100); 
-      let lastActiveCheckin = active.checkInAt;
       active=null; 
       save(); 
       update(); 
       renderHistory();
 
-      // Sync to Supabase Cloud
       await saveToSupabase({ id: Date.now(), type: 'Clock Out', time: end.toISOString(), location: outLoc.areaName });
 
       setStatus('Checked out. Total duty time: '+fmtDuration(duration)+'.');
-      $('tsCheckIn').disabled=false; 
-      $('tsCheckOut').disabled=true;
+      showToast('🔴 Direct Clock-Out Successful!');
+      updateBadgeState();
     }
 
-    // Supabase Cloud Sync Function
+    // Direct One-Tap Clock Handler from Hero Box
+    window.performDirectClock = async function(type) {
+        if (type === 'Clock In') {
+            if (active) {
+                alert('You are already checked in!');
+                return;
+            }
+            await checkIn();
+        } else {
+            if (!active) {
+                alert('You are not checked in yet!');
+                return;
+            }
+            await checkOut();
+        }
+    };
+
+    // WhatsApp Summary Share
+    window.shareAttendanceWhatsApp = function() {
+        let currentStatusText = active ? "🟢 Currently ON DUTY" : "🔴 Currently OFF DUTY";
+        let lastLoc = active && active.location ? active.location.areaName : (history.length > 0 && history[0].checkInLocation ? history[0].checkInLocation.areaName : 'UAE Site');
+        
+        let msg = `*Elite Workforce Attendance Report*%0A` +
+                  `📌 *Status:* ${currentStatusText}%0A` +
+                  `📍 *Site Location:* ${encodeURIComponent(lastLoc)}%0A` +
+                  `📅 *Date:* ${new Date().toLocaleDateString()}`;
+                  
+        window.open(`https://wa.me/?text=${msg}`, '_blank');
+    };
+
     async function saveToSupabase(recordData) {
         try {
             if (typeof _supabase !== 'undefined' && _supabase) {
@@ -2434,14 +2493,12 @@ document.addEventListener('click', async (e) => {
                     timestamp: recordData.time,
                     location: recordData.location
                 }]);
-                console.log('Synced to Supabase successfully.');
             }
         } catch (err) {
             console.log('Supabase sync note:', err.message);
         }
     }
 
-    // Export to Excel (.CSV Format)
     window.exportToExcel = function() {
         if (history.length === 0) {
             alert('No attendance records found to export!');
@@ -2486,6 +2543,7 @@ document.addEventListener('click', async (e) => {
         if($('tsCheckOut'))$('tsCheckOut').disabled=!active;
         if(active){ renderLocation(active.location); }
       }
+      updateBadgeState();
     }
 
     function renderHistory(){
