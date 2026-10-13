@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <title>Elite Workforce Solutions | Live Timesheet, Currency Converter & UAE Manpower</title>
 
-<!-- PWA Manifest Link (होम स्क्रीन शॉर्टकट के लिए जरूरी) -->
+<!-- PWA Manifest Link (होम स्क्रीन शॉर्टकट के लिए आवश्यक) -->
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b3d91">
 
@@ -77,7 +77,7 @@ a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}
 .container{max-width:1200px;margin:auto;width:100%;padding:0 15px;}section{padding:80px 20px}
 .section-title{text-align:center;margin-bottom:45px}.section-title h2{font-size:38px;color:var(--blue);margin-bottom:10px}.section-title p{color:var(--muted);max-width:720px;margin:auto}
 
-/* Global Interactive Elements Styling (Enhances ALL Click Options) */
+/* Global Interactive Elements Styling */
 button, a, select, input[type="file"], summary, .faq-question, .admin-tab-btn, .ts-btn-checkin, .ts-btn-checkout, .theme-toggle-btn, .menu-btn {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   cursor: pointer;
@@ -720,7 +720,7 @@ textarea{min-height:115px;resize:vertical}
       </div>
 
       <!-- HOME SCREEN PWA SHORTCUT INSTALL BUTTON & INSTRUCTION BOX -->
-      <div class="shortcut-hero-box" id="shortcutContainer" style="display: none;">
+      <div class="shortcut-hero-box" id="shortcutContainer">
         <button id="installBtn" class="shortcut-btn">
           <span>📱</span> होम स्क्रीन पर शॉर्टकट जोड़ें (Add App)
         </button>
@@ -2239,24 +2239,35 @@ textarea{min-height:115px;resize:vertical}
 
   /* PWA INSTALL PROMPT JAVASCRIPT LOGIC */
   let deferredPrompt;
+
+  // बटन और बॉक्स को हमेशा स्क्रीन पर Visible रखें
+  window.addEventListener('DOMContentLoaded', () => {
+      const shortcutContainer = document.getElementById('shortcutContainer');
+      if (shortcutContainer) {
+          shortcutContainer.style.display = 'block';
+      }
+  });
+
+  // ऑटोमैटिक इंस्टॉलेशन प्रॉम्प्ट कैच करें
   window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      
-      const shortcutContainer = document.getElementById('shortcutContainer');
-      if (shortcutContainer) shortcutContainer.style.display = 'block';
+  });
 
-      const installBtn = document.getElementById('installBtn');
-      if (installBtn) {
-          installBtn.addEventListener('click', async () => {
+  // बटन पर क्लिक करने पर एक्शन
+  document.addEventListener('click', async (e) => {
+      if (e.target && e.target.closest('#installBtn')) {
+          if (deferredPrompt) {
               deferredPrompt.prompt();
               const { outcome } = await deferredPrompt.userChoice;
               if (outcome === 'accepted') {
-                  console.log('User accepted the install prompt');
-                  if (shortcutContainer) shortcutContainer.style.display = 'none';
+                  showToast('शॉर्टकट होम स्क्रीन पर जोड़ लिया गया है!');
               }
               deferredPrompt = null;
-          });
+          } else {
+              // अगर ब्राउज़र ऑटो-प्रॉम्प्ट न दे, तो यूजर को 3-डॉट्स गाइड दिखाएं
+              alert('होम स्क्रीन पर ऐप की तरह जोड़ने के लिए:\n\n1. अपने ब्राउज़र के 3 डॉट्स (Menu) पर क्लिक करें।\n2. "Add to Home screen" या "Install app" का ऑप्शन चुनें।');
+          }
       }
   });
 
