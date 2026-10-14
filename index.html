@@ -604,29 +604,6 @@ textarea{min-height:115px;resize:vertical}
 .azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s; padding:2px 8px; border-radius:50%;}
 .azad-close-btn:hover{color:var(--text); background: rgba(0,0,0,0.08); transform: rotate(90deg);}
 
-/* Printable Table Sheet Styling for PDF Export */
-.pdf-excel-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  font-size: 11px;
-}
-.pdf-excel-table th {
-  background-color: #0b3d91;
-  color: #ffffff;
-  padding: 8px;
-  border: 1px solid #1255b3;
-  text-align: left;
-}
-.pdf-excel-table td {
-  padding: 7px 8px;
-  border: 1px solid #cbd5e1;
-  color: #0f172a;
-}
-.pdf-excel-table tr:nth-child(even) {
-  background-color: #f8fafc;
-}
-
 /* UI Animations & Modern Hover Effects */
 .reveal-on-scroll {
   opacity: 0;
@@ -1219,54 +1196,6 @@ textarea{min-height:115px;resize:vertical}
     &copy; 2026 Elite Workforce Solutions. All rights reserved.
   </div>
 </footer>
-
-<!-- HIDDEN CONTAINER SPECIFICALLY FOR PRINTABLE PDF EXCEL SHEET REPORT (POSITIONED OFF-SCREEN TO PREVENT CRASH / SCREENSHOT ISSUES) -->
-<div id="hiddenPdfExportTemplate" style="position: absolute; left: -9999px; top: -9999px; width: 850px; background: #ffffff; color: #1e293b; padding: 30px; font-family: 'Inter', Arial, sans-serif; box-sizing: border-box;">
-  <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #0b3d91; padding-bottom:15px; margin-bottom:20px;">
-    <div style="display:flex; align-items:center; gap:14px;">
-      <img src="logo.png" alt="Logo" style="width:52px; height:52px; object-fit:contain; border-radius:6px; border:1px solid #e2e8f0; padding:2px;">
-      <div>
-        <h1 style="font-size:22px; font-weight:900; color:#0b3d91; margin:0; line-height:1.1; letter-spacing:0.5px;">ELITE WORKFORCE SOLUTIONS</h1>
-        <span style="font-size:12px; color:#64748b; font-weight:700;">Official Attendance & GPS Timesheet Log Sheet</span>
-      </div>
-    </div>
-    <div style="text-align:right;">
-      <span style="font-size:10px; background:#10b981; color:#fff; font-weight:800; padding:4px 10px; border-radius:4px; text-transform:uppercase;">VERIFIED UAE LOG</span>
-      <p style="font-size:11px; color:#64748b; margin:6px 0 0 0; font-weight:600;" id="pdfReportGenDate">Generated: --</p>
-    </div>
-  </div>
-
-  <div style="margin-bottom:20px; background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0; font-size:12px; display:flex; justify-content:space-between; color:#334155;">
-    <div><strong>Company License:</strong> UAE-EWS-2026</div>
-    <div><strong>Location:</strong> Business Bay, Dubai, UAE</div>
-    <div><strong>System Sync:</strong> Live Database Verified</div>
-  </div>
-
-  <!-- PRINTABLE EXCEL TABLE CONTAINER -->
-  <table class="pdf-excel-table" id="pdfExcelTableBody" style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; text-align: left;">
-    <thead>
-      <tr style="background-color: #0b3d91; color: #ffffff;">
-        <th style="padding: 10px; border: 1px solid #0b3d91; width: 22%;">Check-In Time (UAE)</th>
-        <th style="padding: 10px; border: 1px solid #0b3d91; width: 22%;">Check-Out Time (UAE)</th>
-        <th style="padding: 10px; border: 1px solid #0b3d91; width: 16%;">Duty Duration</th>
-        <th style="padding: 10px; border: 1px solid #0b3d91; width: 25%;">Site Area / Location</th>
-        <th style="padding: 10px; border: 1px solid #0b3d91; width: 15%;">GPS Coords</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Injected via JavaScript -->
-    </tbody>
-  </table>
-
-  <div style="margin-top:35px; display:flex; justify-content:space-between; align-items:flex-end; font-size:11px; color:#64748b; border-top:1px solid #cbd5e1; padding-top:15px;">
-    <div>
-      <p style="margin:0; font-weight:600; color:#334155;">Authorized Signature: _______________________</p>
-    </div>
-    <div style="text-align:right;">
-      <p style="margin:0; font-weight:600; color:#334155;">Elite Workforce Solutions © 2026. All Rights Reserved.</p>
-    </div>
-  </div>
-</div>
 
 <!-- MULTI-COUNTRY CURRENCY CONVERTER POPUP MODAL -->
 <div class="azad-modal" id="currencyModal">
@@ -2360,7 +2289,7 @@ textarea{min-height:115px;resize:vertical}
       return;
     }
 
-    showToast(`${targetName} ke emails fetch kiye ja rahe hain...`);
+    showToast(`${targetName} ke emails fetch kiye ja rahe ہیں...`);
 
     try {
       let allEmails = [];
@@ -2622,7 +2551,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    // PRINTABLE EXCEL TABLE FORMAT PDF DOWNLOAD FUNCTION (FIXED RENDERING TARGET)
+    // FULLY DYNAMIC PRINTABLE EXCEL TABLE PDF DOWNLOAD FUNCTION (MOBILE & DESKTOP FIXED)
     window.downloadTimesheetPDF = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records available to generate PDF!');
@@ -2630,59 +2559,110 @@ document.addEventListener('click', async (e) => {
         }
         showToast('Generating Printable Timesheet PDF...');
 
-        // Target the correct tbody inside #pdfExcelTableBody
-        const tableBody = document.querySelector('#pdfExcelTableBody tbody') || document.getElementById('pdfExcelTableBody');
-        tableBody.innerHTML = '';
+        const template = document.createElement('div');
+        template.style.position = 'fixed';
+        template.style.top = '0';
+        template.style.left = '0';
+        template.style.width = '850px';
+        template.style.background = '#ffffff';
+        template.style.color = '#1e293b';
+        template.style.padding = '30px';
+        template.style.fontFamily = "'Inter', Arial, sans-serif";
+        template.style.boxSizing = 'border-box';
+        template.style.zIndex = '999999';
+        template.style.opacity = '0.01';
 
-        // Add Active Clock In Record if Currently Working
+        let rowsHtml = '';
         if (active) {
-            const row = document.createElement('tr');
-            row.style.background = '#fef3c7'; // Light gold for active shift
             let locText = (active.location && active.location.areaName) ? active.location.areaName : 'Site Location Captured';
             let coords = active.location ? `${active.location.latitude.toFixed(4)}, ${active.location.longitude.toFixed(4)}` : 'N/A';
-            row.innerHTML = `
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(active.checkInAt)}</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1;"><span style="color:#d97706; font-weight:bold;">🟢 CURRENTLY ON DUTY</span></td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">In Progress</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
+            rowsHtml += `
+              <tr style="background: #fef3c7;">
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(active.checkInAt)}</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1;"><span style="color:#d97706; font-weight:bold;">🟢 CURRENTLY ON DUTY</span></td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">In Progress</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
+              </tr>
             `;
-            tableBody.appendChild(row);
         }
 
-        // Add History Records
         history.forEach((item, index) => {
-            const row = document.createElement('tr');
-            row.style.background = (index % 2 === 0) ? '#ffffff' : '#f8fafc';
             let locText = (item.checkInLocation && item.checkInLocation.areaName) ? item.checkInLocation.areaName : 'Site Location Captured';
             let coords = item.checkInLocation ? `${item.checkInLocation.latitude.toFixed(4)}, ${item.checkInLocation.longitude.toFixed(4)}` : 'N/A';
-            
-            row.innerHTML = `
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkInAt)}</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkOutAt)}</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">${fmtDuration(item.durationMs)}</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
-              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
+            let bgStyle = (index % 2 === 0) ? '#ffffff' : '#f8fafc';
+            rowsHtml += `
+              <tr style="background: ${bgStyle};">
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkInAt)}</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkOutAt)}</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">${fmtDuration(item.durationMs)}</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
+                <td style="padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
+              </tr>
             `;
-            tableBody.appendChild(row);
         });
 
-        // Set Generated Date in Header
-        document.getElementById('pdfReportGenDate').innerText = 'Generated: ' + new Date().toLocaleString();
+        template.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #0b3d91; padding-bottom:15px; margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div style="width:52px; height:52px; background:#0b3d91; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:20px; border-radius:6px;">EW</div>
+              <div>
+                <h1 style="font-size:22px; font-weight:900; color:#0b3d91; margin:0; line-height:1.1; letter-spacing:0.5px;">ELITE WORKFORCE SOLUTIONS</h1>
+                <span style="font-size:12px; color:#64748b; font-weight:700;">Official Attendance & GPS Timesheet Log Sheet</span>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:10px; background:#10b981; color:#fff; font-weight:800; padding:4px 10px; border-radius:4px; text-transform:uppercase;">VERIFIED UAE LOG</span>
+              <p style="font-size:11px; color:#64748b; margin:6px 0 0 0; font-weight:600;">Generated: ${new Date().toLocaleString()}</p>
+            </div>
+          </div>
 
-        const template = document.getElementById('hiddenPdfExportTemplate');
+          <div style="margin-bottom:20px; background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0; font-size:12px; display:flex; justify-content:space-between; color:#334155;">
+            <div><strong>Company License:</strong> UAE-EWS-2026</div>
+            <div><strong>Location:</strong> Business Bay, Dubai, UAE</div>
+            <div><strong>System Sync:</strong> Live Database Verified</div>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; text-align: left;">
+            <thead>
+              <tr style="background-color: #0b3d91; color: #ffffff;">
+                <th style="padding: 10px; border: 1px solid #0b3d91; width: 22%;">Check-In Time (UAE)</th>
+                <th style="padding: 10px; border: 1px solid #0b3d91; width: 22%;">Check-Out Time (UAE)</th>
+                <th style="padding: 10px; border: 1px solid #0b3d91; width: 16%;">Duty Duration</th>
+                <th style="padding: 10px; border: 1px solid #0b3d91; width: 25%;">Site Area / Location</th>
+                <th style="padding: 10px; border: 1px solid #0b3d91; width: 15%;">GPS Coords</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+
+          <div style="margin-top:35px; display:flex; justify-content:space-between; align-items:flex-end; font-size:11px; color:#64748b; border-top:1px solid #cbd5e1; padding-top:15px;">
+            <div>
+              <p style="margin:0; font-weight:600; color:#334155;">Authorized Signature: _______________________</p>
+            </div>
+            <div style="text-align:right;">
+              <p style="margin:0; font-weight:600; color:#334155;">Elite Workforce Solutions © 2026. All Rights Reserved.</p>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(template);
 
         const opt = {
             margin:       10,
             filename:     'Elite_Workforce_Timesheet_Log.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
         };
 
         html2pdf().set(opt).from(template).save().then(() => {
+            document.body.removeChild(template);
             showToast('📄 Printable Timesheet PDF Downloaded!');
         }).catch(err => {
+            if (template.parentNode) document.body.removeChild(template);
             showToast('PDF Export Error: ' + err.message, 'error');
         });
     };
