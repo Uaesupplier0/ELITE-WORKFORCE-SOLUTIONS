@@ -1514,7 +1514,6 @@ textarea{min-height:115px;resize:vertical}
   let rawPublicData = []; 
   let currentPairExchangeRate = 26.05;
 
-  // Translations Dictionary for 10 Languages
   const translations = {
     en: {
       nav_home: "Home", nav_about: "About Us", nav_board: "Public Board", nav_post: "Post Requirement", nav_careers: "Careers", nav_faq: "FAQ", nav_contact: "Contact", nav_staffing: "Get Staffing",
@@ -1600,11 +1599,6 @@ textarea{min-height:115px;resize:vertical}
 
   function toggleFaq(item) {
     item.classList.toggle('active');
-  }
-
-  function renderPdfButton(fileUrl) {
-    if (!fileUrl) return '<span style="color:#aaa;">No Doc</span>';
-    return `<a href="${fileUrl}" target="_blank" class="view-pdf-btn"><i class="fa-solid fa-file-pdf"></i> View PDF</a>`;
   }
 
   function openCurrencyModal() { 
@@ -2394,7 +2388,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT WITH EXCEL SPREADSHEET IMAGE GENERATION */
+  /* ADVANCED TIMESHEET SCRIPT WITH SHORTENED CLEAN LOCATION */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2466,7 +2460,14 @@ document.addEventListener('click', async (e) => {
       try {
         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
         const data = await response.json();
-        if (data && data.display_name) return data.display_name;
+        if (data && data.address) {
+          const addr = data.address;
+          const road = addr.road || addr.suburb || '';
+          const neighborhood = addr.neighbourhood || addr.city_district || '';
+          const city = addr.city || addr.town || addr.state || 'UAE';
+          let short = [road, neighborhood, city].filter(Boolean).join(', ');
+          return short || data.display_name;
+        }
       } catch (e) {
         console.log("Geocoding fetch note:", e);
       }
@@ -2573,7 +2574,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    /* RENDER REAL EXCEL SPREADSHEET LAYOUT TO IMAGE */
+    /* RENDER CLEAN SHORT LOCATION IN EXCEL GRID IMAGE */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
@@ -2582,17 +2583,16 @@ document.addEventListener('click', async (e) => {
 
         showToast('🖼️ Generating Excel Grid Image...');
 
-        // Dynamic Container for Rendering Excel Table
         const tempContainer = document.createElement('div');
         tempContainer.className = 'excel-grid-container';
         tempContainer.style.position = 'absolute';
         tempContainer.style.left = '-9999px';
-        tempContainer.style.width = '800px';
+        tempContainer.style.width = '750px';
 
         let rowsHtml = '';
         history.forEach(row => {
             let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
-            let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(5)}, ${row.checkInLocation.longitude.toFixed(5)}` : 'N/A';
+            let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(4)}, ${row.checkInLocation.longitude.toFixed(4)}` : 'N/A';
             rowsHtml += `
                 <tr>
                     <td>${fmtDate(row.checkInAt)}</td>
@@ -2605,7 +2605,7 @@ document.addEventListener('click', async (e) => {
         });
 
         tempContainer.innerHTML = `
-            <div style="font-size: 22px; font-weight: bold; color: #16a34a; margin-bottom: 12px; font-family: Arial, sans-serif;">
+            <div style="font-size: 20px; font-weight: bold; color: #16a34a; margin-bottom: 10px; font-family: Arial, sans-serif;">
                 Attendance Timesheet
             </div>
             <table class="excel-grid-table">
