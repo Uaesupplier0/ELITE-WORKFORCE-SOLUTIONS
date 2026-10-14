@@ -31,13 +31,14 @@
 }
 </script>
 
-<!-- Fonts, Icons & html2pdf Library -->
+<!-- Fonts, Icons, XLSX & html2pdf Libraries -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <!-- Supabase JS Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1268,10 +1269,25 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- UPDATED TIMESHEET POPUP MODAL WITH GPS, AUTO-CHECKOUT & EXCEL EXPORT -->
+<!-- UPDATED TIMESHEET POPUP MODAL WITH BRANDED HEADER, GPS, AUTO-CHECKOUT & REAL EXCEL EXPORT -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
+      
+      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD -->
+      <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
+          <div>
+            <h2 style="font-size:16px; font-weight:900; color:#fbbf24; margin:0; line-height:1.1;">ELITE WORKFORCE SOLUTIONS</h2>
+            <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Official Attendance & Timesheet Report</span>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:9px; background:#10b981; color:#fff; font-weight:800; padding:2px 6px; border-radius:4px;">VERIFIED LOG</span>
+        </div>
+      </div>
+
       <span class="azad-close-btn" onclick="closeTimesheetModal()" style="color: #cbd5e1; top: 18px; right: 20px;">&times;</span>
       
       <div class="timesheet-heading-row">
@@ -1314,7 +1330,7 @@ textarea{min-height:115px;resize:vertical}
           📄 Export PDF
         </button>
         <button onclick="exportToExcel()" type="button" style="flex:1; background:#10b981; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; box-shadow:0 3px 10px rgba(16,185,129,0.3);">
-          📥 Export CSV
+          📊 Export Excel (.xlsx)
         </button>
       </div>
       
@@ -2352,7 +2368,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & PDF/EXCEL EXPORT) */
+  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & REAL EXCEL EXPORT) */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2535,7 +2551,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    // DOWNLOAD TIMESHEET PDF FUNCTION
+    // DOWNLOAD TIMESHEET PDF FUNCTION WITH BRANDED HEADER
     window.downloadTimesheetPDF = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records available to generate PDF!');
@@ -2543,14 +2559,13 @@ document.addEventListener('click', async (e) => {
         }
         showToast('Generating Timesheet PDF...');
         
-        // Open modal if closed so html2pdf can capture element
         const modal = document.getElementById('timesheetModal');
         const wasHidden = modal.style.display !== 'flex';
         modal.style.display = 'flex';
 
         const element = document.getElementById('pdfPrintArea');
         const opt = {
-            margin:       10,
+            margin:       8,
             filename:     'Elite_Workforce_Timesheet_Report.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
@@ -2591,25 +2606,46 @@ document.addEventListener('click', async (e) => {
         }
     }
 
+    // EXPORT TO REAL EXCEL (.XLSX) WITH BRANDED HEADERS
     window.exportToExcel = function() {
-        if (history.length === 0) {
+        if (history.length === 0 && !active) {
             alert('No attendance records found to export!');
             return;
         }
 
-        let csvContent = "data:text/csv;charset=utf-8,Check-In Time,Check-Out Time,Duration,Location\n";
+        const excelData = [];
+        
+        // Title Row Header
+        excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
+        excelData.push(["Generated Date:", new Date().toLocaleString()]);
+        excelData.push([]); // Blank row
+        
+        // Column Headers
+        excelData.push(["Check-In Time (UAE)", "Check-Out Time (UAE)", "Duration (HH:MM:SS)", "Site Area / Location", "GPS Coordinates"]);
+
+        // Populate Rows
         history.forEach(row => {
-            let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName.replace(/,/g, ' ') : 'GPS Location';
-            csvContent += `"${fmtDate(row.checkInAt)}","${fmtDate(row.checkOutAt)}","${fmtDuration(row.durationMs)}","${locText}"\n`;
+            let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
+            let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(5)}, ${row.checkInLocation.longitude.toFixed(5)}` : 'N/A';
+            
+            excelData.push([
+                fmtDate(row.checkInAt),
+                fmtDate(row.checkOutAt),
+                fmtDuration(row.durationMs),
+                locText,
+                coords
+            ]);
         });
 
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "elite_timesheet_report.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Generate Sheet and File via SheetJS (XLSX)
+        const ws = XLSX.utils.aoa_to_sheet(excelData);
+        ws['!cols'] = [{wch:25}, {wch:25}, {wch:20}, {wch:35}, {wch:25}]; // Column widths
+        
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
+        
+        XLSX.writeFile(wb, "Elite_Workforce_Timesheet_Report.xlsx");
+        showToast('📊 Excel File Downloaded Successfully!');
     };
 
     function update(){
