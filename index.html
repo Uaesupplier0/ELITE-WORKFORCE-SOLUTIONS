@@ -35,7 +35,7 @@
 }
 </script>
 
-<!-- Fonts, Icons, XLSX & html2pdf Libraries -->
+<!-- Fonts, Icons, XLSX, html2pdf & html2canvas Libraries -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -43,6 +43,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <!-- Supabase JS Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -727,7 +728,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH INTEGRATED DIRECT 3 BUTTONS (CLOCK IN, CLOCK OUT, DOWNLOAD TIMESHEET) -->
+<!-- HERO SECTION WITH INTEGRATED DIRECT 3 BUTTONS -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
@@ -748,7 +749,7 @@ textarea{min-height:115px;resize:vertical}
             </div>
           </div>
 
-          <!-- DIRECT 3 ACTION BUTTONS (CLOCK IN, CLOCK OUT, DOWNLOAD TIMESHEET EXCEL/IMAGE) -->
+          <!-- DIRECT 3 ACTION BUTTONS (CLOCK IN, CLOCK OUT, DIRECT DOWNLOAD IMAGE) -->
           <div style="display:flex; gap:6px; margin-top:6px;">
             <button onclick="performDirectClock('Clock In')" class="hero-ts-btn" style="background:#10b981; color:#fff; box-shadow:0 2px 6px rgba(16,185,129,0.3);">
               🟢 Clock In
@@ -756,8 +757,8 @@ textarea{min-height:115px;resize:vertical}
             <button onclick="performDirectClock('Clock Out')" class="hero-ts-btn" style="background:#ef4444; color:#fff; box-shadow:0 2px 6px rgba(239,68,68,0.3);">
               🔴 Clock Out
             </button>
-            <button onclick="downloadTimesheetExcelOrImage()" class="hero-ts-btn" style="background:#3b82f6; color:#fff; box-shadow:0 2px 6px rgba(59,130,246,0.3);">
-              📥 Download Timesheet
+            <button onclick="downloadTimesheetDirectImage()" class="hero-ts-btn" style="background:#3b82f6; color:#fff; box-shadow:0 2px 6px rgba(59,130,246,0.3);">
+              🖼️ Download Timesheet
             </button>
           </div>
 
@@ -786,7 +787,7 @@ textarea{min-height:115px;resize:vertical}
       </div>
 
       <h1 data-i18n="hero_title">Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span></h1>
-      <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project, industrial, construction and maintenance requirements.</p>
+      <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project requirements.</p>
       
       <!-- ALL HERO ACTION BUTTONS WRAPPED IN GLASSMORPHISM RECTANGLE BOXES -->
       <div class="hero-buttons">
@@ -1272,12 +1273,12 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- UPDATED TIMESHEET POPUP MODAL WITH BRANDED HEADER, GPS, AUTO-CHECKOUT & REAL EXCEL EXPORT -->
+<!-- UPDATED TIMESHEET POPUP MODAL WITH BRANDED HEADER, GPS, AUTO-CHECKOUT & EXCEL/IMAGE EXPORT -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
       
-      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD -->
+      <!-- BRANDED HEADER INCLUDED IN IMAGE/PDF DOWNLOAD -->
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
@@ -1298,7 +1299,7 @@ textarea{min-height:115px;resize:vertical}
         <div class="timesheet-badge-live">LIVE<br>CLOCK</div>
       </div>
       
-      <p class="ts-subtitle-text">GPS-assisted check-in, check-out, auto-checkout & PDF/Excel export.</p>
+      <p class="ts-subtitle-text">GPS-assisted check-in, check-out, auto-checkout & Image/PDF export.</p>
       
       <div class="ts-clock-time" id="tsClock">--:--:--</div>
       <div class="ts-date-sub" id="tsDate">Loading...</div>
@@ -1327,10 +1328,10 @@ textarea{min-height:115px;resize:vertical}
         </button>
       </div>
 
-      <!-- PDF & EXCEL EXPORT BUTTONS -->
+      <!-- EXPORT BUTTONS -->
       <div style="display:flex; gap:8px; margin-bottom: 12px;">
-        <button onclick="downloadTimesheetPDF()" type="button" style="flex:1; background:#3b82f6; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; box-shadow:0 3px 10px rgba(59,130,246,0.3);">
-          📄 Export PDF
+        <button onclick="downloadTimesheetDirectImage()" type="button" style="flex:1; background:#3b82f6; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; box-shadow:0 3px 10px rgba(59,130,246,0.3);">
+          🖼️ Download Image (.png)
         </button>
         <button onclick="exportToExcel()" type="button" style="flex:1; background:#10b981; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; box-shadow:0 3px 10px rgba(16,185,129,0.3);">
           📊 Export Excel (.xlsx)
@@ -2371,7 +2372,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & REAL EXCEL/IMAGE EXPORT) */
+  /* ADVANCED TIMESHEET SCRIPT (DIRECT IMAGE CAPTURE VIA HTML2CANVAS) */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2551,65 +2552,32 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    // DOWNLOAD TIMESHEET PDF FUNCTION WITH BRANDED HEADER
-    window.downloadTimesheetPDF = function() {
-        if (history.length === 0 && !active) {
-            alert('No attendance records available to generate PDF!');
+    // DIRECT IMAGE CAPTURE FUNCTION (NO POPUPS)
+    window.downloadTimesheetDirectImage = function() {
+        const printArea = document.getElementById('pdfPrintArea');
+        if (!printArea) {
+            alert('Print area element nahi mila.');
             return;
         }
-        showToast('Generating Timesheet PDF...');
+        
+        showToast('🖼️ Downloading Timesheet Image...');
         
         const modal = document.getElementById('timesheetModal');
         const wasHidden = modal.style.display !== 'flex';
         modal.style.display = 'flex';
 
-        const element = document.getElementById('pdfPrintArea');
-        const opt = {
-            margin:      8,
-            filename:    'Elite_Workforce_Timesheet_Report.pdf',
-            image:       { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(element).save().then(() => {
+        html2canvas(printArea, { scale: 2, useCORS: true }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'Elite_Workforce_Timesheet.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
             if (wasHidden) modal.style.display = 'none';
-            showToast('📄 PDF Downloaded Successfully!');
+            showToast('🖼️ Timesheet Image Downloaded!');
+        }).catch(err => {
+            if (wasHidden) modal.style.display = 'none';
+            showToast('Error generating image: ' + err.message, 'error');
         });
-    };
-
-    // NEW HERO DOWNLOAD BUTTON HANDLER (EXCEL OR IMAGE PROMPT)
-    window.downloadTimesheetExcelOrImage = function() {
-        const choice = confirm("Timesheet download karne ke liye format chuniye:\n\nOK = Excel (.xlsx) Download\nCancel = Image (.png) Download");
-        
-        if (choice) {
-            exportToExcel();
-        } else {
-            const printArea = document.getElementById('pdfPrintArea');
-            if (!printArea) {
-                alert('Print area nahi mila.');
-                return;
-            }
-            
-            showToast('Downloading Timesheet as Image...');
-            
-            const modal = document.getElementById('timesheetModal');
-            const wasHidden = modal.style.display !== 'flex';
-            modal.style.display = 'flex';
-
-            html2canvas(printArea, { scale: 2, useCORS: true }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Elite_Workforce_Timesheet.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                
-                if (wasHidden) modal.style.display = 'none';
-                showToast('🖼️ Image Downloaded Successfully!');
-            }).catch(err => {
-                if (wasHidden) modal.style.display = 'none';
-                showToast('Error generating image: ' + err.message, 'error');
-            });
-        }
     };
 
     // WhatsApp Summary Share
