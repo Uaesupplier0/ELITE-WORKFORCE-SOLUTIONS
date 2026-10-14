@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=yes">
 <meta name="description" content="Elite Workforce Solutions connects UAE companies with manpower suppliers, skilled workforce (electricians, fitters, welders, HVAC) and provides Live Timesheet Clock, GPS Attendance, and Real-time Currency Converter.">
 <meta name="keywords" content="timesheet, live timesheet clock, gps attendance, currency converter, currency rate UAE, AED to INR, manpower supplier UAE, electrician supplier UAE, fitter supplier UAE, welder supplier UAE, skilled manpower UAE, workforce solutions UAE">
-<meta name="author" content="Elite Workforce Solutions">
+<meta name="author" content="Manjur Ansari">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Elite Workforce Solutions | UAE Workforce Network">
 <meta property="og:description" content="Connecting UAE companies with manpower suppliers and skilled workforce.">
@@ -23,6 +23,10 @@
   "name": "Elite Workforce Solutions",
   "url": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/",
   "applicationCategory": "BusinessApplication",
+  "author": {
+    "@type": "Person",
+    "name": "Manjur Ansari"
+  },
   "featureList": [
     "GPS Timesheet Attendance System",
     "Live Currency Converter Pair",
@@ -84,7 +88,6 @@ button, a, select, input[type="file"], summary, .faq-question, .admin-tab-btn, .
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   cursor: pointer;
 }
-
 button:active, a:active, .admin-tab-btn:active {
   transform: scale(0.96) !important;
 }
@@ -971,7 +974,7 @@ textarea{min-height:115px;resize:vertical}
         </div>
         <div class="form-group">
           <label>Trade License Number</label>
-          <input type="text" id="comp_license" required placeholder="e.g. UAE-CN-12345">
+          <input type="text" id="comp_license" required placeholder="e.g. UAE-CN-123456">
         </div>
         <div class="form-group">
           <label>Company Logo Image File</label>
@@ -1193,7 +1196,7 @@ textarea{min-height:115px;resize:vertical}
 
 <footer>
   <div class="copyright" style="text-align:center; padding:25px; font-size:14px; color:var(--muted); background:var(--navy);">
-    &copy; 2026 Elite Workforce Solutions. All rights reserved.
+    &copy; 2026 Elite Workforce Solutions. All rights reserved. Developed by Manjur Ansari.
   </div>
 </footer>
 
@@ -1269,18 +1272,18 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- UPDATED TIMESHEET POPUP MODAL -->
+<!-- UPDATED TIMESHEET POPUP MODAL WITH BRANDED HEADER, GPS, AUTO-CHECKOUT & REAL EXCEL EXPORT -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
       
-      <!-- BRANDED HEADER -->
+      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD -->
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
           <div>
             <h2 style="font-size:16px; font-weight:900; color:#fbbf24; margin:0; line-height:1.1;">ELITE WORKFORCE SOLUTIONS</h2>
-            <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Official Attendance & Timesheet Report</span>
+            <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Official Attendance & Timesheet Report (Manjur Ansari)</span>
           </div>
         </div>
         <div style="text-align:right;">
@@ -2368,7 +2371,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & PRINTABLE EXCEL PDF EXPORT) */
+  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & REAL EXCEL EXPORT) */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2551,118 +2554,31 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    // DIRECT PRINTABLE WINDOW PDF EXPORT (100% FIXED FOR MOBILE & DESKTOP)
+    // DOWNLOAD TIMESHEET PDF FUNCTION WITH BRANDED HEADER
     window.downloadTimesheetPDF = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records available to generate PDF!');
             return;
         }
-        showToast('Preparing Printable Timesheet Log...');
+        showToast('Generating Timesheet PDF...');
+        
+        const modal = document.getElementById('timesheetModal');
+        const wasHidden = modal.style.display !== 'flex';
+        modal.style.display = 'flex';
 
-        let rowsHtml = '';
-        if (active) {
-            let locText = (active.location && active.location.areaName) ? active.location.areaName : 'Site Location Captured';
-            let coords = active.location ? `${active.location.latitude.toFixed(4)}, ${active.location.longitude.toFixed(4)}` : 'N/A';
-            rowsHtml += `
-              <tr style="background: #fef3c7;">
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(active.checkInAt)}</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1;"><span style="color:#d97706; font-weight:bold;">🟢 CURRENTLY ON DUTY</span></td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">In Progress</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
-              </tr>
-            `;
-        }
+        const element = document.getElementById('pdfPrintArea');
+        const opt = {
+            margin:      8,
+            filename:    'Elite_Workforce_Timesheet_Report.pdf',
+            image:       { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
 
-        history.forEach((item, index) => {
-            let locText = (item.checkInLocation && item.checkInLocation.areaName) ? item.checkInLocation.areaName : 'Site Location Captured';
-            let coords = item.checkInLocation ? `${item.checkInLocation.latitude.toFixed(4)}, ${item.checkInLocation.longitude.toFixed(4)}` : 'N/A';
-            let bgStyle = (index % 2 === 0) ? '#ffffff' : '#f8fafc';
-            rowsHtml += `
-              <tr style="background: ${bgStyle};">
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkInAt)}</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkOutAt)}</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">${fmtDuration(item.durationMs)}</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
-                <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
-              </tr>
-            `;
+        html2pdf().set(opt).from(element).save().then(() => {
+            if (wasHidden) modal.style.display = 'none';
+            showToast('📄 PDF Downloaded Successfully!');
         });
-
-        const printWindow = window.open('', '_blank');
-        if (!printWindow) {
-            alert('Popup blocked! Please allow popups for this site.');
-            return;
-        }
-
-        printWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Elite_Workforce_Timesheet_Log</title>
-            <style>
-              @page { size: A4 landscape; margin: 10mm; }
-              body { font-family: Arial, sans-serif; margin: 0; padding: 20px; color: #1e293b; background: #fff; }
-              table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; }
-              th { background-color: #0b3d91; color: #ffffff; padding: 10px; border: 1px solid #0b3d91; text-align: left; }
-              td { border: 1px solid #cbd5e1; }
-            </style>
-          </head>
-          <body>
-            <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #0b3d91; padding-bottom:15px; margin-bottom:20px;">
-              <div style="display:flex; align-items:center; gap:14px;">
-                <div style="width:52px; height:52px; background:#0b3d91; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:20px; border-radius:6px;">EW</div>
-                <div>
-                  <h1 style="font-size:22px; font-weight:900; color:#0b3d91; margin:0; line-height:1.1;">ELITE WORKFORCE SOLUTIONS</h1>
-                  <span style="font-size:12px; color:#64748b; font-weight:700;">Official Attendance & GPS Timesheet Log Sheet</span>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <span style="font-size:10px; background:#10b981; color:#fff; font-weight:800; padding:4px 10px; border-radius:4px;">VERIFIED UAE LOG</span>
-                <p style="font-size:11px; color:#64748b; margin:6px 0 0 0; font-weight:600;">Generated: ${new Date().toLocaleString()}</p>
-              </div>
-            </div>
-
-            <div style="margin-bottom:20px; background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0; font-size:12px; display:flex; justify-content:space-between; color:#334155;">
-              <div><strong>Company License:</strong> UAE-EWS-2026</div>
-              <div><strong>Location:</strong> Business Bay, Dubai, UAE</div>
-              <div><strong>System Sync:</strong> Live Database Verified</div>
-            </div>
-
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 22%;">Check-In Time (UAE)</th>
-                  <th style="width: 22%;">Check-Out Time (UAE)</th>
-                  <th style="width: 16%;">Duty Duration</th>
-                  <th style="width: 25%;">Site Area / Location</th>
-                  <th style="width: 15%;">GPS Coords</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${rowsHtml}
-              </tbody>
-            </table>
-
-            <div style="margin-top:35px; display:flex; justify-content:space-between; align-items:flex-end; font-size:11px; color:#64748b; border-top:1px solid #cbd5e1; padding-top:15px;">
-              <div>
-                <p style="margin:0; font-weight:600; color:#334155;">Authorized Signature: _______________________</p>
-              </div>
-              <div style="text-align:right;">
-                <p style="margin:0; font-weight:600; color:#334155;">Elite Workforce Solutions © 2026. All Rights Reserved.</p>
-              </div>
-            </div>
-
-            <script>
-              window.onload = function() {
-                window.print();
-                setTimeout(function() { window.close(); }, 750);
-              };
-            <\/script>
-          </body>
-          </html>
-        `);
-        printWindow.document.close();
     };
 
     // WhatsApp Summary Share
@@ -2705,6 +2621,7 @@ document.addEventListener('click', async (e) => {
         // Title Row Header
         excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
         excelData.push(["Generated Date:", new Date().toLocaleString()]);
+        excelData.push(["Developer/Author:", "Manjur Ansari"]);
         excelData.push([]); // Blank row
         
         // Column Headers
