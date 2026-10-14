@@ -515,6 +515,32 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   margin-top: 14px;
 }
 
+/* EXCEL GRID TABLE STYLING FOR DYNAMIC IMAGE CAPTURE */
+.excel-grid-container {
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.excel-grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.excel-grid-table th, .excel-grid-table td {
+  border: 1px solid #d1d5db;
+  padding: 6px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+.excel-grid-table th {
+  background-color: #f3f4f6;
+  font-weight: bold;
+  color: #111827;
+}
+
 /* Forms & Tables Section */
 .requirement-section{background:var(--light); transition: background 0.3s;}
 .requirement-card{background:var(--card-bg);border-radius:16px;padding:30px;box-shadow:0 8px 28px rgba(0,0,0,.06);border:1px solid var(--border-color);max-width:700px;width:100%;margin:auto; transition: background 0.3s, border 0.3s;}
@@ -749,7 +775,7 @@ textarea{min-height:115px;resize:vertical}
             </div>
           </div>
 
-          <!-- DIRECT 3 ACTION BUTTONS (CLOCK IN, CLOCK OUT, DIRECT DOWNLOAD IMAGE) -->
+          <!-- DIRECT 3 ACTION BUTTONS (CLOCK IN, CLOCK OUT, DIRECT DOWNLOAD EXCEL-GRID IMAGE) -->
           <div style="display:flex; gap:6px; margin-top:6px;">
             <button onclick="performDirectClock('Clock In')" class="hero-ts-btn" style="background:#10b981; color:#fff; box-shadow:0 2px 6px rgba(16,185,129,0.3);">
               🟢 Clock In
@@ -1273,12 +1299,12 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- UPDATED TIMESHEET POPUP MODAL WITH BRANDED HEADER, GPS, AUTO-CHECKOUT & EXCEL/IMAGE EXPORT -->
+<!-- UPDATED TIMESHEET POPUP MODAL -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
       
-      <!-- BRANDED HEADER INCLUDED IN IMAGE/PDF DOWNLOAD -->
+      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD -->
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
@@ -1486,7 +1512,7 @@ textarea{min-height:115px;resize:vertical}
   let currentTab = 'companies';
   let currentPublicTab = 'companies';
   let rawPublicData = []; 
-  let currentPairExchangeRate = 26.05; // Dynamic rate for chosen currency pair
+  let currentPairExchangeRate = 26.05;
 
   // Translations Dictionary for 10 Languages
   const translations = {
@@ -1581,7 +1607,6 @@ textarea{min-height:115px;resize:vertical}
     return `<a href="${fileUrl}" target="_blank" class="view-pdf-btn"><i class="fa-solid fa-file-pdf"></i> View PDF</a>`;
   }
 
-  // Multi-Country Currency Modal Functions & Pair Logic
   function openCurrencyModal() { 
     document.getElementById('currencyModal').style.display = 'flex'; 
     fetchDynamicPairRate();
@@ -1611,7 +1636,6 @@ textarea{min-height:115px;resize:vertical}
         
         document.getElementById('modalRateInfo').innerText = `Live Rate: 1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
         
-        // Update Hero Section Widget text
         if(fromCode === 'AED' && toCode === 'INR') {
           document.getElementById('heroAedRate').innerText = `1 AED = ₹${currentPairExchangeRate.toFixed(2)} INR`;
           document.getElementById('heroCurrPairText').innerText = `🇦🇪 AED ↔ 🇮🇳 INR`;
@@ -1642,7 +1666,6 @@ textarea{min-height:115px;resize:vertical}
     document.getElementById('inputFromAmount').value = (toVal / currentPairExchangeRate).toFixed(2);
   }
 
-  // Dark / Light Mode Logic
   function toggleDarkMode() {
     const htmlEl = document.documentElement;
     const iconEl = document.getElementById('themeIcon');
@@ -1685,7 +1708,6 @@ textarea{min-height:115px;resize:vertical}
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
 
-  // Timesheet Modal Actions
   function openTimesheetModal() { document.getElementById('timesheetModal').style.display = 'flex'; }
   function closeTimesheetModal() { document.getElementById('timesheetModal').style.display = 'none'; }
 
@@ -2345,7 +2367,7 @@ textarea{min-height:115px;resize:vertical}
     }
   });
 
-/* PWA INSTALL PROMPT JAVASCRIPT LOGIC (ENGLISH) */
+/* PWA INSTALL PROMPT LOGIC */
 let deferredPrompt;
 window.addEventListener('DOMContentLoaded', () => {
     const shortcutContainer = document.getElementById('shortcutContainer');
@@ -2372,7 +2394,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT (DIRECT IMAGE CAPTURE VIA HTML2CANVAS) */
+  /* ADVANCED TIMESHEET SCRIPT WITH EXCEL SPREADSHEET IMAGE GENERATION */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2535,7 +2557,6 @@ document.addEventListener('click', async (e) => {
       updateBadgeState();
     }
 
-    // Direct One-Tap Clock Handler from Hero Box
     window.performDirectClock = async function(type) {
         if (type === 'Clock In') {
             if (active) {
@@ -2552,35 +2573,72 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    // DIRECT IMAGE CAPTURE FUNCTION (NO POPUPS)
+    /* RENDER REAL EXCEL SPREADSHEET LAYOUT TO IMAGE */
     window.downloadTimesheetDirectImage = function() {
-        const printArea = document.getElementById('pdfPrintArea');
-        if (!printArea) {
-            alert('Print area element nahi mila.');
+        if (history.length === 0 && !active) {
+            alert('No attendance records found to generate image!');
             return;
         }
-        
-        showToast('🖼️ Downloading Timesheet Image...');
-        
-        const modal = document.getElementById('timesheetModal');
-        const wasHidden = modal.style.display !== 'flex';
-        modal.style.display = 'flex';
 
-        html2canvas(printArea, { scale: 2, useCORS: true }).then(canvas => {
+        showToast('🖼️ Generating Excel Grid Image...');
+
+        // Dynamic Container for Rendering Excel Table
+        const tempContainer = document.createElement('div');
+        tempContainer.className = 'excel-grid-container';
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.width = '800px';
+
+        let rowsHtml = '';
+        history.forEach(row => {
+            let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
+            let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(5)}, ${row.checkInLocation.longitude.toFixed(5)}` : 'N/A';
+            rowsHtml += `
+                <tr>
+                    <td>${fmtDate(row.checkInAt)}</td>
+                    <td>${fmtDate(row.checkOutAt)}</td>
+                    <td>${fmtDuration(row.durationMs)}</td>
+                    <td>${locText}</td>
+                    <td>${coords}</td>
+                </tr>
+            `;
+        });
+
+        tempContainer.innerHTML = `
+            <div style="font-size: 22px; font-weight: bold; color: #16a34a; margin-bottom: 12px; font-family: Arial, sans-serif;">
+                Attendance Timesheet
+            </div>
+            <table class="excel-grid-table">
+                <thead>
+                    <tr>
+                        <th>Check-In Time (UAE)</th>
+                        <th>Check-Out Time (UAE)</th>
+                        <th>Duration (HH:MM:SS)</th>
+                        <th>Site Area / Location</th>
+                        <th>GPS Coordinates</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHtml}
+                </tbody>
+            </table>
+        `;
+
+        document.body.appendChild(tempContainer);
+
+        html2canvas(tempContainer, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'Elite_Workforce_Timesheet.png';
+            link.download = 'Attendance_Timesheet_Excel_View.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
-            
-            if (wasHidden) modal.style.display = 'none';
-            showToast('🖼️ Timesheet Image Downloaded!');
+            document.body.removeChild(tempContainer);
+            showToast('🖼️ Excel Timesheet Image Downloaded!');
         }).catch(err => {
-            if (wasHidden) modal.style.display = 'none';
-            showToast('Error generating image: ' + err.message, 'error');
+            if(document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
+            showToast('Error: ' + err.message, 'error');
         });
     };
 
-    // WhatsApp Summary Share
     window.shareAttendanceWhatsApp = function() {
         let currentStatusText = active ? "🟢 Currently ON DUTY" : "🔴 Currently OFF DUTY";
         let lastLoc = active && active.location ? active.location.areaName : (history.length > 0 && history[0].checkInLocation ? history[0].checkInLocation.areaName : 'UAE Site');
@@ -2608,7 +2666,6 @@ document.addEventListener('click', async (e) => {
         }
     }
 
-    // EXPORT TO REAL EXCEL (.XLSX) WITH BRANDED HEADERS
     window.exportToExcel = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to export!');
@@ -2616,17 +2673,13 @@ document.addEventListener('click', async (e) => {
         }
 
         const excelData = [];
-        
-        // Title Row Header
         excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
         excelData.push(["Generated Date:", new Date().toLocaleString()]);
         excelData.push(["Developer/Author:", "Manjur Ansari"]);
-        excelData.push([]); // Blank row
+        excelData.push([]);
         
-        // Column Headers
         excelData.push(["Check-In Time (UAE)", "Check-Out Time (UAE)", "Duration (HH:MM:SS)", "Site Area / Location", "GPS Coordinates"]);
 
-        // Populate Rows
         history.forEach(row => {
             let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
             let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(5)}, ${row.checkInLocation.longitude.toFixed(5)}` : 'N/A';
@@ -2640,9 +2693,8 @@ document.addEventListener('click', async (e) => {
             ]);
         });
 
-        // Generate Sheet and File via SheetJS (XLSX)
         const ws = XLSX.utils.aoa_to_sheet(excelData);
-        ws['!cols'] = [{wch:25}, {wch:25}, {wch:20}, {wch:35}, {wch:25}]; // Column widths
+        ws['!cols'] = [{wch:25}, {wch:25}, {wch:20}, {wch:35}, {wch:25}];
         
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
