@@ -727,13 +727,13 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH INTEGRATED DIRECT 3 BUTTONS (CLOCK IN, CLOCK OUT, DOWNLOAD PDF) -->
+<!-- HERO SECTION WITH INTEGRATED DIRECT 3 BUTTONS (CLOCK IN, CLOCK OUT, DOWNLOAD TIMESHEET) -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
       <!-- TOP WIDGETS CONTAINER: TIMESHEET RECTANGLE BOX + LIVE CURRENCY RATE -->
       <div class="hero-widgets-container">
-        <!-- Timesheet Rectangle Box with Direct 3 Buttons (Added gold-shiny-box class) -->
+        <!-- Timesheet Rectangle Box with Direct 3 Buttons -->
         <div class="hero-timesheet-box gold-shiny-box">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <button onclick="openTimesheetModal()" class="btn-hero-timesheet" style="width:auto;">
@@ -748,7 +748,7 @@ textarea{min-height:115px;resize:vertical}
             </div>
           </div>
 
-          <!-- DIRECT 3 ACTION BUTTONS ADDED HERE -->
+          <!-- DIRECT 3 ACTION BUTTONS (CLOCK IN, CLOCK OUT, DOWNLOAD TIMESHEET EXCEL/IMAGE) -->
           <div style="display:flex; gap:6px; margin-top:6px;">
             <button onclick="performDirectClock('Clock In')" class="hero-ts-btn" style="background:#10b981; color:#fff; box-shadow:0 2px 6px rgba(16,185,129,0.3);">
               🟢 Clock In
@@ -756,8 +756,8 @@ textarea{min-height:115px;resize:vertical}
             <button onclick="performDirectClock('Clock Out')" class="hero-ts-btn" style="background:#ef4444; color:#fff; box-shadow:0 2px 6px rgba(239,68,68,0.3);">
               🔴 Clock Out
             </button>
-            <button onclick="downloadTimesheetPDF()" class="hero-ts-btn" style="background:#3b82f6; color:#fff; box-shadow:0 2px 6px rgba(59,130,246,0.3);">
-              📄 Download PDF
+            <button onclick="downloadTimesheetExcelOrImage()" class="hero-ts-btn" style="background:#3b82f6; color:#fff; box-shadow:0 2px 6px rgba(59,130,246,0.3);">
+              📥 Download Timesheet
             </button>
           </div>
 
@@ -2371,7 +2371,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & REAL EXCEL EXPORT) */
+  /* ADVANCED TIMESHEET SCRIPT (WITH GPS GEOFENCING, AUTO-CHECKOUT & REAL EXCEL/IMAGE EXPORT) */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2393,7 +2393,6 @@ document.addEventListener('click', async (e) => {
     function fmtDate(iso){ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',dateStyle:'medium',timeStyle:'short'}).format(new Date(iso))+' UAE'; }
     function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; updateBadgeState(); }
 
-    // Update Status Badge UI (Green/Red)
     function updateBadgeState() {
         const badge = $('dutyStatusBadge');
         if (!badge) return;
@@ -2406,7 +2405,6 @@ document.addEventListener('click', async (e) => {
         }
     }
 
-    // Browser Notification Setup
     function initNotifications() {
         if ("Notification" in window) {
             if (Notification.permission !== "granted" && Notification.permission !== "denied") {
@@ -2420,7 +2418,6 @@ document.addEventListener('click', async (e) => {
         }
     }
 
-    // Auto-Checkout Check (12 Hours rule)
     function checkAutoCheckout() {
         if (active) {
             let checkInTime = new Date(active.checkInAt);
@@ -2579,6 +2576,40 @@ document.addEventListener('click', async (e) => {
             if (wasHidden) modal.style.display = 'none';
             showToast('📄 PDF Downloaded Successfully!');
         });
+    };
+
+    // NEW HERO DOWNLOAD BUTTON HANDLER (EXCEL OR IMAGE PROMPT)
+    window.downloadTimesheetExcelOrImage = function() {
+        const choice = confirm("Timesheet download karne ke liye format chuniye:\n\nOK = Excel (.xlsx) Download\nCancel = Image (.png) Download");
+        
+        if (choice) {
+            exportToExcel();
+        } else {
+            const printArea = document.getElementById('pdfPrintArea');
+            if (!printArea) {
+                alert('Print area nahi mila.');
+                return;
+            }
+            
+            showToast('Downloading Timesheet as Image...');
+            
+            const modal = document.getElementById('timesheetModal');
+            const wasHidden = modal.style.display !== 'flex';
+            modal.style.display = 'flex';
+
+            html2canvas(printArea, { scale: 2, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Elite_Workforce_Timesheet.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                if (wasHidden) modal.style.display = 'none';
+                showToast('🖼️ Image Downloaded Successfully!');
+            }).catch(err => {
+                if (wasHidden) modal.style.display = 'none';
+                showToast('Error generating image: ' + err.message, 'error');
+            });
+        }
     };
 
     // WhatsApp Summary Share
