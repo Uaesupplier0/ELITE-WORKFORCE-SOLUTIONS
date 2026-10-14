@@ -1220,37 +1220,37 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
-<!-- HIDDEN CONTAINER SPECIFICALLY FOR PRINTABLE PDF EXCEL SHEET REPORT -->
-<div id="hiddenPdfExportTemplate" style="display:none; background:#ffffff; color:#1e293b; padding:25px; font-family:'Inter', Arial, sans-serif; width:750px;">
-  <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #0b3d91; padding-bottom:12px; margin-bottom:15px;">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <img src="logo.png" alt="Logo" style="width:48px; height:48px; object-fit:contain; border-radius:6px; border:1px solid #e2e8f0;">
+<!-- HIDDEN CONTAINER SPECIFICALLY FOR PRINTABLE PDF EXCEL SHEET REPORT (POSITIONED OFF-SCREEN TO PREVENT CRASH / SCREENSHOT ISSUES) -->
+<div id="hiddenPdfExportTemplate" style="position: absolute; left: -9999px; top: -9999px; width: 850px; background: #ffffff; color: #1e293b; padding: 30px; font-family: 'Inter', Arial, sans-serif; box-sizing: border-box;">
+  <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid #0b3d91; padding-bottom:15px; margin-bottom:20px;">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <img src="logo.png" alt="Logo" style="width:52px; height:52px; object-fit:contain; border-radius:6px; border:1px solid #e2e8f0; padding:2px;">
       <div>
-        <h1 style="font-size:20px; font-weight:900; color:#0b3d91; margin:0; line-height:1.1; letter-spacing:0.5px;">ELITE WORKFORCE SOLUTIONS</h1>
-        <span style="font-size:11px; color:#64748b; font-weight:700;">Official Attendance & GPS Timesheet Log Sheet</span>
+        <h1 style="font-size:22px; font-weight:900; color:#0b3d91; margin:0; line-height:1.1; letter-spacing:0.5px;">ELITE WORKFORCE SOLUTIONS</h1>
+        <span style="font-size:12px; color:#64748b; font-weight:700;">Official Attendance & GPS Timesheet Log Sheet</span>
       </div>
     </div>
     <div style="text-align:right;">
-      <span style="font-size:10px; background:#10b981; color:#fff; font-weight:800; padding:4px 8px; border-radius:4px; text-transform:uppercase;">Verified UAE Report</span>
-      <p style="font-size:10px; color:#64748b; margin:4px 0 0 0;" id="pdfReportGenDate"></p>
+      <span style="font-size:10px; background:#10b981; color:#fff; font-weight:800; padding:4px 10px; border-radius:4px; text-transform:uppercase;">VERIFIED UAE LOG</span>
+      <p style="font-size:11px; color:#64748b; margin:6px 0 0 0; font-weight:600;" id="pdfReportGenDate">Generated: --</p>
     </div>
   </div>
 
-  <div style="margin-bottom:15px; background:#f8fafc; padding:10px 14px; border-radius:6px; border:1px solid #e2e8f0; font-size:12px; display:flex; justify-content:space-between;">
+  <div style="margin-bottom:20px; background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0; font-size:12px; display:flex; justify-content:space-between; color:#334155;">
     <div><strong>Company License:</strong> UAE-EWS-2026</div>
     <div><strong>Location:</strong> Business Bay, Dubai, UAE</div>
     <div><strong>System Sync:</strong> Live Database Verified</div>
   </div>
 
   <!-- PRINTABLE EXCEL TABLE CONTAINER -->
-  <table class="pdf-excel-table" id="pdfExcelTableBody">
+  <table class="pdf-excel-table" id="pdfExcelTableBody" style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; text-align: left;">
     <thead>
-      <tr>
-        <th>Check-In Time (UAE)</th>
-        <th>Check-Out Time (UAE)</th>
-        <th>Duty Duration</th>
-        <th>Site Area / Location</th>
-        <th>GPS Coords</th>
+      <tr style="background-color: #0b3d91; color: #ffffff;">
+        <th style="padding: 10px; border: 1px solid #0b3d91; width: 22%;">Check-In Time (UAE)</th>
+        <th style="padding: 10px; border: 1px solid #0b3d91; width: 22%;">Check-Out Time (UAE)</th>
+        <th style="padding: 10px; border: 1px solid #0b3d91; width: 16%;">Duty Duration</th>
+        <th style="padding: 10px; border: 1px solid #0b3d91; width: 25%;">Site Area / Location</th>
+        <th style="padding: 10px; border: 1px solid #0b3d91; width: 15%;">GPS Coords</th>
       </tr>
     </thead>
     <tbody>
@@ -1258,12 +1258,12 @@ textarea{min-height:115px;resize:vertical}
     </tbody>
   </table>
 
-  <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:flex-end; font-size:11px; color:#64748b; border-top:1px solid #e2e8f0; padding-top:10px;">
+  <div style="margin-top:35px; display:flex; justify-content:space-between; align-items:flex-end; font-size:11px; color:#64748b; border-top:1px solid #cbd5e1; padding-top:15px;">
     <div>
-      <p style="margin:0;">Authorized Signature: _______________________</p>
+      <p style="margin:0; font-weight:600; color:#334155;">Authorized Signature: _______________________</p>
     </div>
     <div style="text-align:right;">
-      <p style="margin:0;">Elite Workforce Solutions © 2026. All Rights Reserved.</p>
+      <p style="margin:0; font-weight:600; color:#334155;">Elite Workforce Solutions © 2026. All Rights Reserved.</p>
     </div>
   </div>
 </div>
@@ -2622,7 +2622,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    // PRINTABLE EXCEL TABLE FORMAT PDF DOWNLOAD FUNCTION
+    // PRINTABLE EXCEL TABLE FORMAT PDF DOWNLOAD FUNCTION (FIXED RENDERING TARGET)
     window.downloadTimesheetPDF = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records available to generate PDF!');
@@ -2630,8 +2630,8 @@ document.addEventListener('click', async (e) => {
         }
         showToast('Generating Printable Timesheet PDF...');
 
-        // Populate Printable Table Element
-        const tableBody = document.querySelector('#pdfExcelTableBody tbody');
+        // Target the correct tbody inside #pdfExcelTableBody
+        const tableBody = document.querySelector('#pdfExcelTableBody tbody') || document.getElementById('pdfExcelTableBody');
         tableBody.innerHTML = '';
 
         // Add Active Clock In Record if Currently Working
@@ -2641,27 +2641,28 @@ document.addEventListener('click', async (e) => {
             let locText = (active.location && active.location.areaName) ? active.location.areaName : 'Site Location Captured';
             let coords = active.location ? `${active.location.latitude.toFixed(4)}, ${active.location.longitude.toFixed(4)}` : 'N/A';
             row.innerHTML = `
-              <td>${fmtDate(active.checkInAt)}</td>
-              <td><span style="color:#d97706; font-weight:bold;">🟢 CURRENTLY ON DUTY</span></td>
-              <td>In Progress</td>
-              <td>${locText}</td>
-              <td>${coords}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(active.checkInAt)}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1;"><span style="color:#d97706; font-weight:bold;">🟢 CURRENTLY ON DUTY</span></td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">In Progress</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
             `;
             tableBody.appendChild(row);
         }
 
         // Add History Records
-        history.forEach(item => {
+        history.forEach((item, index) => {
             const row = document.createElement('tr');
+            row.style.background = (index % 2 === 0) ? '#ffffff' : '#f8fafc';
             let locText = (item.checkInLocation && item.checkInLocation.areaName) ? item.checkInLocation.areaName : 'Site Location Captured';
             let coords = item.checkInLocation ? `${item.checkInLocation.latitude.toFixed(4)}, ${item.checkInLocation.longitude.toFixed(4)}` : 'N/A';
             
             row.innerHTML = `
-              <td>${fmtDate(item.checkInAt)}</td>
-              <td>${fmtDate(item.checkOutAt)}</td>
-              <td><b>${fmtDuration(item.durationMs)}</b></td>
-              <td>${locText}</td>
-              <td>${coords}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkInAt)}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${fmtDate(item.checkOutAt)}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a;">${fmtDuration(item.durationMs)}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${locText}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0f172a;">${coords}</td>
             `;
             tableBody.appendChild(row);
         });
@@ -2670,7 +2671,6 @@ document.addEventListener('click', async (e) => {
         document.getElementById('pdfReportGenDate').innerText = 'Generated: ' + new Date().toLocaleString();
 
         const template = document.getElementById('hiddenPdfExportTemplate');
-        template.style.display = 'block';
 
         const opt = {
             margin:       10,
@@ -2681,8 +2681,9 @@ document.addEventListener('click', async (e) => {
         };
 
         html2pdf().set(opt).from(template).save().then(() => {
-            template.style.display = 'none';
             showToast('📄 Printable Timesheet PDF Downloaded!');
+        }).catch(err => {
+            showToast('PDF Export Error: ' + err.message, 'error');
         });
     };
 
