@@ -176,7 +176,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* Gold Shiny Glowing Animation for Timesheet Box */
 @keyframes goldPulseGlow {
   0% {
     box-shadow: 0 0 12px rgba(251, 191, 36, 0.5), inset 0 0 6px rgba(251, 191, 36, 0.25);
@@ -244,7 +243,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   opacity: 0.85;
 }
 
-/* Quick Action Buttons Inside Hero Box */
 .hero-ts-btn {
   border: 0;
   padding: 6px 8px;
@@ -264,7 +262,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   filter: brightness(1.1);
 }
 
-/* Currency Rate Widget Button */
 .btn-hero-currency {
   background: #0284c7;
   color: #ffffff;
@@ -292,7 +289,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   line-height: 1.1;
 }
 
-/* PWA Shortcut Hero Section Styles & Instruction Box */
 .shortcut-hero-box {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -340,7 +336,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   margin: 0;
 }
 
-/* Updated Sleek Dark Timesheet Card Styling */
+/* Timesheet Panel & Badges */
 .timesheet-panel-card {
   background: #112347;
   border-radius: 16px;
@@ -418,7 +414,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   margin-top: 4px;
 }
 
-/* Attendance Summary Stats Box (Present, Absent, Total) */
 .ts-summary-bar {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -463,6 +458,27 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
 .ts-location-card a:hover {
   color: #ffffff;
 }
+
+/* Geofence Badges */
+.badge-geofence-onsite {
+  background-color: #065f46;
+  color: #a7f3d0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-block;
+}
+.badge-geofence-offsite {
+  background-color: #92400e;
+  color: #fde68a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-block;
+}
+
 .ts-action-buttons {
   display: flex;
   gap: 12px;
@@ -544,7 +560,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   margin-top: 14px;
 }
 
-/* EXCEL GRID TABLE STYLING FOR DYNAMIC IMAGE CAPTURE */
 .excel-grid-container {
   background: #ffffff;
   color: #000000;
@@ -573,7 +588,6 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   color: #111827;
 }
 
-/* Forms & Tables Section */
 .requirement-section{background:var(--light); transition: background 0.3s;}
 .requirement-card{background:var(--card-bg);border-radius:16px;padding:30px;box-shadow:0 8px 28px rgba(0,0,0,.06);border:1px solid var(--border-color);max-width:700px;width:100%;margin:auto; transition: background 0.3s, border 0.3s;}
 .form-group{margin-bottom:16px}.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:14px}
@@ -583,7 +597,6 @@ textarea{min-height:115px;resize:vertical}
 .submit-btn{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;padding:14px;border-radius:8px;font-weight:800;box-shadow: 0 4px 14px rgba(11,61,145,0.3);transition:all 0.3s}
 .submit-btn:hover{background:var(--blue2);transform:translateY(-3px) scale(1.01);box-shadow:0 8px 22px rgba(37,99,235,0.45)}
 
-/* FAQ Accordion Style */
 .faq-item {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -626,7 +639,6 @@ textarea{min-height:115px;resize:vertical}
   transform: rotate(180deg);
 }
 
-/* Admin Tabs/Tables & Clickable Public Rows */
 .admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 20px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;color:var(--text);transition:all 0.25s;}
@@ -653,10 +665,7 @@ textarea{min-height:115px;resize:vertical}
 .admin-logout:hover{filter:brightness(1.1); transform:translateY(-2px); box-shadow: 0 6px 16px rgba(239,68,68,0.5);}
 .admin-del-btn{background:#ef4444;color:#fff;border:0;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;transition:0.2s}
 .admin-del-btn:hover{filter:brightness(1.1); transform: scale(1.08);}
-.view-pdf-btn{background:var(--blue2);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:bold;text-decoration:none;display:inline-flex;align-items:center;gap:6px; box-shadow: 0 2px 8px rgba(37,99,235,0.3); transition: all 0.25s;}
-.view-pdf-btn:hover{background:var(--blue); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(11,61,145,0.5);}
 
-/* Modal Styling with Glassmorphism / Scale Animation */
 .azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px;backdrop-filter:blur(5px);animation: fadeIn 0.3s ease;}
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -666,7 +675,6 @@ textarea{min-height:115px;resize:vertical}
 .azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s; padding:2px 8px; border-radius:50%;}
 .azad-close-btn:hover{color:var(--text); background: rgba(0,0,0,0.08); transform: rotate(90deg);}
 
-/* UI Animations & Modern Hover Effects */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -685,7 +693,6 @@ textarea{min-height:115px;resize:vertical}
   box-shadow: 0 16px 35px rgba(0,0,0,0.15);
 }
 
-/* Floating WhatsApp Quick Contact Button */
 .floating-whatsapp {
   position: fixed;
   bottom: 25px;
@@ -709,12 +716,10 @@ textarea{min-height:115px;resize:vertical}
   box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
 }
 
-/* Toast Notifications */
 #toast-container{position:fixed;bottom:90px;right:20px;z-index:9999}
 .toast{background:var(--navy);color:#fff;padding:14px 20px;border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,0.25);margin-top:10px;font-size:14px;display:flex;align-items:center;gap:12px;animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);border:1px solid rgba(255,255,255,0.1)}
 @keyframes slideIn{from{transform:translateX(100%); opacity:0;}to{transform:translateX(0); opacity:1;}}
 
-/* Responsive Navigation Styles */
 @media(max-width:992px){
   .hero-container{grid-template-columns:1fr;text-align:left}
   .hero-lead{margin:0 0 30px 0}
@@ -730,7 +735,6 @@ textarea{min-height:115px;resize:vertical}
 </head>
 <body class="">
 
-<!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/971500000000" target="_blank" class="floating-whatsapp" title="Chat with us on WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
@@ -743,7 +747,6 @@ textarea{min-height:115px;resize:vertical}
     </a>
     
     <div style="display: flex; align-items: center; gap: 10px;">
-      <!-- Expanded Language Selector (10 Languages) -->
       <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
         <option value="en">🌐 EN</option>
         <option value="hi">🇮🇳 HI</option>
@@ -757,7 +760,6 @@ textarea{min-height:115px;resize:vertical}
         <option value="ur">🇵🇰 UR</option>
       </select>
         
-      <!-- Dark / Light Mode Toggle Button -->
       <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
         <i class="fa-solid fa-moon" id="themeIcon"></i>
       </button>
@@ -786,13 +788,10 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- HERO SECTION WITH INTEGRATED DIRECT 3 BUTTONS -->
 <section class="hero" id="home">
   <div class="hero-container">
     <div>
-      <!-- TOP WIDGETS CONTAINER: TIMESHEET RECTANGLE BOX + LIVE CURRENCY RATE -->
       <div class="hero-widgets-container">
-        <!-- Timesheet Rectangle Box with Direct 3 Buttons -->
         <div class="hero-timesheet-box gold-shiny-box">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <button onclick="openTimesheetModal()" class="btn-hero-timesheet" style="width:auto;">
@@ -807,7 +806,6 @@ textarea{min-height:115px;resize:vertical}
             </div>
           </div>
 
-          <!-- DIRECT 3 ACTION BUTTONS (CLOCK IN, CLOCK OUT, DIRECT DOWNLOAD EXCEL-GRID IMAGE) -->
           <div style="display:flex; gap:6px; margin-top:6px;">
             <button onclick="performDirectClock('Clock In')" class="hero-ts-btn" style="background:#10b981; color:#fff; box-shadow:0 2px 6px rgba(16,185,129,0.3);">
               🟢 Clock In
@@ -820,7 +818,6 @@ textarea{min-height:115px;resize:vertical}
             </button>
           </div>
 
-          <!-- WHATSAPP QUICK SHARE -->
           <div style="margin-top:6px;">
             <button onclick="shareAttendanceWhatsApp()" style="width:100%; background:#25d366; color:#fff; border:0; padding:5px; border-radius:6px; font-weight:800; cursor:pointer; font-size:10px;">
               📱 Share Summary on WhatsApp
@@ -828,7 +825,6 @@ textarea{min-height:115px;resize:vertical}
           </div>
         </div>
 
-        <!-- Currency Pair Button -->
         <div class="hero-timesheet-box" style="min-width: unset;">
           <button onclick="openCurrencyModal()" class="btn-hero-currency">
             <i class="fa-solid fa-coins" style="font-size: 16px;"></i>
@@ -847,7 +843,6 @@ textarea{min-height:115px;resize:vertical}
       <h1 data-i18n="hero_title">Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span></h1>
       <p class="hero-lead" data-i18n="hero_desc">Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project requirements.</p>
       
-      <!-- ALL HERO ACTION BUTTONS WRAPPED IN GLASSMORPHISM RECTANGLE BOXES -->
       <div class="hero-buttons">
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <a href="#requirements" class="btn btn-primary" style="padding: 10px 16px;" data-i18n="btn_post">Post Requirement</a>
@@ -860,7 +855,6 @@ textarea{min-height:115px;resize:vertical}
         </div>
       </div>
 
-      <!-- HOME SCREEN PWA SHORTCUT INSTALL BUTTON & INSTRUCTION BOX -->
       <div class="shortcut-hero-box" id="shortcutContainer">
         <button id="installBtn" class="shortcut-btn">
           <span>📱</span> Add App Shortcut to Home Screen
@@ -874,469 +868,11 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </section>
 
-<!-- TRUST & COMPLIANCE BADGES SECTION -->
-<section class="reveal-on-scroll" style="background: var(--white); padding: 40px 20px; border-bottom: 1px solid var(--border-color); transition: background 0.3s;">
-    <div class="container" style="max-width: 1200px; margin: auto;">
-        <div style="text-align: center; margin-bottom: 25px;">
-            <span style="color: var(--blue2); font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Verified Operations</span>
-            <h3 style="font-size: 24px; color: var(--text); margin-top: 5px;">Licensed & Compliant Manpower Partner in UAE</h3>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
-            <div class="hover-card-effect" style="background: var(--light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px;">
-                <div style="width: 50px; height: 50px; background: rgba(11,61,145,0.1); color: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
-                    <i class="fa-solid fa-file-shield"></i>
-                </div>
-                <div>
-                    <h4 style="font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 3px;">Trade License</h4>
-                    <p style="font-size: 13px; color: var(--muted); margin: 0;">Lic. No: <strong>UAE-EWS-2026</strong></p>
-                    <span style="font-size: 11px; color: var(--emerald2); font-weight: bold;"><i class="fa-solid fa-check-circle"></i> Officially Registered</span>
-                </div>
-            </div>
-            
-            <div class="hover-card-effect" style="background: var(--light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px;">
-                <div style="width: 50px; height: 50px; background: rgba(16,185,129,0.1); color: var(--emerald2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
-                    <i class="fa-solid fa-building-columns"></i>
-                </div>
-                <div>
-                    <h4 style="font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 3px;">Government Standard</h4>
-                    <p style="font-size: 13px; color: var(--muted); margin: 0;">Adhering to UAE Labor Guidelines</p>
-                    <span style="font-size: 11px; color: var(--emerald2); font-weight: bold;"><i class="fa-solid fa-check-circle"></i> 100% Compliant</span>
-                </div>
-            </div>
-
-            <div class="hover-card-effect" style="background: var(--light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px;">
-                <div style="width: 50px; height: 50px; background: rgba(245,158,11,0.1); color: var(--gold2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div>
-                    <h4 style="font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 3px;">Secure Platform</h4>
-                    <p style="font-size: 13px; color: var(--muted); margin: 0;">Encrypted Database & Forms</p>
-                    <span style="font-size: 11px; color: var(--emerald2); font-weight: bold;"><i class="fa-solid fa-check-circle"></i> Verified SSL</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- PUBLIC LEADERBOARD SECTION WITH LIVE SEARCH/FILTER -->
-<section class="requirement-section reveal-on-scroll" id="leaderboard" style="padding:80px 20px;">
-  <div class="container">
-    <div class="section-title">
-      <h2>🔥 Verified Company Requirements & Suppliers</h2>
-      <p>Browse active company requirements and verified manpower suppliers with official trade licenses and direct WhatsApp contact.</p>
-    </div>
-
-    <!-- Live Search & Filter Bar -->
-    <div style="max-width: 600px; margin: 0 auto 25px auto; padding: 0 10px;">
-      <input type="text" id="publicSearchInput" oninput="filterPublicTable()" placeholder="🔍 Search by company name, skill, or location..." style="padding: 12px 18px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-    </div>
-
-    <div class="admin-tabs" style="justify-content: center; margin-bottom: 25px;">
-      <button class="admin-tab-btn active" onclick="switchPublicTab('companies', this)"><i class="fa-solid fa-briefcase"></i> Active Requirements</button>
-      <button class="admin-tab-btn" onclick="switchPublicTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Verified Suppliers</button>
-      <button class="admin-tab-btn" onclick="switchPublicTab('azad_workers', this)"><i class="fa-solid fa-users"></i> Available Workers</button>
-    </div>
-
-    <div class="admin-table-wrap" id="public-table-container">
-      <p style="padding:20px;text-align:center;">Loading verified listings...</p>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT US SECTION -->
-<section id="about" class="reveal-on-scroll" style="background:var(--white); padding:80px 20px; transition: background 0.3s;">
-    <div class="container">
-        <div class="section-title">
-            <span style="font-size:14px; color:var(--blue2); font-weight:800; letter-spacing:1px; text-transform:uppercase;">About Our Agency</span>
-            <h2 style="font-size:32px; font-weight:800; color:var(--text); margin-top:5px; margin-bottom:10px;">Building Stronger Workforces Across Industries</h2>
-            <div style="width:60px; height:4px; background:var(--blue); margin:15px auto 0;"></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;" class="about-grid">
-            <div class="space-y-6">
-                <p style="color:var(--muted); line-height:1.7; margin-bottom:15px;">
-                    Founded with a mission to streamline human capital management, <strong>Elite Workforce Solutions</strong> has evolved into a premier staffing and HR services agency in the UAE. We specialize in providing end-to-end recruitment, contract staffing, technical manpower, and legal compliance support.
-                </p>
-                <p style="color:var(--muted); line-height:1.7; margin-bottom:20px;">
-                    Whether you are a multinational enterprise expanding operations or an energetic startup assembling a high-performance team, our tailor-made human resource solutions ensure operational efficiency and sustainable growth.
-                </p>
-
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                    <div class="hover-card-effect" style="background:var(--light); padding:20px; border-radius:10px; border:1px solid var(--border-color);">
-                        <div style="font-size:18px; color:var(--blue); margin-bottom:8px;"><i class="fa-solid fa-bullseye"></i></div>
-                        <h3 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Our Mission</h3>
-                        <p style="font-size:12px; color:var(--muted); line-height:1.5;">To deliver vetted, reliable talent quickly while safeguarding business compliance and fostering career advancement.</p>
-                    </div>
-                    <div class="hover-card-effect" style="background:var(--light); padding:20px; border-radius:10px; border:1px solid var(--border-color);">
-                        <div style="font-size:18px; color:#4f46e5; margin-bottom:8px;"><i class="fa-solid fa-eye"></i></div>
-                        <h3 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Our Vision</h3>
-                        <p style="font-size:12px; color:var(--muted); line-height:1.5;">To be the global standard for workforce reliability, HR transparency, and ethical recruitment practices.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Team meeting" style="border-radius:12px; width:100%; height:250px; object-fit:cover; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" alt="HR Professional" style="border-radius:12px; width:100%; height:250px; object-fit:cover; margin-top:25px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- WHY CHOOSE US SECTION -->
-<section id="why-choose-us" class="reveal-on-scroll" style="background:var(--navy); color:#fff; padding:80px 20px;">
-    <div class="container">
-        <div class="section-title" style="text-align:center; margin-bottom:45px;">
-            <span style="color:var(--gold); font-weight:800; font-size:13px; letter-spacing:1px; text-transform:uppercase;">Our Advantage</span>
-            <h2 style="font-size:36px; color:#fff; margin-top:5px;">Why Choose Elite Workforce Solutions?</h2>
-            <div style="width:60px; height:4px; background:var(--gold2); margin:15px auto 0;"></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:25px;">
-            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-                <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-user-check"></i></div>
-                <h3 style="font-size:18px; margin-bottom:10px;">Vetted Candidates</h3>
-                <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Rigorous background verification, trade tests, and document authentication before deployment.</p>
-            </div>
-            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-                <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-bolt"></i></div>
-                <h3 style="font-size:18px; margin-bottom:10px;">Fast Turnaround</h3>
-                <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Fulfill urgent technical and contractual manpower requirements within 24 to 48 hours.</p>
-            </div>
-            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-                <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-scale-balanced"></i></div>
-                <h3 style="font-size:18px; margin-bottom:10px;">100% Legal Compliance</h3>
-                <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Complete management of UAE labor laws, visa processing, and statutory compliance.</p>
-            </div>
-            <div class="hover-card-effect" style="background:rgba(255,255,255,0.05); padding:30px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-                <div style="font-size:28px; color:var(--gold); margin-bottom:15px;"><i class="fa-solid fa-headset"></i></div>
-                <h3 style="font-size:18px; margin-bottom:10px;">Dedicated Support</h3>
-                <p style="font-size:13px; color:#cbd5e1; line-height:1.5;">Single-point account managers available round-the-clock for seamless operations.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- REQUIREMENTS SECTION -->
-<section class="requirement-section reveal-on-scroll" id="requirements">
-  <div class="container">
-    <div class="section-title">
-      <h2>Post Company Requirement</h2>
-      <p>Submit your manpower requirements directly to our network.</p>
-    </div>
-    <div class="requirement-card">
-      <form id="companyForm" onsubmit="submitCompanyForm(event)">
-        <div class="form-group">
-          <label>Company Name</label>
-          <input type="text" id="comp_name" required placeholder="e.g. Al Habtoor Contracting">
-        </div>
-        <div class="form-group">
-          <label>Trade License Number</label>
-          <input type="text" id="comp_license" required placeholder="e.g. UAE-CN-123456">
-        </div>
-        <div class="form-group">
-          <label>Company Logo Image File</label>
-          <input type="file" id="comp_logo_file" accept="image/*" style="padding: 9px; background: var(--light);">
-        </div>
-        <div class="form-group">
-          <label>Contact Person</label>
-          <input type="text" id="comp_person" required placeholder="Your Name">
-        </div>
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="comp_email" required placeholder="name@company.com">
-        </div>
-        <div class="form-group">
-          <label>Phone Number (WhatsApp)</label>
-          <input type="tel" id="comp_phone" required pattern="(\+971|0)[0-9]{8,9}" title="Valid UAE Phone (+971 50 xxx xxxx or 050 xxx xxxx)" placeholder="+971 50 123 4567">
-        </div>
-        <div class="form-group">
-          <label>Location / Emirate</label>
-          <input type="text" id="comp_location" placeholder="e.g. Dubai, Abu Dhabi">
-        </div>
-        <div class="form-group">
-          <label>Requirement Details</label>
-          <textarea id="comp_details" required placeholder="Specify needed roles, number of workers, duration, etc."></textarea>
-        </div>
-        <!-- Document / PDF Upload Field for Company -->
-        <div class="form-group">
-          <label>Upload Company Trade License / Profile (PDF format)</label>
-          <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: var(--light);">
-        </div>
-        <button type="submit" class="submit-btn" id="comp_btn">Submit Requirement</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- CAREERS & PDF RESUME UPLOAD SECTION -->
-<section id="careers" class="reveal-on-scroll" style="background:#0f172a; color:#fff; padding:80px 20px;">
-    <div class="container">
-        <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:40px; align-items:center;" class="careers-grid">
-            <div class="space-y-6">
-                <span style="color:var(--gold); font-size:12px; letter-spacing:1px; font-weight:700; text-transform:uppercase;">Join Our Talent Pool</span>
-                <h2 style="font-size:36px; margin:10px 0 15px;">Looking For Your Next Career Opportunity?</h2>
-                <p style="color:#cbd5e1; font-size:15px; line-height:1.6;">Submit your details and upload your PDF Resume. Our recruitment specialists match your qualification with active vacancies across top multinational companies.</p>
-                <div style="margin-top:20px;">
-                    <div style="display:flex; gap:10px; margin-bottom:10px;"><i class="fa-solid fa-circle-check" style="color:var(--emerald); margin-top:4px;"></i> <span>Direct Client Interviews with decision makers.</span></div>
-                    <div style="display:flex; gap:10px;"><i class="fa-solid fa-circle-check" style="color:var(--emerald); margin-top:4px;"></i> <span>Zero Hidden Charges & ethical recruitment standards.</span></div>
-                </div>
-            </div>
-
-            <div>
-                <div style="background:#1e293b; padding:30px; border-radius:20px; border:1px solid #334155; box-shadow:0 20px 40px rgba(0,0,0,0.3);">
-                    <h3 style="font-size:22px; margin-bottom:20px;">Submit Candidate Application</h3>
-                    <form id="career-form" onsubmit="handleCareerFormSubmit(event)" style="display:flex; flex-direction:column; gap:15px;">
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                            <div>
-                                <label style="display:block; font-size:12px; font-weight:600; color:#cbd5e1; margin-bottom:5px;">Full Name *</label>
-                                <input type="text" required placeholder="John Doe" style="background:#0f172a; border:1px solid #475569; color:#fff; padding:12px; border-radius:8px; width:100%;">
-                            </div>
-                            <div>
-                                <label style="display:block; font-size:12px; font-weight:600; color:#cbd5e1; margin-bottom:5px;">Email Address *</label>
-                                <input type="email" required placeholder="john@example.com" style="background:#0f172a; border:1px solid #475569; color:#fff; padding:12px; border-radius:8px; width:100%;">
-                            </div>
-                        </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                            <div>
-                                <label style="display:block; font-size:12px; font-weight:600; color:#cbd5e1; margin-bottom:5px;">Phone Number *</label>
-                                <input type="tel" required placeholder="+971 50 000 0000" style="background:#0f172a; border:1px solid #475569; color:#fff; padding:12px; border-radius:8px; width:100%;">
-                            </div>
-                            <div>
-                                <label style="display:block; font-size:12px; font-weight:600; color:#cbd5e1; margin-bottom:5px;">Applied Position *</label>
-                                <select required style="background:#0f172a; border:1px solid #475569; color:#cbd5e1; padding:12px; border-radius:8px; width:100%;">
-                                    <option value="">Select Target Job Field</option>
-                                    <option value="engineering">Engineering & Construction</option>
-                                    <option value="hr">HR & Administration</option>
-                                    <option value="it">Information Technology</option>
-                                    <option value="doc">Document Control & Support</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label style="display:block; font-size:12px; font-weight:600; color:#cbd5e1; margin-bottom:5px;">Upload Resume (PDF format) *</label>
-                            <div style="border:2px dashed #475569; border-radius:8px; padding:20px; text-align:center; background:#0f172a; position:relative; cursor:pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--gold)';" onmouseout="this.style.borderColor='#475569';">
-                                <input type="file" id="resume-file" accept=".pdf" required style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;" onchange="handleFileSelect(event)">
-                                <i class="fa-solid fa-file-pdf" style="font-size:28px; color:var(--gold); margin-bottom:5px;"></i>
-                                <p style="font-size:13px; font-weight:500; color:#e2e8f0;" id="file-name-label">Click or Drag & Drop PDF Resume Here</p>
-                            </div>
-                        </div>
-                        <button type="submit" style="background:var(--blue); color:#fff; border:0; padding:14px; border-radius:8px; font-weight:bold; cursor:pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.3); transition:0.25s;" onmouseover="this.style.background='var(--blue2)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--blue)'; this.style.transform='translateY(0)';">Submit Application</button>
-                    </form>
-                    <div id="career-success-msg" style="display:none; margin-top:15px; padding:12px; background:rgba(16,185,129,0.2); border:1px solid var(--emerald); border-radius:8px; color:#10b981; text-align:center; font-size:13px; font-weight:bold;">
-                        <i class="fa-solid fa-circle-check mr-2"></i> Application and PDF Resume received successfully!
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ SECTION (ACCORDION) -->
-<section id="faq" class="reveal-on-scroll" style="background:var(--white); padding:80px 20px;">
-  <div class="container" style="max-width:800px;">
-    <div class="section-title">
-      <span style="font-size:12px; color:var(--blue2); font-weight:800; letter-spacing:1px; text-transform:uppercase;">Help & Questions</span>
-      <h2 style="font-size:32px; font-weight:800; color:var(--text); margin-top:5px;">Frequently Asked Questions</h2>
-    </div>
-
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">
-        <span>1. How fast can Elite Workforce deploy manpower for site projects?</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-      <div class="faq-answer">
-        We maintain a live pool of pre-vetted technicians and workers across UAE emirates. Standard deployment takes between 24 to 48 hours after requirement verification.
-      </div>
-    </div>
-
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">
-        <span>2. Are all manpower suppliers on this platform licensed?</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-      <div class="faq-answer">
-        Yes, all suppliers listed on our Public Board undergo trade license authentication and document checks to ensure 100% legal compliance with UAE labor standards.
-      </div>
-    </div>
-
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">
-        <span>3. How can Azad Visa workers get daily or hourly site leads?</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-      <div class="faq-answer">
-        Azad Visa holders can fill out the quick registration form by clicking the "Azad Visa Worker" button. Once verified, their skills are published on the public board for direct company contact.
-      </div>
-    </div>
-
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">
-        <span>4. Is there any fee for companies to post job requirements?</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-      <div class="faq-answer">
-        No, posting requirements on Elite Workforce Solutions is completely free for registered UAE companies and hiring partners.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT & GOOGLE MAPS SECTION -->
-<section class="requirement-section reveal-on-scroll" id="contact" style="background:var(--light); padding:80px 20px;">
-  <div class="container">
-    <div class="section-title">
-      <h2>Get In Touch & Location</h2>
-      <p>Send us a message for general inquiries or visit our headquarters.</p>
-    </div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;" class="contact-grid">
-        <div style="display:flex; flex-direction:column; gap:20px;">
-            <div style="background:var(--card-bg); padding:25px; border-radius:12px; border:1px solid var(--border-color); display:flex; gap:15px; align-items:flex-start;">
-                <div style="width:45px; height:45px; background:var(--blue); color:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;"><i class="fa-solid fa-location-dot"></i></div>
-                <div>
-                    <h4 style="font-weight:bold; color:var(--text); margin-bottom:5px;">Headquarters Address</h4>
-                    <p style="font-size:13px; color:var(--muted);">Level 12, Elite Tower, Business Bay, Dubai, United Arab Emirates</p>
-                </div>
-            </div>
-
-            <div style="background:var(--card-bg); padding:5px; border-radius:12px; border:1px solid var(--border-color); overflow:hidden; height:280px;">
-                <iframe title="Office Location Map" style="width:100%; height:100%; border:0; border-radius:10px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1786541819777!2d55.2721877150094!3d25.18880398390069!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682def2893d9%3A0xe349f7831f13b632!2sBusiness%20Bay%2C%20Dubai!5e0!3m2!1sen!2sae!4v1650000000000" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
-
-        <div class="requirement-card" style="max-width:100%; margin:0;">
-          <form id="contactForm" onsubmit="submitContactForm(event)">
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" id="cont_name" required placeholder="Your Full Name">
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" id="cont_email" required placeholder="yourname@gmail.com">
-            </div>
-            <div class="form-group">
-              <label>Message</label>
-              <textarea id="cont_msg" required placeholder="Write your message here..."></textarea>
-            </div>
-            <button type="submit" class="submit-btn" id="cont_btn">Send Message</button>
-          </form>
-        </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECURED ADMIN DASHBOARD SECTION -->
-<section class="admin-section" id="admin">
-  <div class="container">
-    <div class="section-title">
-      <h2>Live Database Entries (Admin Panel)</h2>
-      <p>View all live submissions from the forms above in real-time.</p>
-    </div>
-
-    <button class="admin-refresh" onclick="loadActiveTabData()"><i class="fa-solid fa-rotate-right"></i> Refresh Table</button>
-    <button class="admin-logout" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-
-    <div class="admin-tabs">
-      <button class="admin-tab-btn active" onclick="switchTab('companies', this)"><i class="fa-solid fa-building"></i> Companies Data</button>
-      <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
-      <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
-      <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
-      <!-- Targeted Bulk Email Button -->
-      <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
-    </div>
-
-    <div class="admin-table-wrap" id="admin-table-container">
-      <p style="padding:20px;text-align:center;">Loading database records...</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="copyright" style="text-align:center; padding:25px; font-size:14px; color:var(--muted); background:var(--navy);">
-    &copy; 2026 Elite Workforce Solutions. All rights reserved. Developed by Manjur Ansari.
-  </div>
-</footer>
-
-<!-- MULTI-COUNTRY CURRENCY CONVERTER POPUP MODAL -->
-<div class="azad-modal" id="currencyModal">
-  <div class="azad-modal-content">
-    <span class="azad-close-btn" onclick="closeCurrencyModal()">&times;</span>
-    <h3 style="color:var(--blue); margin-bottom:5px; font-weight:800;">🌐 Global Currency Converter Pair</h3>
-    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Select any country currency pair for live exchange rate conversion.</p>
-
-    <div style="background:var(--light); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
-      <!-- FROM CURRENCY SELECTION -->
-      <div class="form-group">
-        <label>From Currency (Base)</label>
-        <div style="display:flex; gap:10px;">
-          <select id="fromCurrency" onchange="onCurrencyPairChange()" style="flex:1; font-weight:bold;">
-            <option value="AED" selected>🇦🇪 AED - UAE Dirham</option>
-            <option value="INR">🇮🇳 INR - Indian Rupee</option>
-            <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>
-            <option value="BDT">🇧🇩 BDT - Bangladeshi Taka</option>
-            <option value="USD">🇺🇸 USD - US Dollar</option>
-            <option value="EUR">🇪🇺 EUR - Euro</option>
-            <option value="GBP">🇬🇧 GBP - British Pound</option>
-            <option value="NPR">🇳🇵 NPR - Nepalese Rupee</option>
-            <option value="LKR">🇱🇰 LKR - Sri Lankan Rupee</option>
-            <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
-            <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
-            <option value="QAR">🇶🇦 QAR - Qatari Riyal</option>
-            <option value="KWD">🇰🇼 KWD - Kuwaiti Dinar</option>
-            <option value="OMR">🇴🇲 OMR - Omani Rial</option>
-            <option value="BHD">🇧🇭 BHD - Bahraini Dinar</option>
-          </select>
-          <input type="number" id="inputFromAmount" value="100" oninput="convertFromTo()" placeholder="Amount" style="flex:1;">
-        </div>
-      </div>
-
-      <!-- SWAP BUTTON -->
-      <div style="text-align:center; margin:10px 0;">
-        <button onclick="swapCurrencies()" type="button" style="background:var(--blue); color:#fff; border:0; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer; box-shadow: 0 3px 10px rgba(11,61,145,0.3);" onmouseover="this.style.transform='scale(1.08)';" onmouseout="this.style.transform='scale(1)';">
-          <i class="fa-solid fa-arrow-down-up-lock"></i> Swap Pair
-        </button>
-      </div>
-
-      <!-- TO CURRENCY SELECTION -->
-      <div class="form-group">
-        <label>To Currency (Target)</label>
-        <div style="display:flex; gap:10px;">
-          <select id="toCurrency" onchange="onCurrencyPairChange()" style="flex:1; font-weight:bold;">
-            <option value="AED">🇦🇪 AED - UAE Dirham</option>
-            <option value="INR" selected>🇮🇳 INR - Indian Rupee</option>
-            <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>
-            <option value="BDT">🇧🇩 BDT - Bangladeshi Taka</option>
-            <option value="USD">🇺🇸 USD - US Dollar</option>
-            <option value="EUR">🇪🇺 EUR - Euro</option>
-            <option value="GBP">🇬🇧 GBP - British Pound</option>
-            <option value="NPR">🇳🇵 NPR - Nepalese Rupee</option>
-            <option value="LKR">🇱🇰 LKR - Sri Lankan Rupee</option>
-            <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
-            <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
-            <option value="QAR">🇶🇦 QAR - Qatari Riyal</option>
-            <option value="KWD">🇰🇼 KWD - Kuwaiti Dinar</option>
-            <option value="OMR">🇴🇲 OMR - Omani Rial</option>
-            <option value="BHD">🇧🇭 BHD - Bahraini Dinar</option>
-          </select>
-          <input type="number" id="inputToAmount" oninput="convertToFrom()" placeholder="Converted" style="flex:1;">
-        </div>
-      </div>
-
-      <div style="margin-top:15px; padding:12px; background:rgba(2,132,199,0.1); border-radius:8px; text-align:center; font-size:13px; font-weight:bold; color:#0284c7;" id="modalRateInfo">
-        Live Exchange Rate: Fetching...
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- UPDATED TIMESHEET POPUP MODAL WITH MONTH/YEAR HEADER & PRESENT/ABSENT SUMMARY BOX -->
+<!-- TIMESHEET MODAL -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
       
-      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD WITH MONTH & YEAR -->
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
@@ -1357,12 +893,11 @@ textarea{min-height:115px;resize:vertical}
         <div class="timesheet-badge-live">LIVE<br>CLOCK</div>
       </div>
       
-      <p class="ts-subtitle-text">GPS-assisted check-in, check-out, auto-checkout & Image/PDF export.</p>
+      <p class="ts-subtitle-text">Ultra-GPS Lock, Geofencing, Auto-checkout & Image/PDF export.</p>
       
       <div class="ts-clock-time" id="tsClock">--:--:--</div>
       <div class="ts-date-sub" id="tsDate">Loading...</div>
       
-      <!-- PRESENT / ABSENT SUMMARY BOX -->
       <div class="ts-summary-bar">
         <div class="ts-summary-item">
           <span>🟢 Present</span>
@@ -1402,7 +937,6 @@ textarea{min-height:115px;resize:vertical}
         </button>
       </div>
 
-      <!-- EXPORT BUTTONS -->
       <div style="display:flex; gap:8px; margin-bottom: 12px;">
         <button onclick="downloadTimesheetDirectImage()" type="button" style="flex:1; background:#3b82f6; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; box-shadow:0 3px 10px rgba(59,130,246,0.3);">
           🖼️ Download Image (.png)
@@ -1424,352 +958,21 @@ textarea{min-height:115px;resize:vertical}
       </details>
       
       <p class="ts-disclaimer-text">
-        Features active: GPS Geofencing, Browser Push Notifications, Auto-Checkout, and Supabase cloud sync.
+        Features active: Ultra-Precision GPS Geofencing, Push Notifications, Auto-Checkout, and Supabase cloud sync.
       </p>
     </div>
   </div>
 </div>
 
-<!-- SUPPLIER POPUP MODAL -->
-<div class="azad-modal" id="supplierModal">
-  <div class="azad-modal-content">
-    <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
-    <h3 style="color:var(--blue);margin-bottom:10px;">🚚 Quick Registration: Manpower Supplier</h3>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register your supply company.</p>
-    
-    <form onsubmit="submitModalSupplier(event)">
-      <div class="form-group">
-        <label>Supplier / Company Name</label>
-        <input type="text" id="m_supp_name" required placeholder="e.g. Gulf Manpower Services">
-      </div>
-      <div class="form-group">
-        <label>Trade License Number</label>
-        <input type="text" id="m_supp_license" required placeholder="e.g. UAE-SUPP-789012">
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" id="m_supp_email_field" required placeholder="supplier@domain.com">
-      </div>
-      <div class="form-group">
-        <label>Select Company Logo / Photo (Image format)</label>
-        <input type="file" id="m_supp_photo" accept="image/*" required style="padding: 9px; background: var(--light);">
-      </div>
-      <div class="form-group">
-        <label>Contact Person</label>
-        <input type="text" id="m_supp_person" required placeholder="Your Name">
-      </div>
-      <div class="form-group">
-        <label>Phone / WhatsApp</label>
-        <input type="tel" id="m_supp_phone" required pattern="(\+971|0)[0-9]{8,9}" title="Valid UAE Phone Number" placeholder="+971 50 987 6543">
-      </div>
-      <div class="form-group">
-        <label>Available Manpower Categories</label>
-        <input type="text" id="m_supp_types" placeholder="e.g. Electricians, Welders, Fitters">
-      </div>
-      <div class="form-group">
-        <label>Total Workers Available</label>
-        <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
-      </div>
-      <!-- Document / PDF Upload Field for Supplier Modal -->
-      <div class="form-group">
-        <label>Upload Original Documents (PDF format)</label>
-        <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
-      </div>
-      <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
-    </form>
-  </div>
-</div>
-
-<!-- AZAD VISA POPUP MODAL -->
-<div class="azad-modal" id="azadModal">
-  <div class="azad-modal-content">
-    <span class="azad-close-btn" onclick="closeAzadModal()">&times;</span>
-    <h3 style="color:var(--blue);margin-bottom:10px;">🇦🇪 Quick Registration: Azad Visa Worker</h3>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to get instant daily/hourly site work leads.</p>
-    
-    <form onsubmit="submitModalAzadWorker(event)">
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="m_azad_name" required placeholder="Your Name">
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" id="m_azad_email" required placeholder="yourname@gmail.com">
-      </div>
-      <div class="form-group">
-        <label>WhatsApp / Phone</label>
-        <input type="tel" id="m_azad_phone" required pattern="(\+971|0)[0-9]{8,9}" title="Valid UAE Phone" placeholder="+971 50 xxx xxxx">
-      </div>
-      <div class="form-group">
-        <label>Trade / Skill</label>
-        <select id="m_azad_trade" required>
-          <option value="Electrician">Electrician</option>
-          <option value="Plumber">Plumber</option>
-          <option value="Mason">Mason</option>
-          <option value="Welder">Welder</option>
-          <option value="Fitter / Mechanical">Fitter / Mechanical</option>
-          <option value="HVAC Technician">HVAC Technician</option>
-          <option value="Helper / General Labour">Helper / General Labour</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Emirate</label>
-        <select id="m_azad_location" required>
-          <option value="Dubai">Dubai</option>
-          <option value="Abu Dhabi">Abu Dhabi</option>
-          <option value="Sharjah">Sharjah</option>
-          <option value="Ajman">Ajman</option>
-        </select>
-      </div>
-      <!-- Select Photo Option -->
-      <div class="form-group">
-        <label>Select Profile Photo (Image format)</label>
-        <input type="file" id="m_azad_photo" accept="image/*" required style="padding: 9px; background: var(--light);">
-      </div>
-      <!-- Document / PDF Upload Field for Azad Modal -->
-      <div class="form-group">
-        <label>Upload Experience & Emirates ID (PDF format)</label>
-        <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
-      </div>
-      <button type="submit" class="submit-btn" id="m_azad_btn" style="background:var(--emerald2);">Submit Azad Worker Details</button>
-    </form>
-  </div>
-</div>
-
-<!-- SUCCESS POPUP MODAL (Done ✅) -->
-<div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center;">
-    <div style="background:var(--card-bg); border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
-        <div style="font-size:36px; font-weight:bold; color:#16a34a; margin-bottom:10px;">Done ✅</div>
-        <p style="color:var(--text); font-size:15px; font-weight:600; margin-bottom:20px;" id="popupMessage">Aapki information successfully database mein save ho gayi hai!</p>
-        <button onclick="closeSuccessPopup()" style="width:100%; background:#2563eb; color:#fff; border:0; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:16px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
-            OK
-        </button>
-    </div>
-</div>
-
 <div id="toast-container"></div>
 
-<!-- SUPABASE LOGIC & EVENT HANDLERS -->
 <script>
   const SUPABASE_URL = 'https://maakqzczkhkoimlmnvws.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKz6idXSfDwJWQpVUbONMXY1ihY6oU1hB7yyDnZZgsngnOqQIWigdhCjlQJIancHAZ/exec';
-
-  let currentTab = 'companies';
-  let currentPublicTab = 'companies';
-  let rawPublicData = []; 
-  let currentPairExchangeRate = 26.05;
-
-  const translations = {
-    en: {
-      nav_home: "Home", nav_about: "About Us", nav_board: "Public Board", nav_post: "Post Requirement", nav_careers: "Careers", nav_faq: "FAQ", nav_contact: "Contact", nav_staffing: "Get Staffing",
-      hero_eyebrow: "UAE WORKFORCE NETWORK",
-      hero_title: 'Connecting Companies With <span style="color:var(--gold)">Skilled Workforce</span>',
-      hero_desc: "Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce for project requirements.",
-      btn_post: "Post Requirement", btn_supplier: "Join as Supplier", btn_azad: "Azad Visa Worker"
-    },
-    hi: {
-      nav_home: "होम", nav_about: "हमारे बारे में", nav_board: "पब्लिक बोर्ड", nav_post: "आवश्यकता पोस्ट करें", nav_careers: "करियर", nav_faq: "प्रश्न", nav_contact: "संपर्क करें", nav_staffing: "स्टाफ पाएं",
-      hero_eyebrow: "यूएई वर्कफोर्स नेटवर्क",
-      hero_title: 'कंपनियों को <span style="color:var(--gold)">कुशल कारीगरों</span> से जोड़ें',
-      hero_desc: "एलीट वर्कफोर्स सॉल्यूशंस यूएई की कंपनियों को मैनपावर सप्लायर्स और कुशल वर्करों से जोड़ता है।",
-      btn_post: "रिक्वायरमेंट पोस्ट करें", btn_supplier: "सप्लायर के रूप में जुड़ें", btn_azad: "आज़ाद वीज़ा वर्कर"
-    },
-    ar: {
-      nav_home: "الرئيسية", nav_about: "عن الشركة", nav_board: "اللوحة العامة", nav_post: "إنشاء طلب", nav_careers: "الوظائف", nav_faq: "الأسئلة", nav_contact: "اتصل بنا", nav_staffing: "طلب العمالة",
-      hero_eyebrow: "شبكة القوى العاملة بالإمارات",
-      hero_title: 'ربط الشركات بـ <span style="color:var(--gold)">العمالة الماهرة</span>',
-      hero_desc: "تضمن لك إيليت وورك فورس توفير العمالة الماهرة والشركاء المعتمدين لمشاريعك.",
-      btn_post: "نشر طلب عمل", btn_supplier: "الانضمام كمورد", btn_azad: "تأشيرة حرة"
-    },
-    ml: {
-      nav_home: "ഹോം", nav_about: "ഞങ്ങളെ കുറിച്ച്", nav_board: "പബ്ലിക് ബോർഡ്", nav_post: "ആവശ്യം പോസ്റ്റ് ചെയ്യുക", nav_careers: "കരിയർ", nav_faq: "ചോദ്യങ്ങൾ", nav_contact: "ബന്ധപ്പെടുക", nav_staffing: "തൊഴിലാളികളെ നേടുക",
-      hero_eyebrow: "യു.എ.ഇ വർക്ക്ഫോഴ്സ് നെറ്റ്‌വർക്ക്",
-      hero_title: 'കമ്പനികളെ <span style="color:var(--gold)">വിദഗ്ദ്ധ തൊഴിലാളികളുമായി</span> ബന്ധിപ്പിക്കുന്നു',
-      hero_desc: "എലൈറ്റ് വർക്ക്ഫോഴ്സ് സൊല്യൂഷൻസ് യു.എ.ഇ കമ്പനികളെ മാൻപവർ സപ്ലയർമാരുമായും വിദഗ്ദ്ധ തൊഴിലാളികളുമായും ബന്ധിപ്പിക്കുന്നു.",
-      btn_post: "ആവശ്യം സമർപ്പിക്കുക", btn_supplier: "സപ്ലയറായി ചേരുക", btn_azad: "ആസാദ് വിസ വർക്കർ"
-    },
-    ta: {
-      nav_home: "முகப்பு", nav_about: "எங்களைப் பற்றி", nav_board: "பொது போர்டு", nav_post: "தேவையைப் பதிவுசெய்", nav_careers: "வேலைவாய்ப்பு", nav_faq: "கேள்விகள்", nav_contact: "தொடர்பு கொள்ள", nav_staffing: "ஆட்களைப் பெறுக",
-      hero_eyebrow: "யுஏஇ பணியாளர் நெட்வொர்க்",
-      hero_title: 'நிறுவனங்களை <span style="color:var(--gold)">திறமையான பணியாளர்களுடன்</span> இணைக்கிறது',
-      hero_desc: "எலைட் வொர்க்ஃபோர்ஸ் சொல்யூஷன்ஸ் யுஏஇ நிறுவனங்களை ஆள்சேர்ப்பு விநியோகஸ்தர்கள் மற்றும் திறமையான பணியாளர்களுடன் இணைக்கிறது.",
-      btn_post: "தேவையை இடுகையிடவும்", btn_supplier: "சப்ளையராக இணையவும்", btn_azad: "ஆசாத் விசா தொழிலாளி"
-    },
-    kn: {
-      nav_home: "ಮುಖಪುಟ", nav_about: "ನಮ್ಮ ಬಗ್ಗೆ", nav_board: "ಸಾರ್ವಜನಿಕ ಬೋರ್ಡ್", nav_post: "ಅಗತ್ಯತೆಯನ್ನು ಪೋಸ್ಟ್ ಮಾಡಿ", nav_careers: "ವೃತ್ತಿಜೀವನ", nav_faq: "ಪ್ರಶ್ನೆಗಳು", nav_contact: "ಸಂಪರ್ಕಿಸಿ", nav_staffing: "ಸಿಬ್ಬಂದಿ ಪಡೆಯಿರಿ",
-      hero_eyebrow: "ಯುಎಇ ಕಾರ್ಯಪಡೆ ನೆಟ್‌ವರ್ಕ್",
-      hero_title: 'ಕಂಪನಿಗಳನ್ನು <span style="color:var(--gold)">ಕುಶಲ ಕಾರ್ಮಿಕರೊಂದಿಗೆ</span> ಜೋಡಿಸುವುದು',
-      hero_desc: "ಎಲೈಟ್ ವರ್ಕ್‌ಫೋರ್ಸ್ ಸೊಲ್ಯೂಷನ್ಸ್ ಯುಎಇ ಕಂಪನಿಗಳನ್ನು ಮ್ಯಾನ್‌ಪವರ‍್ ಪೂರೈಕೆದಾರರು ಮತ್ತು ಪರಿಣಿತ ಕಾರ್ಮಿಕರೊಂದಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ.",
-      btn_post: "ಅಗತ್ಯತೆ ಪೋಸ್ಟ್ ಮಾಡಿ", btn_supplier: "ಪೂರೈಕೆದಾರರಾಗಿ ಸೇರಿ", btn_azad: "ಆಜಾದ್ ವೀಸಾ ಕಾರ್ಮಿಕ"
-    },
-    bn: {
-      nav_home: "হোম", nav_about: "আমাদের সম্পর্কে", nav_board: "পাবলিক বোর্ড", nav_post: "প্রয়োজন পোস্ট করুন", nav_careers: "ক্যারিয়ার", nav_faq: "প্রশ্নাবলী", nav_contact: "যোগাযোগ", nav_staffing: "কর্মী পান",
-      hero_eyebrow: "সংযুক্ত আরব আমিরাত ওয়ার্কফোর্স নেটওয়ার্ক",
-      hero_title: 'কোম্পানিগুলোকে <span style="color:var(--gold)">দক্ষ কর্মীদের</span> সাথে সংযুক্ত করা',
-      hero_desc: "এলিট ওয়ার্কফোর্স সলিউশনস ইউএই কোম্পানিগুলোকে ম্যানপাওয়ার সাপ্লাইয়ার এবং দক্ষ কর্মীদের সাথে যুক্ত করে।",
-      btn_post: "রিকোয়ারমেন্ট পোস্ট করুন", btn_supplier: "সরবরাহকারী হিসাবে যোগ দিন", btn_azad: "আজাদ ভিসা কর্মী"
-    },
-    rn: {
-      nav_home: "Ahabanza", nav_about: "Ibitwerekeye", nav_board: "Urubuga rwose", nav_post: "Saba abakozi", nav_careers: "Akazi", nav_faq: "Ibibazo", nav_contact: "Tuja inama", nav_staffing: "Rona abakozi",
-      hero_eyebrow: "INETIWARI Y'ABAKOZI MU UAE",
-      hero_title: 'Guhuza amasosiyete n\'<span style="color:var(--gold)">abakozi b\'abahanga</span>',
-      hero_desc: "Elite Workforce Solutions ihuza amasosiyete yo mu UAE n'abatanzi b'abakozi b'abahanga ku bwa gahunda zitandukanye.",
-      btn_post: "Andikisha icyo ukeneye", btn_supplier: "Injira nk'umutanzi", btn_azad: "Umukozi wa Azad Visa"
-    },
-    fil: {
-      nav_home: "Tahanan", nav_about: "Tungkol sa Amin", nav_board: "Pampublikong Lupon", nav_post: "Mag-post ng Kailangan", nav_careers: "Mga Trabaho", nav_faq: "Mga Tanong", nav_contact: "Makipag-ugnayan", nav_staffing: "Kumuha ng Manggagawa",
-      hero_eyebrow: "UAE WORKFORCE NETWORK",
-      hero_title: 'Ipinagdurugtong ang mga Kompanya sa <span style="color:var(--gold)">Skilled Workers</span>',
-      hero_desc: "Inuugnay ng Elite Workforce Solutions ang mga kompanya sa UAE sa mga manpower supplier at bihasang manggagawa.",
-      btn_post: "Mag-post ng Kailangan", btn_supplier: "Sali bilang Supplier", btn_azad: "Azad Visa Worker"
-    },
-    ur: {
-      nav_home: "ہوم", nav_about: "ہمارے بارے میں", nav_board: "پبلک بورڈ", nav_post: "ضرورت پوسٹ کریں", nav_careers: "کیریئر", nav_faq: "سوالات", nav_contact: "رابطہ کریں", nav_staffing: "اسٹاف حاصل کریں",
-      hero_eyebrow: "یو اے ای ورک فورس نیٹ ورک",
-      hero_title: 'کمپنیوں کو <span style="color:var(--gold)">ماہر افرادی قوت</span> سے جوڑنا',
-      hero_desc: "ایلیٹ ورک فورس سلوشنز یو اے ای کی کمپنیوں کو مین پاور سپلائرز اور ہنر مند کارکنوں سے جوڑتا ہے۔",
-      btn_post: "ضرورت پوسٹ کریں", btn_supplier: "بطور سپلائر شامل ہوں", btn_azad: "آزاد ویزا ورکر"
-    }
-  };
-
-  function changeLanguage(lang) {
-    const t = translations[lang] || translations.en;
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (t[key]) el.innerHTML = t[key];
-    });
-    if (lang === 'ar' || lang === 'ur') document.body.style.direction = 'rtl';
-    else document.body.style.direction = 'ltr';
-  }
-
-  function toggleFaq(item) {
-    item.classList.toggle('active');
-  }
-
-  function openCurrencyModal() { 
-    document.getElementById('currencyModal').style.display = 'flex'; 
-    fetchDynamicPairRate();
-  }
-  function closeCurrencyModal() { document.getElementById('currencyModal').style.display = 'none'; }
-
-  function swapCurrencies() {
-    const fromSelect = document.getElementById('fromCurrency');
-    const toSelect = document.getElementById('toCurrency');
-    const temp = fromSelect.value;
-    fromSelect.value = toSelect.value;
-    toSelect.value = temp;
-    onCurrencyPairChange();
-  }
-
-  async function fetchDynamicPairRate() {
-    const fromCode = document.getElementById('fromCurrency').value;
-    const toCode = document.getElementById('toCurrency').value;
-    
-    document.getElementById('modalRateInfo').innerText = "Fetching live exchange rate...";
-
-    try {
-      const res = await fetch(`https://open.er-api.com/v6/latest/${fromCode}`);
-      const data = await res.json();
-      if (data && data.rates && data.rates[toCode]) {
-        currentPairExchangeRate = data.rates[toCode];
-        
-        document.getElementById('modalRateInfo').innerText = `Live Rate: 1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
-        
-        if(fromCode === 'AED' && toCode === 'INR') {
-          document.getElementById('heroAedRate').innerText = `1 AED = ₹${currentPairExchangeRate.toFixed(2)} INR`;
-          document.getElementById('heroCurrPairText').innerText = `🇦🇪 AED ↔ 🇮🇳 INR`;
-        } else {
-          document.getElementById('heroAedRate').innerText = `1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
-          document.getElementById('heroCurrPairText').innerText = `🌐 ${fromCode} ↔ ${toCode}`;
-        }
-        
-        convertFromTo();
-      }
-    } catch(e) {
-      console.log('Error fetching pair exchange rate:', e);
-      document.getElementById('modalRateInfo').innerText = `Rate: 1 ${fromCode} = ${currentPairExchangeRate.toFixed(2)} ${toCode}`;
-    }
-  }
-
-  function onCurrencyPairChange() {
-    fetchDynamicPairRate();
-  }
-
-  function convertFromTo() {
-    const fromVal = parseFloat(document.getElementById('inputFromAmount').value) || 0;
-    document.getElementById('inputToAmount').value = (fromVal * currentPairExchangeRate).toFixed(2);
-  }
-
-  function convertToFrom() {
-    const toVal = parseFloat(document.getElementById('inputToAmount').value) || 0;
-    document.getElementById('inputFromAmount').value = (toVal / currentPairExchangeRate).toFixed(2);
-  }
-
-  function toggleDarkMode() {
-    const htmlEl = document.documentElement;
-    const iconEl = document.getElementById('themeIcon');
-    
-    if (htmlEl.classList.contains('dark')) {
-      htmlEl.classList.remove('dark');
-      localStorage.setItem('ews_theme', 'light');
-      iconEl.className = 'fa-solid fa-moon';
-    } else {
-      htmlEl.classList.add('dark');
-      localStorage.setItem('ews_theme', 'dark');
-      iconEl.className = 'fa-solid fa-sun';
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('ews_theme');
-    const iconEl = document.getElementById('themeIcon');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      if(iconEl) iconEl.className = 'fa-solid fa-sun';
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.reveal-on-scroll').forEach(section => {
-      observer.observe(section);
-    });
-
-    loadPublicLeaderboard();
-    fetchDynamicPairRate();
-  });
-
-  function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
-  function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
-
   function openTimesheetModal() { document.getElementById('timesheetModal').style.display = 'flex'; }
   function closeTimesheetModal() { document.getElementById('timesheetModal').style.display = 'none'; }
-
-  function openSupplierModal() { document.getElementById('supplierModal').style.display = 'flex'; }
-  function closeSupplierModal() { document.getElementById('supplierModal').style.display = 'none'; }
-
-  function openAzadModal() { document.getElementById('azadModal').style.display = 'flex'; }
-  function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
-
-  function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
-      const popup = document.getElementById('successPopup');
-      const msgElement = document.getElementById('popupMessage');
-      msgElement.innerText = customMessage;
-      popup.style.display = 'flex';
-  }
-
-  function closeSuccessPopup() {
-      const popup = document.getElementById('successPopup');
-      popup.style.display = 'none';
-  }
 
   function showToast(msg, type = 'success') {
     const container = document.getElementById('toast-container');
@@ -1780,674 +983,52 @@ textarea{min-height:115px;resize:vertical}
     setTimeout(() => toast.remove(), 4000);
   }
 
-  async function unlockAdminPanel() {
-    const session = await _supabase.auth.getSession();
-    if (session.data.session) {
-      document.getElementById('admin').style.display = 'block';
-      window.location.hash = "#admin";
-      loadActiveTabData();
-      return;
-    }
-
-    const email = prompt("Enter Admin Email:");
-    if (!email) return;
-
-    const password = prompt("Enter Admin Password:");
-    if (!password) return;
-
-    showToast("Authenticating...");
-
-    const { data, error } = await _supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
-    if (error) {
-      showToast("Login Failed: " + error.message, "error");
-    } else {
-      showToast("Admin authenticated successfully!");
-      document.getElementById('admin').style.display = 'block';
-      window.location.hash = "#admin";
-      loadActiveTabData();
-    }
-  }
-
-  async function logoutAdmin() {
-    await _supabase.auth.signOut();
-    document.getElementById('admin').style.display = 'none';
-    showToast("Logged out successfully.");
-  }
-
-  function switchPublicTab(tab, btn) {
-    currentPublicTab = tab;
-    document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('publicSearchInput').value = ''; 
-    loadPublicLeaderboard();
-  }
-
-  async function loadPublicLeaderboard() {
-    const container = document.getElementById('public-table-container');
-    
-    if (currentPublicTab === 'companies') {
-      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading requirements...</p>';
-      const { data, error } = await _supabase.from('companies').select('*').order('created_at', { ascending: false });
-
-      if (error || !data || data.length === 0) {
-        rawPublicData = [];
-        container.innerHTML = '<p style="padding:20px;text-align:center;">No active requirements posted yet.</p>';
-        return;
-      }
-      rawPublicData = data;
-      renderPublicTable(rawPublicData);
-
-    } else if (currentPublicTab === 'suppliers') {
-      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
-      const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
-
-      if (error || !data || data.length === 0) {
-        rawPublicData = [];
-        container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>';
-        return;
-      }
-      rawPublicData = data;
-      renderPublicTable(rawPublicData);
-
-    } else if (currentPublicTab === 'azad_workers') {
-      container.innerHTML = '<p style="padding:20px;text-align:center;">Loading available workers...</p>';
-      const { data, error } = await _supabase
-        .from('azad_workers')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error || !data || data.length === 0) {
-        rawPublicData = [];
-        container.innerHTML = '<p style="padding:20px;text-align:center;">No workers registered yet.</p>';
-        return;
-      }
-      rawPublicData = data;
-      renderPublicTable(rawPublicData);
-    }
-  }
-
-  function renderPublicTable(dataList) {
-    const container = document.getElementById('public-table-container');
-    if (!dataList || dataList.length === 0) {
-      container.innerHTML = '<p style="padding:20px;text-align:center;">No matching records found.</p>';
-      return;
-    }
-
-    if (currentPublicTab === 'companies') {
-      let html = `<table class="admin-table">
-        <thead>
-          <tr>
-            <th>Company / Logo</th>
-            <th>Trade License</th>
-            <th>Location</th>
-            <th>Requirement Details</th>
-            <th>Contact</th>
-          </tr>
-        </thead><tbody id="publicTableBody">`;
-      dataList.forEach((i, index) => {
-        const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
-        const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
-        const tradeLic = i.trade_license || 'UAE-LIC-Verified';
-
-        html += `<tr data-index="${index}">
-          <td><div style="display:flex;align-items:center;gap:10px;">${logoImg} <b>${i.company_name}</b></div></td>
-          <td><span style="font-family:monospace;color:var(--blue);font-weight:bold;"><i class="fa-solid fa-file-shield"></i> ${tradeLic}</span></td>
-          <td>${i.location || 'UAE'}</td>
-          <td>${i.requirement_details}</td>
-          <td><a href="https://wa.me/${cleanPhone}" target="_blank" onclick="event.stopPropagation()" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></td>
-        </tr>`;
-      });
-      container.innerHTML = html + '</tbody></table>';
-
-    } else if (currentPublicTab === 'suppliers') {
-      let html = `<table class="admin-table">
-        <thead>
-          <tr>
-            <th>Supplier</th>
-            <th>Trade License</th>
-            <th>Email</th>
-            <th>Categories</th>
-            <th>Available Workers</th>
-            <th>Connect</th>
-          </tr>
-        </thead><tbody id="publicTableBody">`;
-      dataList.forEach((i, index) => {
-        const cleanPhone = i.phone ? i.phone.replace(/[^0-9]/g, '') : '';
-        const tradeLic = i.trade_license || 'UAE-SUPP-Verified';
-        const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:contain;border-radius:4px;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:bold;color:#475569;">${i.company_name.charAt(0)}</div>`;
-
-        html += `<tr data-index="${index}">
-          <td><div style="display:flex;align-items:center;gap:10px;">${logoImg} <b>${i.company_name}</b></div></td>
-          <td><span style="font-family:monospace;color:var(--blue);font-weight:bold;"><i class="fa-solid fa-file-shield"></i> ${tradeLic}</span></td>
-          <td>${i.email || 'N/A'}</td>
-          <td>${i.manpower_types || 'General Manpower'}</td>
-          <td><b>${i.workers_available || 'Multiple'} Workers</b></td>
-          <td><a href="https://wa.me/${cleanPhone}" target="_blank" onclick="event.stopPropagation()" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Contact Supplier</a></td>
-        </tr>`;
-      });
-      container.innerHTML = html + '</tbody></table>';
-
-    } else if (currentPublicTab === 'azad_workers') {
-      let html = `<table class="admin-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Skill / Trade</th>
-            <th>Location</th>
-            <th>Connect</th>
-          </tr>
-        </thead><tbody id="publicTableBody">`;
-      dataList.forEach((i, index) => {
-        const cleanPhone = i.phone_number ? i.phone_number.replace(/[^0-9]/g, '') : '';
-        const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<div style="width:35px;height:35px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:bold;color:#475569;">${i.full_name.charAt(0)}</div>`;
-
-        html += `<tr data-index="${index}">
-          <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
-          <td>${workerPhoto}</td>
-          <td><b>${i.full_name}</b></td>
-          <td>${i.email || 'N/A'}</td>
-          <td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td>
-          <td>${i.location}</td>
-          <td><a href="https://wa.me/${cleanPhone}" target="_blank" onclick="event.stopPropagation()" style="color:var(--emerald2);font-weight:bold;"><i class="fa-brands fa-whatsapp"></i> Hire Worker</a></td>
-        </tr>`;
-      });
-      container.innerHTML = html + '</tbody></table>';
-    }
-
-    document.querySelectorAll('#publicTableBody tr').forEach(row => {
-      row.addEventListener('click', () => {
-        const idx = row.getAttribute('data-index');
-        const selectedItem = dataList[idx];
-        localStorage.setItem('selected_profile_type', currentPublicTab);
-        localStorage.setItem('selected_profile_data', JSON.stringify(selectedItem));
-        window.location.href = `worker-profile.html?type=${currentPublicTab}`;
-      });
-    });
-  }
-
-  function filterPublicTable() {
-    const query = document.getElementById('publicSearchInput').value.toLowerCase().trim();
-    if (!query) {
-      renderPublicTable(rawPublicData);
-      return;
-    }
-
-    const filtered = rawPublicData.filter(item => {
-      if (currentPublicTab === 'companies') {
-        return (item.company_name && item.company_name.toLowerCase().includes(query)) ||
-               (item.location && item.location.toLowerCase().includes(query)) ||
-               (item.requirement_details && item.requirement_details.toLowerCase().includes(query));
-      } else if (currentPublicTab === 'suppliers') {
-        return (item.company_name && item.company_name.toLowerCase().includes(query)) ||
-               (item.email && item.email.toLowerCase().includes(query)) ||
-               (item.manpower_types && item.manpower_types.toLowerCase().includes(query));
-      } else if (currentPublicTab === 'azad_workers') {
-        return (item.full_name && item.full_name.toLowerCase().includes(query)) ||
-               (item.email && item.email.toLowerCase().includes(query)) ||
-               (item.trade && item.trade.toLowerCase().includes(query)) ||
-               (item.location && item.location.toLowerCase().includes(query));
-      }
-      return false;
-    });
-
-    renderPublicTable(filtered);
-  }
-
-  function handleFileSelect(event) {
-      const file = event.target.files[0];
-      const label = document.getElementById('file-name-label');
-      if (file) {
-          if (file.type !== "application/pdf") {
-              label.innerText = "Error: Please upload a valid .PDF file!";
-              label.style.color = "#ef4444";
-              event.target.value = "";
-              return;
-          }
-          label.innerText = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
-          label.style.color = "#10b981";
-      }
-  }
-
-  function handleCareerFormSubmit(event) {
-      event.preventDefault();
-      showSuccessPopup("Done ✅ - Aapka career application successfully submit ho gaya hai!");
-      event.target.reset();
-      document.getElementById('file-name-label').innerText = "Click or Drag & Drop PDF Resume Here";
-      document.getElementById('file-name-label').style.color = "#e2e8f0";
-  }
-
-  async function submitCompanyForm(e) {
-    e.preventDefault();
-    const btn = document.getElementById('comp_btn');
-    btn.disabled = true; 
-    btn.innerText = 'Uploading & Submitting...';
-
-    try {
-      const companyName = document.getElementById('comp_name').value.trim();
-      const tradeLicense = document.getElementById('comp_license').value.trim();
-      const contactPerson = document.getElementById('comp_person').value.trim();
-      const email = document.getElementById('comp_email').value.trim();
-      const phone = document.getElementById('comp_phone').value.trim();
-      const location = document.getElementById('comp_location').value.trim();
-      const requirementDetails = document.getElementById('comp_details').value.trim();
-      
-      const logoFile = document.getElementById('comp_logo_file').files[0];
-      let logoUrl = '';
-
-      if (logoFile) {
-        const fileName = `comp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('photos')
-          .upload(fileName, logoFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = _supabase.storage
-          .from('photos')
-          .getPublicUrl(fileName);
-        
-        logoUrl = publicUrlData.publicUrl;
-      }
-
-      const payload = {
-        company_name: companyName,
-        trade_license: tradeLicense,
-        logo_url: logoUrl,
-        contact_person: contactPerson,
-        email: email,
-        phone: phone,
-        location: location,
-        requirement_details: requirementDetails
-      };
-
-      const { error } = await _supabase.from('companies').insert([payload]);
-      if (error) throw error;
-
-      const sheetData = new URLSearchParams();
-      sheetData.append('companyName', companyName);
-      sheetData.append('contactPerson', contactPerson);
-      sheetData.append('email', email);
-      sheetData.append('phone', phone);
-      sheetData.append('requirement', requirementDetails);
-
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: sheetData
-      }).catch(err => console.log('Google Sheet sync note:', err));
-
-      showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
-      document.getElementById('companyForm').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      btn.disabled = false; 
-      btn.innerText = 'Submit Requirement';
-    }
-  }
-
-  async function submitModalSupplier(e) {
-    e.preventDefault();
-    const btn = document.getElementById('m_supp_btn');
-    btn.disabled = true; 
-    btn.innerText = 'Uploading & Registering...';
-
-    try {
-      const suppName = document.getElementById('m_supp_name').value.trim();
-      const suppLicense = document.getElementById('m_supp_license').value.trim();
-      const suppEmail = document.getElementById('m_supp_email_field').value.trim();
-      const suppPerson = document.getElementById('m_supp_person').value.trim();
-      const suppPhone = document.getElementById('m_supp_phone').value.trim();
-      const suppTypes = document.getElementById('m_supp_types').value.trim();
-      const rawWorkers = document.getElementById('m_supp_workers').value;
-
-      const logoFile = document.getElementById('m_supp_photo').files[0];
-      let logoUrl = '';
-
-      if (logoFile) {
-        const fileName = `supp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('photos')
-          .upload(fileName, logoFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = _supabase.storage
-          .from('photos')
-          .getPublicUrl(fileName);
-        
-        logoUrl = publicUrlData.publicUrl;
-      }
-
-      const payload = {
-        company_name: suppName,
-        trade_license: suppLicense,
-        email: suppEmail,
-        logo_url: logoUrl,
-        contact_person: suppPerson,
-        phone: suppPhone,
-        manpower_types: suppTypes,
-        workers_available: rawWorkers ? parseInt(rawWorkers, 10) : 0
-      };
-
-      const { error } = await _supabase.from('suppliers').insert([payload]);
-      if (error) throw error;
-
-      closeSupplierModal();
-      showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
-      document.getElementById('supplierModal').querySelector('form').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      btn.disabled = false; 
-      btn.innerText = 'Submit Supplier Details';
-    }
-  }
-
-  async function submitModalAzadWorker(e) {
-    e.preventDefault();
-    const btn = document.getElementById('m_azad_btn');
-    btn.disabled = true; 
-    btn.innerText = 'Uploading Photo & Registering...';
-
-    try {
-      const fullName = document.getElementById('m_azad_name').value.trim();
-      const email = document.getElementById('m_azad_email').value.trim();
-      const phone = document.getElementById('m_azad_phone').value.trim();
-      const trade = document.getElementById('m_azad_trade').value;
-      const location = document.getElementById('m_azad_location').value;
-      
-      const photoFile = document.getElementById('m_azad_photo').files[0];
-      let photoUrl = '';
-
-      if (photoFile) {
-        const fileName = `worker_${Date.now()}_${photoFile.name.replace(/\s+/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('photos')
-          .upload(fileName, photoFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = _supabase.storage
-          .from('photos')
-          .getPublicUrl(fileName);
-        
-        photoUrl = publicUrlData.publicUrl;
-      }
-
-      const payload = {
-        full_name: fullName,
-        email: email,
-        phone_number: phone,
-        trade: trade,
-        location: location,
-        expected_daily_rate: 0,
-        file_uri: photoUrl
-      };
-
-      const { error } = await _supabase.from('azad_workers').insert([payload]);
-      if (error) throw error;
-
-      closeAzadModal();
-      showSuccessPopup('Done ✅ - Azad worker registration & photo upload successful.');
-      document.getElementById('azadModal').querySelector('form').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      btn.disabled = false; 
-      btn.innerText = 'Submit Azad Worker Details';
-    }
-  }
-
-  async function submitContactForm(e) {
-    e.preventDefault();
-    const btn = document.getElementById('cont_btn');
-    btn.disabled = true; btn.innerText = 'Sending...';
-
-    const payload = {
-      name: document.getElementById('cont_name').value.trim(),
-      email: document.getElementById('cont_email').value.trim(),
-      message: document.getElementById('cont_msg').value.trim()
-    };
-
-    const { error } = await _supabase.from('contact_messages').insert([payload]);
-    if (error) { showToast('Error: ' + error.message, 'error'); } 
-    else {
-      showSuccessPopup('Done ✅ - Aapka message successfully database mein save ho gaya hai!');
-      document.getElementById('contactForm').reset();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-    }
-    btn.disabled = false; btn.innerText = 'Send Message';
-  }
-
-  function switchTab(tableName, btn) {
-    currentTab = tableName;
-    document.querySelectorAll('.admin-section .admin-tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadActiveTabData();
-  }
-
-  function loadActiveTabData() {
-    if (currentTab === 'companies') fetchCompanies();
-    else if (currentTab === 'suppliers') fetchSuppliers();
-    else if (currentTab === 'azad_workers') fetchAzadWorkers();
-    else if (currentTab === 'contact_messages') fetchMessages();
-  }
-
-  async function fetchCompanies() {
-    const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading companies...</p>';
-    const { data, error } = await _supabase.from('companies').select('*').order('created_at', { ascending: false });
-
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No company requirements posted yet.</p>'; return; }
-
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
-    data.forEach(i => {
-      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
-    });
-    container.innerHTML = html + '</tbody></table>';
-  }
-
-  async function fetchSuppliers() {
-    const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
-    const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
-
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>'; return; }
-
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
-    data.forEach(i => {
-      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email || 'N/A'}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
-    });
-    container.innerHTML = html + '</tbody></table>';
-  }
-
-  async function fetchAzadWorkers() {
-    const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading Azad Visa Workers...</p>';
-    const { data, error } = await _supabase.from('azad_workers').select('*').order('created_at', { ascending: false });
-
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No Azad workers registered yet.</p>'; return; }
-
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Photo</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
-    data.forEach(i => {
-      const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Photo</span>`;
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${workerPhoto}</td><td><b>${i.full_name}</b></td><td>${i.email || 'N/A'}</td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
-    });
-    container.innerHTML = html + '</tbody></table>';
-  }
-
-  async function fetchMessages() {
-    const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading messages...</p>';
-    const { data, error } = await _supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
-
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No messages received yet.</p>'; return; }
-
-    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Message</th><th>Action</th></tr></thead><tbody>`;
-    data.forEach(i => {
-      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.name}</b></td><td>${i.email}</td><td>${i.message}</td><td><button class="admin-del-btn" onclick="deleteRecord('contact_messages', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
-    });
-    container.innerHTML = html + '</tbody></table>';
-  }
-
-  async function deleteRecord(table, id) {
-    if (confirm('Delete this entry permanently?')) {
-      const { error } = await _supabase.from(table).delete().eq('id', id);
-      if (error) showToast('Error: ' + error.message, 'error');
-      else { 
-        showToast('Record deleted.'); 
-        loadActiveTabData(); 
-        loadPublicLeaderboard(); 
-      }
-    }
-  }
-
-  async function triggerBulkEmail() {
-    const targetType = prompt(
-      "Kise email bhejna hai?\n\n" +
-      "1: Sirf Azad Workers ko\n" +
-      "2: Sirf Suppliers ko\n" +
-      "3: Sirf Companies ko\n" +
-      "4: Sabhi (All Database) ko ek sath\n\n" +
-      "Number enter karein (1, 2, 3 ya 4):", "4"
-    );
-
-    if (!targetType) return;
-
-    let selectedTable = '';
-    let targetName = '';
-
-    if (targetType === '1') {
-      selectedTable = 'azad_workers';
-      targetName = 'Azad Workers';
-    } else if (targetType === '2') {
-      selectedTable = 'suppliers';
-      targetName = 'Suppliers';
-    } else if (targetType === '3') {
-      selectedTable = 'companies';
-      targetName = 'Companies';
-    } else if (targetType === '4') {
-      selectedTable = 'all';
-      targetName = 'All Users & Companies';
-    } else {
-      showToast("Galat choice select ki gayi!", "error");
-      return;
-    }
-
-    showToast(`${targetName} ke emails fetch kiye ja rahe hain...`);
-
-    try {
-      let allEmails = [];
-
-      if (selectedTable === 'all') {
-        const { data: comps } = await _supabase.from('companies').select('email');
-        const { data: supps } = await _supabase.from('suppliers').select('email');
-        const { data: workers } = await _supabase.from('azad_workers').select('email');
-        const { data: msgs } = await _supabase.from('contact_messages').select('email');
-
-        if (comps) comps.forEach(i => i.email && allEmails.push(i.email));
-        if (supps) supps.forEach(i => i.email && allEmails.push(i.email));
-        if (workers) workers.forEach(i => i.email && allEmails.push(i.email));
-        if (msgs) msgs.forEach(i => i.email && allEmails.push(i.email));
-      } else {
-        const { data, error } = await _supabase.from(selectedTable).select('email');
-        if (error) throw error;
-        if (data) data.forEach(i => i.email && allEmails.push(i.email));
-      }
-
-      let uniqueEmails = [...new Set(allEmails)].filter(e => e && e !== 'N/A' && e.includes('@'));
-
-      if (uniqueEmails.length === 0) {
-        showToast(`${targetName} mein koi valid email address nahi mila!`, "error");
-        return;
-      }
-
-      const subject = prompt(`[${targetName}] Total ${uniqueEmails.length} emails mil gaye hain.\nEmail ka Subject enter karein:`, "Urgent Requirement Update from Elite Workforce");
-      if (!subject) return;
-
-      const body = prompt(`[${targetName}] Email ka Message enter karein:`, "Hello, we have urgent site requirements available. Please check...");
-      if (!body) return;
-
-      const bccList = uniqueEmails.join(',');
-      const mailtoLink = `mailto:?bcc=${encodeURIComponent(bccList)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-      window.location.href = mailtoLink;
-      showToast(`Email client open ho gaya (${uniqueEmails.length} ${targetName} recipients ke sath)!`);
-
-    } catch (error) {
-      showToast("Error fetching emails: " + error.message, "error");
-    }
-  }
-
-  window.addEventListener('load', async () => {
-    const session = await _supabase.auth.getSession();
-    if (session.data.session) {
-      document.getElementById('admin').style.display = 'block';
-    }
-  });
-
-/* PWA INSTALL PROMPT LOGIC */
-let deferredPrompt;
-window.addEventListener('DOMContentLoaded', () => {
-    const shortcutContainer = document.getElementById('shortcutContainer');
-    if (shortcutContainer) shortcutContainer.style.display = 'block';
-});
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-});
-
-document.addEventListener('click', async (e) => {
-    if (e.target && e.target.closest('#installBtn')) {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                showToast('Shortcut successfully added to home screen!');
-            }
-            deferredPrompt = null;
-        } else {
-            alert('To add this website to your home screen as an app:\n\n1. Tap the 3 dots (Menu) at the top right of your browser.\n2. Select "Add to Home screen" or "Install app".');
-        }
-    }
-});
-
-  /* ADVANCED TIMESHEET SCRIPT WITH CORRECT DURATION, ASCENDING SORTING & SUMMARY FORMATTING */
+  /* ADVANCED TIMESHEET SCRIPT WITH ULTRA-PRECISION GPS & GEOFENCING */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
     const $ = id => document.getElementById(id);
     
+    // TARGET PROJECT SITE COORDINATES (Default: Ajman Site)
+    const TARGET_SITE = {
+      latitude: 25.4052,
+      longitude: 55.5136,
+      allowedRadiusMeters: 500
+    };
+
     let active = read(ACTIVE_KEY, null);
     let history = read(KEY, []);
     
     function read(key, fallback){ try { const v=localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; } }
     function save(){ try { localStorage.setItem(KEY, JSON.stringify(history)); localStorage.setItem(ACTIVE_KEY, JSON.stringify(active)); } catch(e){ setStatus('Could not save to browser storage.'); } }
     
+    // HAVERSINE FORMULA FOR GEOFENCE DISTANCE (Meters)
+    function calculateDistanceMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const phi1 = lat1 * Math.PI / 180;
+      const phi2 = lat2 * Math.PI / 180;
+      const deltaPhi = (lat2 - lat1) * Math.PI / 180;
+      const deltaLambda = (lon2 - lon1) * Math.PI / 180;
+
+      const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+                Math.cos(phi1) * Math.cos(phi2) *
+                Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+      
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function checkGeofence(lat, lon) {
+      let dist = calculateDistanceMeters(lat, lon, TARGET_SITE.latitude, TARGET_SITE.longitude);
+      let isOnSite = dist <= TARGET_SITE.allowedRadiusMeters;
+      return {
+        isOnSite: isOnSite,
+        statusText: isOnSite ? 'On-Site Verified' : 'Remote / Off-Site',
+        badgeClass: isOnSite ? 'badge-geofence-onsite' : 'badge-geofence-offsite',
+        distanceMeters: Math.round(dist)
+      };
+    }
+
     function fmtDuration(ms){
       const total=Math.max(0,Math.floor(ms/1000));
       const h=String(Math.floor(total/3600)).padStart(2,'0');
@@ -2478,40 +1059,6 @@ document.addEventListener('click', async (e) => {
         }
     }
 
-    function initNotifications() {
-        if ("Notification" in window) {
-            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-                Notification.requestPermission();
-            }
-        }
-    }
-    function sendNotification(text) {
-        if ("Notification" in window && Notification.permission === "granted") {
-            new Notification("Elite Workforce Timesheet", { body: text, icon: "logo.png" });
-        }
-    }
-
-    function checkAutoCheckout() {
-        if (active) {
-            let checkInTime = new Date(active.checkInAt);
-            let now = new Date();
-            let hoursPassed = (now - checkInTime) / (1000 * 60 * 60);
-            if (hoursPassed >= 12) {
-                let autoEnd = new Date(checkInTime.getTime() + (8 * 60 * 60 * 1000));
-                history.unshift({
-                    checkInAt: active.checkInAt,
-                    checkOutAt: autoEnd.toISOString(),
-                    durationMs: 8 * 60 * 60 * 1000,
-                    checkInLocation: active.location,
-                    checkOutLocation: active.location
-                });
-                active = null;
-                save();
-                sendNotification("Your previous shift was auto-closed by the system (forgot to check out).");
-            }
-        }
-    }
-
     async function fetchAreaName(lat, lon) {
       try {
         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
@@ -2536,38 +1083,69 @@ document.addEventListener('click', async (e) => {
       const locBox=$('tsLocation');
       if(!locBox) return;
       if(!loc){ locBox.textContent='Location not captured yet. Allow location access when checking in.'; return; }
+      
       const areaText = loc.areaName ? `📍 <strong>${loc.areaName}</strong><br>` : '';
-      const coords=`${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)}`;
-      locBox.innerHTML=`${areaText}GPS Coords: <strong>${coords}</strong> · <a href="https://www.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" rel="noopener">Open Map</a>`;
+      const coords = `${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)}`;
+      const accuracyText = loc.accuracy ? ` (Precision: ±${loc.accuracy}m)` : '';
+      
+      const geo = checkGeofence(loc.latitude, loc.longitude);
+      const geoBadge = `<span class="${geo.badgeClass}">${geo.statusText} (${geo.distanceMeters}m from site)</span><br>`;
+
+      locBox.innerHTML = `${geoBadge}${areaText}GPS Coords: <strong>${coords}</strong>${accuracyText} · <a href="https://www.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" rel="noopener">Open Map</a>`;
     }
 
+    /* ULTRA-HIGH PRECISION GPS LOCK FUNCTION */
     function getLocation(){
       return new Promise((resolve,reject)=>{
         if(!navigator.geolocation){ reject(new Error('This browser does not support GPS location.')); return; }
+        
+        const gpsOptions = {
+          enableHighAccuracy: true, // Forces dedicated GPS chip
+          timeout: 25000,           // 25s satellite warm-up
+          maximumAge: 0             // Strictly fresh reading
+        };
+
         navigator.geolocation.getCurrentPosition(async pos=>{
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
+          const accuracyMeters = Math.round(pos.coords.accuracy);
+
           const area = await fetchAreaName(lat, lon);
-          resolve({ latitude: lat, longitude: lon, accuracy: Math.round(pos.coords.accuracy), areaName: area });
+          resolve({ 
+            latitude: lat, 
+            longitude: lon, 
+            accuracy: accuracyMeters, 
+            areaName: area 
+          });
         },err=>{
-          const messages={1:'Location permission was denied.',2:'Location unavailable.',3:'Location request timed out.'};
-          reject(new Error(messages[err.code]||'Unable to get location.'));
-        },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+          const messages={
+            1:'Location permission was denied. Please enable GPS in browser settings.',
+            2:'GPS signal unavailable. Please go near a window or outdoors.',
+            3:'GPS request timed out. Please try again.'
+          };
+          reject(new Error(messages[err.code]||'Unable to get precise location.'));
+        }, gpsOptions);
       });
     }
 
     async function checkIn(){
-      setStatus('Capturing GPS location & Area name…');
+      setStatus('Acquiring High-Precision GPS Lock…');
       try{
         const loc=await getLocation();
-        active={checkInAt:new Date().toISOString(),location:loc}; 
+        const geo=checkGeofence(loc.latitude, loc.longitude);
+
+        active={
+          checkInAt:new Date().toISOString(),
+          location:loc,
+          geofenceStatus: geo.statusText
+        }; 
         save(); 
         renderLocation(loc);
         
-        await saveToSupabase({ id: Date.now(), type: 'Clock In', time: active.checkInAt, location: loc.areaName });
+        await saveToSupabase({ id: Date.now(), type: 'Clock In', time: active.checkInAt, location: `${loc.areaName} [${geo.statusText}]` });
 
-        setStatus('Checked in successfully with GPS location!');
-        showToast('🟢 Direct Clock-In Successful!');
+        setStatus(`Checked in! GPS Precision: ±${loc.accuracy}m (${geo.statusText})`);
+        showToast(`🟢 Direct Clock-In Successful! [${geo.statusText}]`);
       }catch(e){ 
         setStatus(e.message); 
         showToast(e.message, 'error');
@@ -2593,16 +1171,17 @@ document.addEventListener('click', async (e) => {
 
       const end=new Date(); 
       const start=new Date(active.checkInAt); 
-      
-      // FIXED DURATION CALCULATION LOGIC BUG
       let duration=Math.max(0,end-start);
+
+      const geo = checkGeofence(outLoc.latitude, outLoc.longitude);
 
       history.unshift({
         checkInAt:active.checkInAt,
         checkOutAt:end.toISOString(),
         durationMs:duration,
         checkInLocation:active.location,
-        checkOutLocation:outLoc
+        checkOutLocation:outLoc,
+        geofenceStatus: geo.statusText
       });
       
       history=history.slice(0,100); 
@@ -2611,7 +1190,7 @@ document.addEventListener('click', async (e) => {
       update(); 
       renderHistory();
 
-      await saveToSupabase({ id: Date.now(), type: 'Clock Out', time: end.toISOString(), location: outLoc.areaName });
+      await saveToSupabase({ id: Date.now(), type: 'Clock Out', time: end.toISOString(), location: `${outLoc.areaName} [${geo.statusText}]` });
 
       setStatus('Checked out. Total duty time: '+fmtDuration(duration)+'.');
       showToast('🔴 Direct Clock-Out Successful!');
@@ -2620,21 +1199,14 @@ document.addEventListener('click', async (e) => {
 
     window.performDirectClock = async function(type) {
         if (type === 'Clock In') {
-            if (active) {
-                alert('You are already checked in!');
-                return;
-            }
+            if (active) { alert('You are already checked in!'); return; }
             await checkIn();
         } else {
-            if (!active) {
-                alert('You are not checked in yet!');
-                return;
-            }
+            if (!active) { alert('You are not checked in yet!'); return; }
             await checkOut();
         }
     };
 
-    /* RENDER CLEAN IMAGE WITH ASCENDING SORTING (1 Oct → 31 Oct) & SUMMARY FORMATTING */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
@@ -2660,6 +1232,8 @@ document.addEventListener('click', async (e) => {
             presentDays.add(dateKey);
             totalDurationMs += row.durationMs || 0;
 
+            let geoText = row.geofenceStatus ? ` [${row.geofenceStatus}]` : '';
+
             if (!dailyGroups[dateKey]) {
                 dailyGroups[dateKey] = {
                     rawDate: new Date(row.checkInAt),
@@ -2667,7 +1241,7 @@ document.addEventListener('click', async (e) => {
                     inTime: fmtTimeOnly(row.checkInAt),
                     outTime: fmtTimeOnly(row.checkOutAt),
                     durationMs: row.durationMs || 0,
-                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured'
+                    location: ((row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured') + geoText
                 };
             } else {
                 dailyGroups[dateKey].durationMs += (row.durationMs || 0);
@@ -2675,7 +1249,6 @@ document.addEventListener('click', async (e) => {
             }
         });
 
-        // ASCENDING ORDER SORTING (1 Oct → 31 Oct)
         let sortedGroups = Object.values(dailyGroups).sort((a, b) => a.rawDate - b.rawDate);
 
         let rowsHtml = '';
@@ -2710,7 +1283,6 @@ document.addEventListener('click', async (e) => {
                 </div>
             </div>
 
-            <!-- Present / Absent Summary Header -->
             <div style="display:flex; gap:15px; background:#f1f5f9; padding:10px 14px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1; font-family:Arial, sans-serif;">
                 <div style="flex:1; text-align:center;">
                     <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Present Days</span>
@@ -2799,9 +1371,8 @@ document.addEventListener('click', async (e) => {
         excelData.push(["Developer/Author:", "Manjur Ansari"]);
         excelData.push([]);
         
-        excelData.push(["Date", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Site Area / Location"]);
+        excelData.push(["Date", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Site Area / Location", "Geofence Status"]);
 
-        // ASCENDING ORDER SORTING FOR EXCEL EXPORT
         let sortedHistory = [...history].sort((a, b) => new Date(a.checkInAt) - new Date(b.checkInAt));
 
         sortedHistory.forEach(row => {
@@ -2812,12 +1383,13 @@ document.addEventListener('click', async (e) => {
                 fmtTimeOnly(row.checkInAt),
                 fmtTimeOnly(row.checkOutOut || row.checkOutAt),
                 fmtDuration(row.durationMs),
-                locText
+                locText,
+                row.geofenceStatus || 'Verified'
             ]);
         });
 
         const ws = XLSX.utils.aoa_to_sheet(excelData);
-        ws['!cols'] = [{wch:15}, {wch:15}, {wch:15}, {wch:20}, {wch:35}];
+        ws['!cols'] = [{wch:15}, {wch:15}, {wch:15}, {wch:20}, {wch:35}, {wch:20}];
         
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
@@ -2881,7 +1453,6 @@ document.addEventListener('click', async (e) => {
       if(!history.length){box.textContent='No attendance records yet.';return;}
       box.replaceChildren();
       
-      // ASCENDING ORDER SORTING FOR HISTORY LIST
       let sortedHistory = [...history].sort((a, b) => new Date(a.checkInAt) - new Date(b.checkInAt));
 
       sortedHistory.forEach(item=>{
@@ -2890,11 +1461,12 @@ document.addEventListener('click', async (e) => {
         
         const locInName = item.checkInLocation && item.checkInLocation.areaName ? item.checkInLocation.areaName : 'Location captured';
         const mapUrl = item.checkInLocation ? `https://www.google.com/maps?q=${item.checkInLocation.latitude},${item.checkInLocation.longitude}` : '#';
+        const geoBadge = item.geofenceStatus ? ` · <span style="color:#fde68a; font-weight:bold;">[${item.geofenceStatus}]</span>` : '';
 
         div.innerHTML = `
           <div class="time-line">📅 ${fmtDayDate(item.checkInAt)} (${fmtTimeOnly(item.checkInAt)} → ${fmtTimeOnly(item.checkOutAt)})</div>
           <div style="font-weight:700; color:#10b981; font-size:11px;">Duty Duration: ${fmtDuration(item.durationMs)}</div>
-          <div class="loc-line">📍 <strong>Site Area:</strong> ${locInName}</div>
+          <div class="loc-line">📍 <strong>Site Area:</strong> ${locInName}${geoBadge}</div>
           <div class="loc-line"><a href="${mapUrl}" target="_blank" style="color:#fde68a; text-decoration:underline;">🗺️ View exact location on Google Maps</a></div>
         `;
         box.appendChild(div);
@@ -2904,8 +1476,6 @@ document.addEventListener('click', async (e) => {
     if($('tsCheckIn'))$('tsCheckIn').addEventListener('click',checkIn);
     if($('tsCheckOut'))$('tsCheckOut').addEventListener('click',checkOut);
     
-    initNotifications();
-    checkAutoCheckout();
     renderHistory(); 
     update(); 
     setInterval(update,1000);
