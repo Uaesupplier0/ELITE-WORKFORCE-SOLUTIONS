@@ -2436,7 +2436,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT WITH MONTH/YEAR HEADER & PRESENT/ABSENT LOGIC */
+  /* ADVANCED TIMESHEET SCRIPT WITH SAME-DATE GROUPING & AUTOMATIC DURATION SUM */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2634,7 +2634,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    /* RENDER CLEAN IMAGE WITH MONTH/YEAR HEADER & SUMMARY BOX */
+    /* RENDER CLEAN IMAGE WITH SAME-DATE GROUPING & AUTOMATIC DURATION SUM */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
@@ -2651,24 +2651,39 @@ document.addEventListener('click', async (e) => {
         tempContainer.style.left = '-9999px';
         tempContainer.style.width = '780px';
 
-        let rowsHtml = '';
+        // Same-Date Grouping & Automatic Duration Sum Logic
+        let dailyGroups = {};
         let presentDays = new Set();
         let totalDurationMs = 0;
 
         history.forEach(row => {
-            let dateKey = new Date(row.checkInAt).toDateString();
+            let dateKey = fmtDayDate(row.checkInAt);
             presentDays.add(dateKey);
             totalDurationMs += row.durationMs || 0;
 
-            let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
-            
+            if (!dailyGroups[dateKey]) {
+                dailyGroups[dateKey] = {
+                    date: dateKey,
+                    inTime: fmtTimeOnly(row.checkInAt),
+                    outTime: fmtTimeOnly(row.checkOutAt),
+                    durationMs: row.durationMs || 0,
+                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured'
+                };
+            } else {
+                dailyGroups[dateKey].durationMs += (row.durationMs || 0);
+                dailyGroups[dateKey].outTime = fmtTimeOnly(row.checkOutAt);
+            }
+        });
+
+        let rowsHtml = '';
+        Object.values(dailyGroups).forEach(item => {
             rowsHtml += `
                 <tr>
-                    <td>${fmtDayDate(row.checkInAt)}</td>
-                    <td>${fmtTimeOnly(row.checkInAt)}</td>
-                    <td>${fmtTimeOnly(row.checkOutAt)}</td>
-                    <td>${fmtDuration(row.durationMs)}</td>
-                    <td>${locText}</td>
+                    <td>${item.date}</td>
+                    <td>${item.inTime}</td>
+                    <td>${item.outTime}</td>
+                    <td><b>${fmtDuration(item.durationMs)}</b></td>
+                    <td>${item.location}</td>
                 </tr>
             `;
         });
@@ -2714,7 +2729,7 @@ document.addEventListener('click', async (e) => {
                         <th>Date</th>
                         <th>In Time</th>
                         <th>Out Time</th>
-                        <th>Duration</th>
+                        <th>Total Duration</th>
                         <th>Site Location</th>
                     </tr>
                 </thead>
