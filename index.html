@@ -533,6 +533,9 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   border: 1px solid #d1d5db;
   padding: 6px 8px;
   text-align: left;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .excel-grid-table th {
@@ -2462,16 +2465,19 @@ document.addEventListener('click', async (e) => {
         const data = await response.json();
         if (data && data.address) {
           const addr = data.address;
+          // Shorten location to road, neighborhood and city/emirate only
           const road = addr.road || addr.suburb || '';
           const neighborhood = addr.neighbourhood || addr.city_district || '';
           const city = addr.city || addr.town || addr.state || 'UAE';
-          let short = [road, neighborhood, city].filter(Boolean).join(', ');
-          return short || data.display_name;
+          let shortParts = [road, neighborhood, city].filter(Boolean);
+          if (shortParts.length > 2) shortParts = shortParts.slice(0, 2); // Keep it compact
+          let short = shortParts.join(', ');
+          return short || city;
         }
       } catch (e) {
         console.log("Geocoding fetch note:", e);
       }
-      return `GPS (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+      return `GPS (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
     }
 
     function renderLocation(loc){
@@ -2479,7 +2485,7 @@ document.addEventListener('click', async (e) => {
       if(!locBox) return;
       if(!loc){ locBox.textContent='Location not captured yet. Allow location access when checking in.'; return; }
       const areaText = loc.areaName ? `📍 <strong>${loc.areaName}</strong><br>` : '';
-      const coords=`${loc.latitude.toFixed(5)}, ${loc.longitude.toFixed(5)}`;
+      const coords=`${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)}`;
       locBox.innerHTML=`${areaText}GPS Coords: <strong>${coords}</strong> · <a href="https://www.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" rel="noopener">Open Map</a>`;
     }
 
