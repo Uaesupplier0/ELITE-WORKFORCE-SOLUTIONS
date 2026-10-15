@@ -417,6 +417,35 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   font-weight: 800;
   margin-top: 4px;
 }
+
+/* Attendance Summary Stats Box (Present, Absent, Total) */
+.ts-summary-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  background: #0d1b36;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.ts-summary-item {
+  text-align: center;
+}
+.ts-summary-item span {
+  font-size: 10px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+}
+.ts-summary-item strong {
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 2px;
+  display: block;
+}
+
 .ts-location-card {
   font-size: 13px;
   color: #cbd5e1;
@@ -1302,18 +1331,18 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- UPDATED TIMESHEET POPUP MODAL -->
+<!-- UPDATED TIMESHEET POPUP MODAL WITH MONTH/YEAR HEADER & PRESENT/ABSENT SUMMARY BOX -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
       
-      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD -->
+      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD WITH MONTH & YEAR -->
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
           <div>
             <h2 style="font-size:16px; font-weight:900; color:#fbbf24; margin:0; line-height:1.1;">ELITE WORKFORCE SOLUTIONS</h2>
-            <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Official Attendance & Timesheet Report (Manjur Ansari)</span>
+            <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Attendance & Timesheet Report — <strong id="tsHeaderMonthYear" style="color:#ffffff;">October 2026</strong></span>
           </div>
         </div>
         <div style="text-align:right;">
@@ -1333,6 +1362,22 @@ textarea{min-height:115px;resize:vertical}
       <div class="ts-clock-time" id="tsClock">--:--:--</div>
       <div class="ts-date-sub" id="tsDate">Loading...</div>
       
+      <!-- PRESENT / ABSENT SUMMARY BOX -->
+      <div class="ts-summary-bar">
+        <div class="ts-summary-item">
+          <span>🟢 Present</span>
+          <strong id="tsPresentCount" style="color:#10b981;">0 Days</strong>
+        </div>
+        <div class="ts-summary-item">
+          <span>🔴 Absent</span>
+          <strong id="tsAbsentCount" style="color:#ef4444;">0 Days</strong>
+        </div>
+        <div class="ts-summary-item">
+          <span>⏱️ Total Work</span>
+          <strong id="tsTotalHours" style="color:#3b82f6;">00:00:00</strong>
+        </div>
+      </div>
+
       <div class="ts-grid-boxes">
         <div class="ts-box-item">
           <span>Today's duty time</span>
@@ -2391,7 +2436,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT WITH SHORTENED CLEAN LOCATION */
+  /* ADVANCED TIMESHEET SCRIPT WITH MONTH/YEAR HEADER & PRESENT/ABSENT LOGIC */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2410,7 +2455,17 @@ document.addEventListener('click', async (e) => {
       const sec=String(total%60).padStart(2,'0');
       return `${h}:${m}:${sec}`;
     }
-    function fmtDate(iso){ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',dateStyle:'medium',timeStyle:'short'}).format(new Date(iso))+' UAE'; }
+
+    // Time-only formatting without repeating date & year
+    function fmtTimeOnly(iso){
+      return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(iso));
+    }
+    
+    // Short Date format without year
+    function fmtDayDate(iso){
+      return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'short',day:'2-digit',month:'short'}).format(new Date(iso));
+    }
+
     function setStatus(msg){ const st=$('tsStatus'); if(st) st.textContent=msg; updateBadgeState(); }
 
     function updateBadgeState() {
@@ -2465,12 +2520,11 @@ document.addEventListener('click', async (e) => {
         const data = await response.json();
         if (data && data.address) {
           const addr = data.address;
-          // Shorten location to road, neighborhood and city/emirate only
           const road = addr.road || addr.suburb || '';
           const neighborhood = addr.neighbourhood || addr.city_district || '';
           const city = addr.city || addr.town || addr.state || 'UAE';
           let shortParts = [road, neighborhood, city].filter(Boolean);
-          if (shortParts.length > 2) shortParts = shortParts.slice(0, 2); // Keep it compact
+          if (shortParts.length > 2) shortParts = shortParts.slice(0, 2);
           let short = shortParts.join(', ');
           return short || city;
         }
@@ -2580,7 +2634,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    /* RENDER CLEAN SHORT LOCATION IN EXCEL GRID IMAGE */
+    /* RENDER CLEAN IMAGE WITH MONTH/YEAR HEADER & SUMMARY BOX */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
@@ -2589,39 +2643,79 @@ document.addEventListener('click', async (e) => {
 
         showToast('🖼️ Generating Excel Grid Image...');
 
+        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(new Date());
+
         const tempContainer = document.createElement('div');
         tempContainer.className = 'excel-grid-container';
         tempContainer.style.position = 'absolute';
         tempContainer.style.left = '-9999px';
-        tempContainer.style.width = '750px';
+        tempContainer.style.width = '780px';
 
         let rowsHtml = '';
+        let presentDays = new Set();
+        let totalDurationMs = 0;
+
         history.forEach(row => {
+            let dateKey = new Date(row.checkInAt).toDateString();
+            presentDays.add(dateKey);
+            totalDurationMs += row.durationMs || 0;
+
             let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
-            let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(4)}, ${row.checkInLocation.longitude.toFixed(4)}` : 'N/A';
+            
             rowsHtml += `
                 <tr>
-                    <td>${fmtDate(row.checkInAt)}</td>
-                    <td>${fmtDate(row.checkOutAt)}</td>
+                    <td>${fmtDayDate(row.checkInAt)}</td>
+                    <td>${fmtTimeOnly(row.checkInAt)}</td>
+                    <td>${fmtTimeOnly(row.checkOutAt)}</td>
                     <td>${fmtDuration(row.durationMs)}</td>
                     <td>${locText}</td>
-                    <td>${coords}</td>
                 </tr>
             `;
         });
 
+        const todayDate = new Date().getDate();
+        const presentCount = presentDays.size;
+        const absentCount = Math.max(0, todayDate - presentCount);
+
         tempContainer.innerHTML = `
-            <div style="font-size: 20px; font-weight: bold; color: #16a34a; margin-bottom: 10px; font-family: Arial, sans-serif;">
-                Attendance Timesheet
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom:2px solid #2563eb; padding-bottom:8px;">
+                <div>
+                  <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; font-family: Arial, sans-serif;">
+                      ELITE WORKFORCE SOLUTIONS
+                  </div>
+                  <div style="font-size: 13px; font-weight: 600; color: #475569;">
+                      Attendance Timesheet — <span style="color:#2563eb;">${currentMonthYear}</span>
+                  </div>
+                </div>
+                <div style="text-align:right; font-size:11px; font-weight:bold; color:#059669;">
+                   Verified Monthly Log
+                </div>
             </div>
+
+            <!-- Present / Absent Summary Header -->
+            <div style="display:flex; gap:15px; background:#f1f5f9; padding:10px 14px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1; font-family:Arial, sans-serif;">
+                <div style="flex:1; text-align:center;">
+                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Present Days</span>
+                    <div style="font-size:16px; font-weight:bold; color:#16a34a;">${presentCount} Days</div>
+                </div>
+                <div style="flex:1; text-align:center; border-left:1px solid #cbd5e1; border-right:1px solid #cbd5e1;">
+                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Absent Days</span>
+                    <div style="font-size:16px; font-weight:bold; color:#dc2626;">${absentCount} Days</div>
+                </div>
+                <div style="flex:1; text-align:center;">
+                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Total Hours</span>
+                    <div style="font-size:16px; font-weight:bold; color:#2563eb;">${fmtDuration(totalDurationMs)}</div>
+                </div>
+            </div>
+
             <table class="excel-grid-table">
                 <thead>
                     <tr>
-                        <th>Check-In Time (UAE)</th>
-                        <th>Check-Out Time (UAE)</th>
-                        <th>Duration (HH:MM:SS)</th>
-                        <th>Site Area / Location</th>
-                        <th>GPS Coordinates</th>
+                        <th>Date</th>
+                        <th>In Time</th>
+                        <th>Out Time</th>
+                        <th>Duration</th>
+                        <th>Site Location</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -2634,7 +2728,7 @@ document.addEventListener('click', async (e) => {
 
         html2canvas(tempContainer, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'Attendance_Timesheet_Excel_View.png';
+            link.download = `Attendance_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
             document.body.removeChild(tempContainer);
@@ -2678,40 +2772,64 @@ document.addEventListener('click', async (e) => {
             return;
         }
 
+        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(new Date());
+
         const excelData = [];
         excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
+        excelData.push(["Timesheet Month:", currentMonthYear]);
         excelData.push(["Generated Date:", new Date().toLocaleString()]);
         excelData.push(["Developer/Author:", "Manjur Ansari"]);
         excelData.push([]);
         
-        excelData.push(["Check-In Time (UAE)", "Check-Out Time (UAE)", "Duration (HH:MM:SS)", "Site Area / Location", "GPS Coordinates"]);
+        excelData.push(["Date", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Site Area / Location"]);
 
         history.forEach(row => {
             let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
-            let coords = (row.checkInLocation) ? `${row.checkInLocation.latitude.toFixed(5)}, ${row.checkInLocation.longitude.toFixed(5)}` : 'N/A';
             
             excelData.push([
-                fmtDate(row.checkInAt),
-                fmtDate(row.checkOutAt),
+                fmtDayDate(row.checkInAt),
+                fmtTimeOnly(row.checkInAt),
+                fmtTimeOnly(row.checkOutOut || row.checkOutAt),
                 fmtDuration(row.durationMs),
-                locText,
-                coords
+                locText
             ]);
         });
 
         const ws = XLSX.utils.aoa_to_sheet(excelData);
-        ws['!cols'] = [{wch:25}, {wch:25}, {wch:20}, {wch:35}, {wch:25}];
+        ws['!cols'] = [{wch:15}, {wch:15}, {wch:15}, {wch:20}, {wch:35}];
         
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
         
-        XLSX.writeFile(wb, "Elite_Workforce_Timesheet_Report.xlsx");
+        XLSX.writeFile(wb, `Elite_Workforce_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.xlsx`);
         showToast('📊 Excel File Downloaded Successfully!');
     };
+
+    function updateSummaryBox() {
+        let presentDays = new Set();
+        let totalDurationMs = 0;
+
+        history.forEach(row => {
+            let dateKey = new Date(row.checkInAt).toDateString();
+            presentDays.add(dateKey);
+            totalDurationMs += row.durationMs || 0;
+        });
+
+        const todayDate = new Date().getDate();
+        const presentCount = presentDays.size;
+        const absentCount = Math.max(0, todayDate - presentCount);
+
+        if($('tsPresentCount'))$('tsPresentCount').textContent = `${presentCount} Days`;
+        if($('tsAbsentCount'))$('tsAbsentCount').textContent = `${absentCount} Days`;
+        if($('tsTotalHours'))$('tsTotalHours').textContent = fmtDuration(totalDurationMs);
+    }
 
     function update(){
       const now=new Date();
       
+      const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
+      if($('tsHeaderMonthYear'))$('tsHeaderMonthYear').textContent = currentMonthYear;
+
       const heroClock = $('heroLiveClock');
       const heroDate = $('heroLiveDate');
       if(heroClock && heroDate) {
@@ -2733,6 +2851,7 @@ document.addEventListener('click', async (e) => {
         if(active){ renderLocation(active.location); }
       }
       updateBadgeState();
+      updateSummaryBox();
     }
 
     function renderHistory(){
@@ -2748,7 +2867,7 @@ document.addEventListener('click', async (e) => {
         const mapUrl = item.checkInLocation ? `https://www.google.com/maps?q=${item.checkInLocation.latitude},${item.checkInLocation.longitude}` : '#';
 
         div.innerHTML = `
-          <div class="time-line">📅 ${fmtDate(item.checkInAt)} → ${fmtDate(item.checkOutAt)}</div>
+          <div class="time-line">📅 ${fmtDayDate(item.checkInAt)} (${fmtTimeOnly(item.checkInAt)} → ${fmtTimeOnly(item.checkOutAt)})</div>
           <div style="font-weight:700; color:#10b981; font-size:11px;">Duty Duration: ${fmtDuration(item.durationMs)}</div>
           <div class="loc-line">📍 <strong>Site Area:</strong> ${locInName}</div>
           <div class="loc-line"><a href="${mapUrl}" target="_blank" style="color:#fde68a; text-decoration:underline;">🗺️ View exact location on Google Maps</a></div>
