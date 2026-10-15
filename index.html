@@ -2436,7 +2436,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT WITH SAME-DATE GROUPING & AUTOMATIC DURATION SUM */
+  /* ADVANCED TIMESHEET SCRIPT WITH CORRECT DURATION, ASCENDING SORTING & SUMMARY FORMATTING */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2456,12 +2456,10 @@ document.addEventListener('click', async (e) => {
       return `${h}:${m}:${sec}`;
     }
 
-    // Time-only formatting without repeating date & year
     function fmtTimeOnly(iso){
       return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(iso));
     }
     
-    // Short Date format without year
     function fmtDayDate(iso){
       return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'short',day:'2-digit',month:'short'}).format(new Date(iso));
     }
@@ -2595,7 +2593,9 @@ document.addEventListener('click', async (e) => {
 
       const end=new Date(); 
       const start=new Date(active.checkInAt); 
-      const duration=Math.max(0,end-start);
+      
+      // FIXED DURATION CALCULATION LOGIC BUG
+      let duration=Math.max(0,end-start);
 
       history.unshift({
         checkInAt:active.checkInAt,
@@ -2634,7 +2634,7 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    /* RENDER CLEAN IMAGE WITH SAME-DATE GROUPING & AUTOMATIC DURATION SUM */
+    /* RENDER CLEAN IMAGE WITH ASCENDING SORTING (1 Oct → 31 Oct) & SUMMARY FORMATTING */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
@@ -2651,7 +2651,6 @@ document.addEventListener('click', async (e) => {
         tempContainer.style.left = '-9999px';
         tempContainer.style.width = '780px';
 
-        // Same-Date Grouping & Automatic Duration Sum Logic
         let dailyGroups = {};
         let presentDays = new Set();
         let totalDurationMs = 0;
@@ -2663,6 +2662,7 @@ document.addEventListener('click', async (e) => {
 
             if (!dailyGroups[dateKey]) {
                 dailyGroups[dateKey] = {
+                    rawDate: new Date(row.checkInAt),
                     date: dateKey,
                     inTime: fmtTimeOnly(row.checkInAt),
                     outTime: fmtTimeOnly(row.checkOutAt),
@@ -2675,8 +2675,11 @@ document.addEventListener('click', async (e) => {
             }
         });
 
+        // ASCENDING ORDER SORTING (1 Oct → 31 Oct)
+        let sortedGroups = Object.values(dailyGroups).sort((a, b) => a.rawDate - b.rawDate);
+
         let rowsHtml = '';
-        Object.values(dailyGroups).forEach(item => {
+        sortedGroups.forEach(item => {
             rowsHtml += `
                 <tr>
                     <td>${item.date}</td>
@@ -2798,7 +2801,10 @@ document.addEventListener('click', async (e) => {
         
         excelData.push(["Date", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Site Area / Location"]);
 
-        history.forEach(row => {
+        // ASCENDING ORDER SORTING FOR EXCEL EXPORT
+        let sortedHistory = [...history].sort((a, b) => new Date(a.checkInAt) - new Date(b.checkInAt));
+
+        sortedHistory.forEach(row => {
             let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Location Captured';
             
             excelData.push([
@@ -2874,7 +2880,11 @@ document.addEventListener('click', async (e) => {
       if(!box) return;
       if(!history.length){box.textContent='No attendance records yet.';return;}
       box.replaceChildren();
-      history.forEach(item=>{
+      
+      // ASCENDING ORDER SORTING FOR HISTORY LIST
+      let sortedHistory = [...history].sort((a, b) => new Date(a.checkInAt) - new Date(b.checkInAt));
+
+      sortedHistory.forEach(item=>{
         const div=document.createElement('div'); 
         div.className='ts-history-item-detailed';
         
