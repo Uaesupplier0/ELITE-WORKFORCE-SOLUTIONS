@@ -1,168 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile Details - Elite Workforce Solutions</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Custom Font */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
-    body { font-family: 'Inter', sans-serif; background: #f1f5f9; }
-    /* Color Palette Variables based on your main site theme */
-    :root {
-      --navy: #0b132b;
-      --blue: #1d4ed8; /* Tailwind blue-600 */
-      --gold: #f59e0b; /* Tailwind amber-500 */
-      --emerald: #10b981; /* Tailwind emerald-500 */
-      --muted: #94a3b8; /* Tailwind slate-400 */
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile Details | Elite Workforce Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #17233a; margin: 0; padding: 20px; }
+  .profile-card { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e7ebf0; }
+  .profile-header { background: linear-gradient(135deg, #061b3a, #0b3d91); color: #fff; padding: 30px; text-align: center; position: relative; }
+  .profile-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; margin: 0 auto 15px auto; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #0b3d91; font-weight: bold; }
+  .profile-body { padding: 30px; }
+  .info-group { margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+  .info-label { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+  .info-value { font-size: 16px; font-weight: 600; color: #1e293b; }
+  .whatsapp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #fff; font-weight: 800; padding: 12px 20px; border-radius: 8px; width: 100%; text-align: center; margin-top: 15px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); transition: 0.2s; }
+  .whatsapp-btn:hover { background: #20ba5a; transform: translateY(-2px); }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; color: #475569; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; margin-bottom: 20px; text-decoration: none; transition: 0.2s; }
+  .back-btn:hover { background: #e2e8f0; color: #1e293b; }
+</style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col justify-between">
+<body>
 
-  <!-- Header (Colorful Navy with Gold Tones) -->
-  <header style="background-color: var(--navy);" class="text-white shadow-md py-4 px-6 flex justify-between items-center border-b-4 border-amber-500">
-    <a href="index.html" class="font-extrabold text-lg flex items-center gap-2">
-      <i class="fa-solid fa-briefcase" style="color: var(--gold);"></i> ELITE <b style="color: var(--gold);">WORKFORCE</b>
-    </a>
-    <a href="index.html" class="text-xs font-bold text-navy bg-amber-400 px-4 py-2 rounded-full hover:bg-amber-300 transition flex items-center gap-1.5 shadow-md">
-      <i class="fa-solid fa-arrow-left"></i> Back to Home
-    </a>
-  </header>
+<div class="max-w-[600px] mx-auto">
+  <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+</div>
 
-  <!-- Main Card Container -->
-  <main class="container mx-auto max-w-lg px-4 py-10 my-auto">
-    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 md:p-9 overflow-hidden relative">
-      
-      <!-- Decorative Gradient Header -->
-      <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-navy via-blue-900 to-navy"></div>
-
-      <!-- Profile Header / Avatar (Square with subtle rounded corners) -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-8 pb-8 border-b-2 border-slate-100 mt-3">
-        <div id="profileAvatar" class="w-24 h-24 rounded-2xl bg-slate-100 flex items-center justify-center text-4xl font-black overflow-hidden shadow-lg border-4 border-white ring-2 ring-slate-200 flex-shrink-0 text-blue-700">
-          <!-- Image or Initial -->
-        </div>
-        <div class="flex-1 w-full">
-          <h1 id="profileTitle" class="text-3xl font-black text-navy tracking-tight">Loading...</h1>
-          <p id="profileSubtitle" class="text-xs font-bold uppercase tracking-widest mt-1.5" style="color: var(--blue);">Profile Details</p>
-        </div>
-      </div>
-
-      <!-- Details List (Colorful Highlights) -->
-      <div id="profileDetails" class="space-y-5 text-sm">
-        <!-- Dynamic rows injected here with color classes -->
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="mt-10 pt-8 border-t-2 border-slate-100 flex flex-col sm:flex-row gap-4">
-        <a id="whatsappBtn" href="#" target="_blank" class="flex-1 text-white font-bold py-4 px-6 rounded-2xl text-center shadow-xl transition flex items-center justify-center gap-2.5 text-base hover:scale-105" style="background-color: var(--emerald);">
-          <i class="fa-brands fa-whatsapp text-2xl"></i> Connect on WhatsApp
-        </a>
-        <a href="index.html" class="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-center transition text-base">
-          Close
-        </a>
-      </div>
-
+<div class="profile-card" id="profileCardContainer">
+  <div class="profile-header">
+    <div id="avatarContainer" class="profile-avatar">
+      <i class="fa-solid fa-user"></i>
     </div>
-  </main>
+    <h1 id="profileTitle" class="text-2xl font-extrabold text-white">Loading Profile...</h1>
+    <p id="profileRoleSubtitle" class="text-amber-300 font-semibold text-sm mt-1">Please wait</p>
+  </div>
 
-  <!-- Footer (Subtle) -->
-  <footer class="text-center py-8 text-xs text-muted border-t border-slate-200 bg-white mt-6">
-    &copy; 2026 Elite Workforce Solutions. All rights reserved.
-  </footer>
+  <div class="profile-body" id="profileDetailsBody">
+    <p class="text-center text-gray-500 py-6">Loading details from database...</p>
+  </div>
+</div>
 
-  <script>
-    const type = new URLSearchParams(window.location.search).get('type');
-    const rawData = localStorage.getItem('selected_profile_data');
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const profileType = localStorage.getItem('selected_profile_type');
+    const profileDataRaw = localStorage.getItem('selected_profile_data');
 
-    // Define common detail row template for consistency
-    const createRow = (label, value, isLink = false, valueClass = "font-semibold text-slate-700") => `
-      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 py-3 border-b border-slate-50 last:border-b-0">
-        <span class="font-medium text-muted text-xs uppercase tracking-wider">${label}</span> 
-        <span class="${isLink ? 'font-semibold text-blue-700 hover:underline' : valueClass}">${value}</span>
-      </div>
-    `;
+    const titleEl = document.getElementById('profileTitle');
+    const subtitleEl = document.getElementById('profileRoleSubtitle');
+    const avatarEl = document.getElementById('avatarContainer');
+    const bodyEl = document.getElementById('profileDetailsBody');
 
-    if (!rawData) {
-      document.getElementById('profileTitle').innerText = "No Data Found";
-      document.getElementById('profileDetails').innerHTML = "<p class='text-center text-muted py-8'>Please go back and select a valid record from the table.</p>";
-      document.getElementById('whatsappBtn').style.display = 'none';
-      document.getElementById('profileSubtitle').style.display = 'none';
-    } else {
-      const data = JSON.parse(rawData);
-      const avatarContainer = document.getElementById('profileAvatar');
-      const titleEl = document.getElementById('profileTitle');
-      const subtitleEl = document.getElementById('profileSubtitle');
-      const detailsEl = document.getElementById('profileDetails');
-      const waBtn = document.getElementById('whatsappBtn');
-
-      if (type === 'azad_workers') {
-        titleEl.innerText = data.full_name;
-        subtitleEl.innerText = `Skilled Trade: ${data.trade || 'Worker'}`;
-        if (data.file_uri) {
-          avatarContainer.innerHTML = `<img src="${data.file_uri}" class="w-full h-full object-cover">`;
-        } else {
-          avatarContainer.innerText = data.full_name.charAt(0);
-        }
-
-        detailsEl.innerHTML = `
-          ${createRow('Email Address', data.email || 'N/A')}
-          ${createRow('Contact Number', data.phone_number || 'N/A')}
-          ${createRow('Trade / Skill', `<span class="font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full text-xs">${data.trade}</span>`, false, '')}
-          ${createRow('Location', data.location || 'UAE')}
-          ${createRow('Registered On', new Date(data.created_at).toLocaleDateString())}
-        `;
-        const phone = data.phone_number ? data.phone_number.replace(/[^0-9]/g, '') : '';
-        waBtn.href = `https://wa.me/${phone}`;
-
-      } else if (type === 'suppliers') {
-        titleEl.innerText = data.company_name;
-        subtitleEl.innerText = `Manpower Supplier`;
-        if (data.logo_url) {
-          avatarContainer.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain p-2">`;
-        } else {
-          avatarContainer.innerText = data.company_name.charAt(0);
-        }
-
-        detailsEl.innerHTML = `
-          ${createRow('Trade License', data.trade_license || 'Verified', false, 'font-mono font-bold text-navy')}
-          ${createRow('Contact Person', data.contact_person || 'N/A')}
-          ${createRow('Email Address', data.email || 'N/A')}
-          ${createRow('Phone / WhatsApp', data.phone || 'N/A')}
-          ${createRow('Specializations', data.manpower_types || 'General', false, 'font-bold text-blue-700')}
-          ${createRow('Available Workers', `<span class="text-lg font-black text-navy">${data.workers_available || 'Multiple'}</span>`, false, '')}
-        `;
-        const phone = data.phone ? data.phone.replace(/[^0-9]/g, '') : '';
-        waBtn.href = `https://wa.me/${phone}`;
-
-      } else if (type === 'companies') {
-        titleEl.innerText = data.company_name;
-        subtitleEl.innerText = `Active Requirement`;
-        if (data.logo_url) {
-          avatarContainer.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain p-2">`;
-        } else {
-          avatarContainer.innerText = data.company_name.charAt(0);
-        }
-
-        detailsEl.innerHTML = `
-          ${createRow('Trade License', data.trade_license || 'Verified', false, 'font-mono font-bold text-navy')}
-          ${createRow('Contact Person', data.contact_person || 'N/A')}
-          ${createRow('Email Address', data.email || 'N/A')}
-          ${createRow('Location', data.location || 'UAE')}
-          <div class="py-3 border-b border-slate-50">
-            <span class="font-medium text-muted text-xs uppercase tracking-wider block mb-2">Requirement Details</span>
-            <p class="bg-slate-50 p-5 rounded-xl text-slate-700 text-sm leading-relaxed border border-slate-100 shadow-inner">
-              ${data.requirement_details || 'N/A'}
-            </p>
-          </div>
-          ${createRow('Posted On', new Date(data.created_at).toLocaleDateString())}
-        `;
-        const phone = data.phone ? data.phone.replace(/[^0-9]/g, '') : '';
-        waBtn.href = `https://wa.me/${phone}`;
-      }
+    if (!profileDataRaw) {
+      titleEl.innerText = "No Profile Found";
+      subtitleEl.innerText = "Error";
+      bodyEl.innerHTML = `<p class="text-center text-red-500 py-4">Koi profile data select nahi kiya gaya hai. Kripya Home page par wapas jayein.</p>`;
+      return;
     }
-  </script>
+
+    const data = JSON.parse(profileDataRaw);
+
+    if (profileType === 'azad_workers') {
+      titleEl.innerText = data.full_name || 'Worker Profile';
+      subtitleEl.innerText = `Trade / Skill: ${(data.trade || 'General Worker').toUpperCase()}`;
+      
+      if (data.file_uri) {
+        avatarEl.innerHTML = `<img src="${data.file_uri}" class="w-full h-full object-cover rounded-full">`;
+      } else {
+        avatarEl.innerText = (data.full_name || 'W').charAt(0).toUpperCase();
+      }
+
+      const cleanPhone = data.phone_number ? data.phone_number.replace(/[^0-9]/g, '') : '';
+
+      bodyEl.innerHTML = `
+        <div class="info-group">
+          <div class="info-label">Full Name</div>
+          <div class="info-value">${data.full_name || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Email Address</div>
+          <div class="info-value">${data.email || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Phone / WhatsApp Number</div>
+          <div class="info-value">${data.phone_number || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Trade / Expertise</div>
+          <div class="info-value text-blue-600 font-bold">${data.trade || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Emirate / Location</div>
+          <div class="info-value">${data.location || 'UAE'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Registration Date</div>
+          <div class="info-value">${data.created_at ? new Date(data.created_at).toLocaleDateString() : 'N/A'}</div>
+        </div>
+        <a href="https://wa.me/${cleanPhone}" target="_blank" class="whatsapp-btn">
+          <i class="fa-brands fa-whatsapp text-xl"></i> Connect with Worker on WhatsApp
+        </a>
+      `;
+
+    } else if (profileType === 'suppliers') {
+      titleEl.innerText = data.company_name || 'Supplier Company';
+      subtitleEl.innerText = `Trade License: ${data.trade_license || 'Verified Supplier'}`;
+
+      if (data.logo_url) {
+        avatarEl.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain rounded-full bg-white p-1">`;
+      } else {
+        avatarEl.innerText = (data.company_name || 'S').charAt(0).toUpperCase();
+      }
+
+      const cleanPhone = data.phone ? data.phone.replace(/[^0-9]/g, '') : '';
+
+      bodyEl.innerHTML = `
+        <div class="info-group">
+          <div class="info-label">Supplier / Company Name</div>
+          <div class="info-value">${data.company_name || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Trade License Number</div>
+          <div class="info-value font-mono text-blue-600">${data.trade_license || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Contact Person</div>
+          <div class="info-value">${data.contact_person || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Email Address</div>
+          <div class="info-value">${data.email || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Phone / WhatsApp</div>
+          <div class="info-value">${data.phone || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Manpower Categories</div>
+          <div class="info-value">${data.manpower_types || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Workers Available</div>
+          <div class="info-value text-emerald-600 font-bold">${data.workers_available || 'Multiple'} Workers</div>
+        </div>
+        <a href="https://wa.me/${cleanPhone}" target="_blank" class="whatsapp-btn">
+          <i class="fa-brands fa-whatsapp text-xl"></i> Contact Supplier on WhatsApp
+        </a>
+      `;
+
+    } else if (profileType === 'companies') {
+      titleEl.innerText = data.company_name || 'Client Company';
+      subtitleEl.innerText = `Requirement Location: ${data.location || 'UAE'}`;
+
+      if (data.logo_url) {
+        avatarEl.innerHTML = `<img src="${data.logo_url}" class="w-full h-full object-contain rounded-full bg-white p-1">`;
+      } else {
+        avatarEl.innerText = (data.company_name || 'C').charAt(0).toUpperCase();
+      }
+
+      const cleanPhone = data.phone ? data.phone.replace(/[^0-9]/g, '') : '';
+
+      bodyEl.innerHTML = `
+        <div class="info-group">
+          <div class="info-label">Company Name</div>
+          <div class="info-value">${data.company_name || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Trade License</div>
+          <div class="info-value font-mono text-blue-600">${data.trade_license || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Contact Person</div>
+          <div class="info-value">${data.contact_person || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Email Address</div>
+          <div class="info-value">${data.email || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Phone / WhatsApp</div>
+          <div class="info-value">${data.phone || 'N/A'}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Requirement Details</div>
+          <div class="info-value text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-200 mt-1">${data.requirement_details || 'N/A'}</div>
+        </div>
+        <a href="https://wa.me/${cleanPhone}" target="_blank" class="whatsapp-btn">
+          <i class="fa-brands fa-whatsapp text-xl"></i> Chat with Company on WhatsApp
+        </a>
+      `;
+    }
+  });
+</script>
+
 </body>
 </html>
