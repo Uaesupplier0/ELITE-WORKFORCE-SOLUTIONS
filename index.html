@@ -769,6 +769,33 @@ textarea{min-height:115px;resize:vertical}
       <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
         <i class="fa-solid fa-moon" id="themeIcon"></i>
       </button>
+
+      <!-- NAVBAR PROFILE SYSTEM BUTTON & DROPDOWN MENU -->
+      <div style="position: relative;">
+        <button id="navProfileBtn" onclick="toggleProfileDropdown()" style="display: flex; align-items: center; gap: 6px; background: var(--light); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 12px; color: var(--text);">
+          <div id="navProfileAvatar" style="width: 24px; height: 24px; border-radius: 50%; background: var(--blue2); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; overflow: hidden;">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span id="navProfileName" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Login</span>
+          <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: var(--muted);"></i>
+        </button>
+
+        <!-- Dropdown Card -->
+        <div id="navProfileDropdown" style="display: none; position: absolute; top: 110%; right: 0; width: 220px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1010; padding: 12px; text-align: left;">
+          <div id="navUserLoggedInfo" style="padding-bottom: 10px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+            <p style="font-size: 13px; font-weight: 800; color: var(--text); margin: 0;" id="dropUserName">Guest User</p>
+            <p style="font-size: 10px; color: var(--muted); margin: 0;" id="dropUserRole">Not logged in</p>
+          </div>
+          
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 700;">
+            <li id="menuViewProfile"><a href="javascript:void(0)" onclick="goToMyProfile()" style="display: flex; align-items: center; gap: 8px; color: var(--text);"><i class="fa-solid fa-id-card" style="color: var(--blue2);"></i> My Profile</a></li>
+            <li><a href="javascript:void(0)" onclick="openTimesheetModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--text);"><i class="fa-solid fa-clock" style="color: var(--gold2);"></i> My Attendance Log</a></li>
+            <li id="menuLoginOption"><a href="javascript:void(0)" onclick="openAzadModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--emerald2);"><i class="fa-solid fa-right-to-bracket"></i> Register / Login</a></li>
+            <li id="menuLogoutOption" style="display: none;"><a href="javascript:void(0)" onclick="logoutUserProfile()" style="display: flex; align-items: center; gap: 8px; color: #ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+
       <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
     </div>
 
@@ -1753,10 +1780,91 @@ textarea{min-height:115px;resize:vertical}
 
     loadPublicLeaderboard();
     fetchDynamicPairRate();
+    updateNavProfileState();
   });
 
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
   function closeMenu() { document.getElementById('navLinks').classList.remove('active'); }
+
+  /* NAVBAR PROFILE DROPDOWN LOGIC */
+  function toggleProfileDropdown() {
+    const drop = document.getElementById('navProfileDropdown');
+    if (drop) {
+      drop.style.display = drop.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  function closeProfileDropdown() {
+    const drop = document.getElementById('navProfileDropdown');
+    if (drop) drop.style.display = 'none';
+  }
+
+  // Close dropdown if clicked outside
+  document.addEventListener('click', (e) => {
+    const btn = document.getElementById('navProfileBtn');
+    const drop = document.getElementById('navProfileDropdown');
+    if (btn && drop && !btn.contains(e.target) && !drop.contains(e.target)) {
+      drop.style.display = 'none';
+    }
+  });
+
+  // Update Header Profile Details from Local Storage
+  function updateNavProfileState() {
+    const profileDataRaw = localStorage.getItem('selected_profile_data');
+    
+    const navName = document.getElementById('navProfileName');
+    const navAvatar = document.getElementById('navProfileAvatar');
+    const dropName = document.getElementById('dropUserName');
+    const dropRole = document.getElementById('dropUserRole');
+    const menuLogout = document.getElementById('menuLogoutOption');
+    const menuLogin = document.getElementById('menuLoginOption');
+
+    if (profileDataRaw) {
+      const data = JSON.parse(profileDataRaw);
+      const userName = data.full_name || data.company_name || 'User Profile';
+      const photoUrl = data.file_uri || data.logo_url;
+      
+      if (navName) navName.innerText = userName;
+      if (dropName) dropName.innerText = userName;
+      if (dropRole) dropRole.innerText = (data.trade || data.manpower_types || 'Verified Member').toUpperCase();
+      
+      if (navAvatar) {
+        if (photoUrl) {
+          navAvatar.innerHTML = `<img src="${photoUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+        } else {
+          navAvatar.innerText = userName.charAt(0).toUpperCase();
+        }
+      }
+
+      if (menuLogout) menuLogout.style.display = 'block';
+      if (menuLogin) menuLogin.style.display = 'none';
+    } else {
+      if (navName) navName.innerText = 'Login';
+      if (dropName) dropName.innerText = 'Guest User';
+      if (dropRole) dropRole.innerText = 'Not registered';
+      if (navAvatar) navAvatar.innerHTML = '<i class="fa-solid fa-user"></i>';
+      if (menuLogout) menuLogout.style.display = 'none';
+      if (menuLogin) menuLogin.style.display = 'block';
+    }
+  }
+
+  function goToMyProfile() {
+    closeProfileDropdown();
+    const profileDataRaw = localStorage.getItem('selected_profile_data');
+    if (profileDataRaw) {
+      window.location.href = 'worker-profile.html';
+    } else {
+      openAzadModal();
+    }
+  }
+
+  function logoutUserProfile() {
+    localStorage.removeItem('selected_profile_data');
+    localStorage.removeItem('selected_profile_type');
+    updateNavProfileState();
+    closeProfileDropdown();
+    showToast('Profile Logged Out Successfully!');
+  }
 
   function openTimesheetModal() { document.getElementById('timesheetModal').style.display = 'flex'; }
   function closeTimesheetModal() { document.getElementById('timesheetModal').style.display = 'none'; }
@@ -2208,6 +2316,11 @@ textarea{min-height:115px;resize:vertical}
 
       const { error } = await _supabase.from('azad_workers').insert([payload]);
       if (error) throw error;
+
+      // Automatically save as active user session profile in Local Storage
+      localStorage.setItem('selected_profile_type', 'azad_workers');
+      localStorage.setItem('selected_profile_data', JSON.stringify(payload));
+      updateNavProfileState();
 
       closeAzadModal();
       showSuccessPopup('Done ✅ - Azad worker registration & photo upload successful.');
