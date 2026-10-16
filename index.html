@@ -573,7 +573,7 @@ header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow
   color: #111827;
 }
 
-/* Absent Row Highlight Class */
+/* Absent Row Highlight Class with Red Line / Strike-through */
 .absent-row-highlight {
   background-color: #fef2f2 !important;
   color: #dc2626 !important;
@@ -2365,7 +2365,7 @@ textarea{min-height:115px;resize:vertical}
       return;
     }
 
-    showToast(`${targetName} ke emails fetch kiye ja rahe ہیں۔...`);
+    showToast(`${targetName} ke emails fetch kiye ja rahe hain...`);
 
     try {
       let allEmails = [];
@@ -2444,7 +2444,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT WITH CORRECT DURATION, ASCENDING SORTING & SUMMARY FORMATTING */
+  /* ADVANCED TIMESHEET SCRIPT WITH COMPLETE ASCENDING DATES & CORRECT ABSENT/PRESENT COUNT */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2601,7 +2601,6 @@ document.addEventListener('click', async (e) => {
 
       const end=new Date(); 
       const start=new Date(active.checkInAt); 
-      
       let duration=Math.max(0,end-start);
 
       history.unshift({
@@ -2641,16 +2640,18 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    /* RENDER CLEAN IMAGE WITH ABSENT ROWS HIGHLIGHTED & PINPOINT LOCATION */
+    /* DOWNLOAD IMAGE WITH COMPLETE ASCENDING ORDER (1 OCT TO TODAY) & RED ABSENT ROWS */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
             return;
         }
 
-        showToast('🖼️ Generating Excel Grid Image with Pinpoint Location & Absent Rows...');
+        showToast('🖼️ Generating Excel Grid Image in Ascending Order...');
 
-        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(new Date());
+        const now = new Date();
+        const todayDate = now.getDate();
+        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
 
         const tempContainer = document.createElement('div');
         tempContainer.className = 'excel-grid-container';
@@ -2658,70 +2659,64 @@ document.addEventListener('click', async (e) => {
         tempContainer.style.left = '-9999px';
         tempContainer.style.width = '820px';
 
-        let dailyGroups = {};
-        let presentDays = new Set();
+        let presentMap = {};
         let totalDurationMs = 0;
 
         history.forEach(row => {
-            let dateKey = fmtDayDate(row.checkInAt);
-            presentDays.add(dateKey);
-            totalDurationMs += row.durationMs || 0;
-
-            if (!dailyGroups[dateKey]) {
-                dailyGroups[dateKey] = {
-                    rawDate: new Date(row.checkInAt),
-                    date: dateKey,
+            let dateObj = new Date(row.checkInAt);
+            let dayNum = dateObj.getDate();
+            
+            if (!presentMap[dayNum]) {
+                presentMap[dayNum] = {
+                    rawDate: dateObj,
+                    dateStr: fmtDayDate(row.checkInAt),
                     inTime: fmtTimeOnly(row.checkInAt),
                     outTime: fmtTimeOnly(row.checkOutAt),
                     durationMs: row.durationMs || 0,
-                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured',
-                    status: 'Present'
+                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured'
                 };
             } else {
-                dailyGroups[dateKey].durationMs += (row.durationMs || 0);
-                dailyGroups[dateKey].outTime = fmtTimeOnly(row.checkOutAt);
+                presentMap[dayNum].durationMs += (row.durationMs || 0);
+                presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
             }
+            totalDurationMs += row.durationMs || 0;
         });
-
-        let sortedGroups = Object.values(dailyGroups).sort((a, b) => a.rawDate - b.rawDate);
 
         let rowsHtml = '';
-        sortedGroups.forEach(item => {
-            rowsHtml += `
-                <tr>
-                    <td><b>${item.date}</b></td>
-                    <td><span style="color:#059669; font-weight:bold;">Present</span></td>
-                    <td>${item.inTime}</td>
-                    <td>${item.outTime}</td>
-                    <td><b>${fmtDuration(item.durationMs)}</b></td>
-                    <td>📍 ${item.location}</td>
-                </tr>
-            `;
-        });
+        let presentCount = 0;
+        let absentCount = 0;
 
-        // Add Demo Absent Rows with Red Highlight / Strike-through for missed dates
-        rowsHtml += `
-            <tr class="absent-row-highlight">
-                <td><b>Thu 01 Oct</b></td>
-                <td><span style="color:#dc2626; font-weight:bold;">ABSENT</span></td>
-                <td>--:--:--</td>
-                <td>--:--:--</td>
-                <td>00:00:00</td>
-                <td>Not Available</td>
-            </tr>
-            <tr class="absent-row-highlight">
-                <td><b>Fri 02 Oct</b></td>
-                <td><span style="color:#dc2626; font-weight:bold;">ABSENT</span></td>
-                <td>--:--:--</td>
-                <td>--:--:--</td>
-                <td>00:00:00</td>
-                <td>Not Available</td>
-            </tr>
-        `;
-
-        const todayDate = new Date().getDate();
-        const presentCount = presentDays.size;
-        const absentCount = Math.max(0, todayDate - presentCount) + 2;
+        // Loop from Day 1 to Today in strict Ascending Order
+        for (let day = 1; day <= todayDate; day++) {
+            if (presentMap[day]) {
+                presentCount++;
+                let item = presentMap[day];
+                rowsHtml += `
+                    <tr>
+                        <td><b>${item.dateStr}</b></td>
+                        <td><span style="color:#059669; font-weight:bold;">Present</span></td>
+                        <td>${item.inTime}</td>
+                        <td>${item.outTime}</td>
+                        <td><b>${fmtDuration(item.durationMs)}</b></td>
+                        <td>📍 ${item.location}</td>
+                    </tr>
+                `;
+            } else {
+                absentCount++;
+                let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
+                let dateStr = fmtDayDate(dummyDate.toISOString());
+                rowsHtml += `
+                    <tr class="absent-row-highlight">
+                        <td><b>${dateStr}</b></td>
+                        <td><span style="color:#dc2626; font-weight:bold;">ABSENT</span></td>
+                        <td>--:--:--</td>
+                        <td>--:--:--</td>
+                        <td>00:00:00</td>
+                        <td>Not Available</td>
+                    </tr>
+                `;
+            }
+        }
 
         tempContainer.innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom:2px solid #2563eb; padding-bottom:8px;">
@@ -2730,7 +2725,7 @@ document.addEventListener('click', async (e) => {
                       ELITE WORKFORCE SOLUTIONS
                   </div>
                   <div style="font-size: 13px; font-weight: 600; color: #475569;">
-                      Attendance Timesheet (Pinpoint Location & Absent Tracker) — <span style="color:#2563eb;">${currentMonthYear}</span>
+                      Attendance Timesheet (Ascending Order & Absent Tracker) — <span style="color:#2563eb;">${currentMonthYear}</span>
                   </div>
                 </div>
                 <div style="text-align:right; font-size:11px; font-weight:bold; color:#059669;">
@@ -2745,7 +2740,7 @@ document.addEventListener('click', async (e) => {
                     <div style="font-size:16px; font-weight:bold; color:#16a34a;">${presentCount} Days</div>
                 </div>
                 <div style="flex:1; text-align:center; border-left:1px solid #cbd5e1; border-right:1px solid #cbd5e1;">
-                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Absent Days (Highlighted)</span>
+                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Absent Days</span>
                     <div style="font-size:16px; font-weight:bold; color:#dc2626;">${absentCount} Days</div>
                 </div>
                 <div style="flex:1; text-align:center;">
@@ -2775,11 +2770,11 @@ document.addEventListener('click', async (e) => {
 
         html2canvas(tempContainer, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Pinpoint_Attendance_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.png`;
+            link.download = `Ascending_Attendance_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
             document.body.removeChild(tempContainer);
-            showToast('🖼️ Pinpoint Timesheet Image Downloaded!');
+            showToast('🖼️ Ascending Timesheet Image Downloaded!');
         }).catch(err => {
             if(document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
             showToast('Error: ' + err.message, 'error');
@@ -2819,10 +2814,12 @@ document.addEventListener('click', async (e) => {
             return;
         }
 
-        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(new Date());
+        const now = new Date();
+        const todayDate = now.getDate();
+        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
 
         const excelData = [];
-        excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT WITH PINPOINT LOCATION"]);
+        excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
         excelData.push(["Timesheet Month:", currentMonthYear]);
         excelData.push(["Generated Date:", new Date().toLocaleString()]);
         excelData.push(["Developer/Author:", "Manjur Ansari"]);
@@ -2830,24 +2827,32 @@ document.addEventListener('click', async (e) => {
         
         excelData.push(["Date", "Status", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Pinpoint Site Location"]);
 
-        let sortedHistory = [...history].sort((a, b) => new Date(a.checkInAt) - new Date(b.checkInAt));
-
-        sortedHistory.forEach(row => {
-            let locText = (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured';
-            
-            excelData.push([
-                fmtDayDate(row.checkInAt),
-                "Present",
-                fmtTimeOnly(row.checkInAt),
-                fmtTimeOnly(row.checkOutOut || row.checkOutAt),
-                fmtDuration(row.durationMs),
-                locText
-            ]);
+        let presentMap = {};
+        history.forEach(row => {
+            let dayNum = new Date(row.checkInAt).getDate();
+            if (!presentMap[dayNum]) {
+                presentMap[dayNum] = {
+                    dateStr: fmtDayDate(row.checkInAt),
+                    inTime: fmtTimeOnly(row.checkInAt),
+                    outTime: fmtTimeOnly(row.checkOutAt),
+                    durationMs: row.durationMs || 0,
+                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured'
+                };
+            } else {
+                presentMap[dayNum].durationMs += (row.durationMs || 0);
+                presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
+            }
         });
 
-        // Add Absent rows in Excel export too
-        excelData.push(["Thu 01 Oct", "ABSENT", "--:--:--", "--:--:--", "00:00:00", "Not Available"]);
-        excelData.push(["Fri 02 Oct", "ABSENT", "--:--:--", "--:--:--", "00:00:00", "Not Available"]);
+        for (let day = 1; day <= todayDate; day++) {
+            if (presentMap[day]) {
+                let item = presentMap[day];
+                excelData.push([item.dateStr, "Present", item.inTime, item.outTime, fmtDuration(item.durationMs), item.location]);
+            } else {
+                let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
+                excelData.push([fmtDayDate(dummyDate.toISOString()), "ABSENT", "--:--:--", "--:--:--", "00:00:00", "Not Available"]);
+            }
+        }
 
         const ws = XLSX.utils.aoa_to_sheet(excelData);
         ws['!cols'] = [{wch:15}, {wch:12}, {wch:15}, {wch:15}, {wch:20}, {wch:40}];
@@ -2855,27 +2860,22 @@ document.addEventListener('click', async (e) => {
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
         
-        XLSX.writeFile(wb, `Elite_Workforce_Pinpoint_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.xlsx`);
-        showToast('📊 Pinpoint Excel File Downloaded Successfully!');
+        XLSX.writeFile(wb, `Elite_Workforce_Ascending_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.xlsx`);
+        showToast('📊 Ascending Excel File Downloaded Successfully!');
     };
 
     function updateSummaryBox() {
         let presentDays = new Set();
-        let totalDurationMs = 0;
-
         history.forEach(row => {
-            let dateKey = new Date(row.checkInAt).toDateString();
-            presentDays.add(dateKey);
-            totalDurationMs += row.durationMs || 0;
+            presentDays.add(new Date(row.checkInAt).toDateString());
         });
 
         const todayDate = new Date().getDate();
         const presentCount = presentDays.size;
-        const absentCount = Math.max(0, todayDate - presentCount) + 2;
+        const absentCount = Math.max(0, todayDate - presentCount);
 
         if($('tsPresentCount'))$('tsPresentCount').textContent = `${presentCount} Days`;
         if($('tsAbsentCount'))$('tsAbsentCount').textContent = `${absentCount} Days`;
-        if($('tsTotalHours'))$('tsTotalHours').textContent = fmtDuration(totalDurationMs);
     }
 
     function update(){
@@ -2912,31 +2912,50 @@ document.addEventListener('click', async (e) => {
       const box=$('tsHistory');
       if(!box) return;
       
+      const now = new Date();
+      const todayDate = now.getDate();
+      let presentMap = {};
+      
+      history.forEach(row => {
+          let dayNum = new Date(row.checkInAt).getDate();
+          if(!presentMap[dayNum]) {
+              presentMap[dayNum] = {
+                  dateStr: fmtDayDate(row.checkInAt),
+                  inTime: fmtTimeOnly(row.checkInAt),
+                  outTime: fmtTimeOnly(row.checkOutAt),
+                  durationMs: row.durationMs || 0,
+                  location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured',
+                  latitude: row.checkInLocation ? row.checkInLocation.latitude : null,
+                  longitude: row.checkInLocation ? row.checkInLocation.longitude : null
+              };
+          } else {
+              presentMap[dayNum].durationMs += (row.durationMs || 0);
+              presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
+          }
+      });
+
       let historyHtml = '';
-
-      // Render Absent row in history view with red strike-through line
-      historyHtml += `
-        <div class="ts-history-item-detailed" style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">
-          <div class="time-line" style="color:#ef4444; text-decoration:line-through;">📅 Thu 01 Oct · ABSENT</div>
-          <div class="loc-line" style="color:#ef4444;">🔴 Status: Absent (Red Highlighted)</div>
-        </div>
-      `;
-
-      if(history.length > 0) {
-        let sortedHistory = [...history].sort((a, b) => new Date(a.checkInAt) - new Date(b.checkInAt));
-        sortedHistory.forEach(item=>{
-          const locInName = item.checkInLocation && item.checkInLocation.areaName ? item.checkInLocation.areaName : 'Pinpoint Location Captured';
-          const mapUrl = item.checkInLocation ? `https://www.google.com/maps?q=${item.checkInLocation.latitude},${item.checkInLocation.longitude}` : '#';
-
-          historyHtml += `
-            <div class="ts-history-item-detailed">
-              <div class="time-line">📅 ${fmtDayDate(item.checkInAt)} (${fmtTimeOnly(item.checkInAt)} → ${fmtTimeOnly(item.checkOutAt)})</div>
-              <div style="font-weight:700; color:#10b981; font-size:11px;">Duty Duration: ${fmtDuration(item.durationMs)}</div>
-              <div class="loc-line">📍 <strong>Pinpoint Site Location:</strong> ${locInName}</div>
-              <div class="loc-line"><a href="${mapUrl}" target="_blank" style="color:#fde68a; text-decoration:underline;">🗺️ View exact pinpoint location on Google Maps</a></div>
-            </div>
-          `;
-        });
+      for (let day = 1; day <= todayDate; day++) {
+          if (presentMap[day]) {
+              let item = presentMap[day];
+              let mapUrl = item.latitude ? `https://www.google.com/maps?q=${item.latitude},${item.longitude}` : '#';
+              historyHtml += `
+                <div class="ts-history-item-detailed" style="border-left: 3px solid #10b981;">
+                  <div class="time-line">📅 ${item.dateStr} (${item.inTime} → ${item.outTime}) · <span style="color:#10b981;">Present</span></div>
+                  <div style="font-weight:700; color:#10b981; font-size:11px;">Duty Duration: ${fmtDuration(item.durationMs)}</div>
+                  <div class="loc-line">📍 <strong>Pinpoint Site Location:</strong> ${item.location}</div>
+                  <div class="loc-line"><a href="${mapUrl}" target="_blank" style="color:#fde68a; text-decoration:underline;">🗺️ View exact pinpoint location on Google Maps</a></div>
+                </div>
+              `;
+          } else {
+              let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
+              historyHtml += `
+                <div class="ts-history-item-detailed" style="background: rgba(239, 68, 68, 0.08); border-left: 3px solid #ef4444;">
+                  <div class="time-line" style="color:#ef4444; text-decoration:line-through;">📅 ${fmtDayDate(dummyDate.toISOString())} · ABSENT</div>
+                  <div class="loc-line" style="color:#ef4444;">🔴 Status: Absent (Red Highlighted)</div>
+                </div>
+              `;
+          }
       }
 
       box.innerHTML = historyHtml;
