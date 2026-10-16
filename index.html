@@ -790,7 +790,8 @@ textarea{min-height:115px;resize:vertical}
           <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 700;">
             <li id="menuViewProfile"><a href="javascript:void(0)" onclick="goToMyProfile()" style="display: flex; align-items: center; gap: 8px; color: var(--text);"><i class="fa-solid fa-id-card" style="color: var(--blue2);"></i> My Profile</a></li>
             <li><a href="javascript:void(0)" onclick="openTimesheetModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--text);"><i class="fa-solid fa-clock" style="color: var(--gold2);"></i> My Attendance Log</a></li>
-            <li id="menuLoginOption"><a href="javascript:void(0)" onclick="openAzadModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--emerald2);"><i class="fa-solid fa-right-to-bracket"></i> Register / Login</a></li>
+            <!-- UPDATED TO OPEN AUTH SELECTION MODAL -->
+            <li id="menuLoginOption"><a href="javascript:void(0)" onclick="openAuthSelectionModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--emerald2);"><i class="fa-solid fa-right-to-bracket"></i> Register / Login</a></li>
             <li id="menuLogoutOption" style="display: none;"><a href="javascript:void(0)" onclick="logoutUserProfile()" style="display: flex; align-items: center; gap: 8px; color: #ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
           </ul>
         </div>
@@ -1571,6 +1572,32 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
+<!-- MULTI-ACCOUNT AUTH SELECTION MODAL -->
+<div class="azad-modal" id="authSelectionModal">
+  <div class="azad-modal-content" style="max-width: 450px; text-align: center;">
+    <span class="azad-close-btn" onclick="closeAuthSelectionModal()">&times;</span>
+    <h3 style="color:var(--blue); margin-bottom:8px; font-weight:800;">🔐 Choose Account Type</h3>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Aap kis role ke tahat register ya login karna chahte hain?</p>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <!-- Option 1: Worker -->
+      <button onclick="closeAuthSelectionModal(); openAzadModal();" style="background:#10b981; color:#fff; border:0; padding:14px; border-radius:10px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(16,185,129,0.3);">
+        <i class="fa-solid fa-user-gear"></i> 🇦🇪 Azad Visa Worker / Candidate
+      </button>
+
+      <!-- Option 2: Supplier -->
+      <button onclick="closeAuthSelectionModal(); openSupplierModal();" style="background:#2563eb; color:#fff; border:0; padding:14px; border-radius:10px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(37,99,235,0.3);">
+        <i class="fa-solid fa-truck-field"></i> 🚚 Manpower Supplier Company
+      </button>
+
+      <!-- Option 3: Company / Client -->
+      <button onclick="closeAuthSelectionModal(); window.location.hash='#requirements';" style="background:#f59e0b; color:#1e293b; border:0; padding:14px; border-radius:10px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+        <i class="fa-solid fa-building"></i> 🏢 Client Company (Post Requirement)
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- SUCCESS POPUP MODAL (Done ✅) -->
 <div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center;">
     <div style="background:var(--card-bg); border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
@@ -1854,7 +1881,7 @@ textarea{min-height:115px;resize:vertical}
     if (profileDataRaw) {
       window.location.href = 'worker-profile.html';
     } else {
-      openAzadModal();
+      openAuthSelectionModal();
     }
   }
 
@@ -1874,6 +1901,9 @@ textarea{min-height:115px;resize:vertical}
 
   function openAzadModal() { document.getElementById('azadModal').style.display = 'flex'; }
   function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
+
+  function openAuthSelectionModal() { document.getElementById('authSelectionModal').style.display = 'flex'; }
+  function closeAuthSelectionModal() { document.getElementById('authSelectionModal').style.display = 'none'; }
 
   function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
       const popup = document.getElementById('successPopup');
