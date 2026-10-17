@@ -96,8 +96,14 @@ button:active, a:active, .admin-tab-btn:active {
 /* Header & Mobile Navbar */
 header{position:fixed;top:0;left:0;width:100%;background:var(--white);box-shadow:0 2px 18px rgba(0,0,0,.08);z-index:1000;transition:background 0.3s;}
 .navbar{max-width:1200px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-.brand-logo{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:18px;font-weight:900;letter-spacing:.3px; transition: transform 0.2s;}.brand-logo img{width:42px;height:42px;object-fit:contain;border-radius:6px}.brand-logo span{white-space:nowrap}.brand-logo b{color:var(--gold2)}.brand-logo em{font-style:normal;color:var(--blue)}
+.brand-logo{display:flex;align-items:center;gap:10px;text-decoration:none; transition: transform 0.2s;}
+.brand-logo img{width:42px;height:42px;object-fit:contain;border-radius:6px}
 .brand-logo:hover { transform: translateY(-1px); }
+
+/* Brand Text Stack Styling */
+.brand-text-wrap{display:flex;flex-direction:column;line-height:1.1;}
+.brand-title{font-size:20px;font-weight:900;color:#0b1325;letter-spacing:2px;text-transform:uppercase;}
+.brand-subtitle{font-size:8.5px;font-weight:700;color:#3b62ac;letter-spacing:2.2px;text-transform:uppercase;margin-top:2px;}
 
 .nav-links{display:flex;gap:18px;align-items:center;list-style:none}.nav-links a{font-size:13px;font-weight:700;transition:color 0.2s, transform 0.2s; display:inline-block;}.nav-links a:hover{color:var(--blue2); transform: translateY(-2px);}
 .nav-btn{background:var(--blue);color:#fff!important;padding:10px 16px;border-radius:7px;transition:0.3s; box-shadow: 0 4px 12px rgba(11,61,145,0.25);}.nav-btn:hover{background:var(--blue2); transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 18px rgba(11,61,145,0.4);}
@@ -751,7 +757,10 @@ textarea{min-height:115px;resize:vertical}
   <nav class="navbar">
     <a href="#home" class="brand-logo">
       <img src="logo.png" alt="Elite Workforce">
-      <span>ELITE <b>WORKFORCE</b> <em>SOLUTIONS</em></span>
+      <div class="brand-text-wrap">
+        <span class="brand-title">ELITE</span>
+        <span class="brand-subtitle">WORKFORCE SOLUTIONS</span>
+      </div>
     </a>
     
     <div style="display: flex; align-items: center; gap: 10px;">
