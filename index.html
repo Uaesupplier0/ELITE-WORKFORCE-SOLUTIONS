@@ -674,6 +674,10 @@ textarea{min-height:115px;resize:vertical}
 .azad-close-btn{position:absolute;top:15px;right:20px;font-size:24px;cursor:pointer;color:var(--muted);transition:0.2s; padding:2px 8px; border-radius:50%;}
 .azad-close-btn:hover{color:var(--text); background: rgba(0,0,0,0.08); transform: rotate(90deg);}
 
+/* Auth Tab Buttons */
+.auth-tab { flex:1; padding:10px; text-align:center; font-weight:bold; cursor:pointer; border-bottom:2px solid transparent; color:var(--muted); }
+.auth-tab.active { border-color:var(--blue); color:var(--blue); }
+
 /* UI Animations & Modern Hover Effects */
 .reveal-on-scroll {
   opacity: 0;
@@ -790,9 +794,8 @@ textarea{min-height:115px;resize:vertical}
           <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 700;">
             <li id="menuViewProfile"><a href="javascript:void(0)" onclick="goToMyProfile()" style="display: flex; align-items: center; gap: 8px; color: var(--text);"><i class="fa-solid fa-id-card" style="color: var(--blue2);"></i> My Profile</a></li>
             <li><a href="javascript:void(0)" onclick="openTimesheetModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--text);"><i class="fa-solid fa-clock" style="color: var(--gold2);"></i> My Attendance Log</a></li>
-            <!-- UPDATED TO OPEN AUTH SELECTION MODAL -->
-            <li id="menuLoginOption"><a href="javascript:void(0)" onclick="openAuthSelectionModal(); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--emerald2);"><i class="fa-solid fa-right-to-bracket"></i> Register / Login</a></li>
-            <li id="menuLogoutOption" style="display: none;"><a href="javascript:void(0)" onclick="logoutUserProfile()" style="display: flex; align-items: center; gap: 8px; color: #ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            <li id="menuLoginOption"><a href="javascript:void(0)" onclick="openAdvanceAuthModal('login'); closeProfileDropdown();" style="display: flex; align-items: center; gap: 8px; color: var(--emerald2);"><i class="fa-solid fa-right-to-bracket"></i> Register / Login</a></li>
+            <li id="menuLogoutOption" style="display: none;"><a href="javascript:void(0)" onclick="logoutUserSession()" style="display: flex; align-items: center; gap: 8px; color: #ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
           </ul>
         </div>
       </div>
@@ -886,10 +889,10 @@ textarea{min-height:115px;resize:vertical}
       <!-- ALL HERO ACTION BUTTONS WRAPPED IN GLASSMORPHISM RECTANGLE BOXES -->
       <div class="hero-buttons">
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
-          <a href="#requirements" class="btn btn-primary" style="padding: 10px 16px;" data-i18n="btn_post">Post Requirement</a>
+          <button onclick="openAdvanceAuthModal('register')" class="btn btn-primary" style="padding: 10px 16px;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
         </div>
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
-          <button onclick="openSupplierModal()" class="btn btn-outline" style="padding: 10px 16px;" data-i18n="btn_supplier"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
+          <button onclick="openAdvanceAuthModal('login')" class="btn btn-outline" style="padding: 10px 16px;"><i class="fa-solid fa-right-to-bracket"></i> Member Login</button>
         </div>
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <button onclick="openAzadModal()" class="btn btn-azad-hero" style="padding: 10px 16px;" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
@@ -1098,7 +1101,7 @@ textarea{min-height:115px;resize:vertical}
         <!-- Document / PDF Upload Field for Company -->
         <div class="form-group">
           <label>Upload Company Trade License / Profile (PDF format)</label>
-          <input type="file" id="comp_pdf" accept=".pdf" required style="padding: 9px; background: var(--light);">
+          <input type="file" id="comp_pdf" accept=".pdf" style="padding: 9px; background: var(--light);">
         </div>
         <button type="submit" class="submit-btn" id="comp_btn">Submit Requirement</button>
       </form>
@@ -1272,7 +1275,6 @@ textarea{min-height:115px;resize:vertical}
     </div>
 
     <button class="admin-refresh" onclick="loadActiveTabData()"><i class="fa-solid fa-rotate-right"></i> Refresh Table</button>
-    <!-- EXPORT ALL DATABASE BUTTON ADDED -->
     <button class="admin-tab-btn" style="background: var(--blue2); color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: bold; margin-left: 5px;" onclick="exportAllDatabaseToExcel()">
       <i class="fa-solid fa-file-excel"></i> Export All Database (.xlsx)
     </button>
@@ -1283,7 +1285,6 @@ textarea{min-height:115px;resize:vertical}
       <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
       <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
       <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
-      <!-- Targeted Bulk Email Button -->
       <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
     </div>
 
@@ -1298,6 +1299,85 @@ textarea{min-height:115px;resize:vertical}
     &copy; 2026 Elite Workforce Solutions. All rights reserved. Developed by Manjur Ansari.
   </div>
 </footer>
+
+<!-- ADVANCED LOGIN / REGISTER / GOOGLE / PHONE OTP MODAL -->
+<div class="azad-modal" id="advanceAuthModal">
+  <div class="azad-modal-content">
+    <span class="azad-close-btn" onclick="closeAdvanceAuthModal()">&times;</span>
+    
+    <!-- Modal Navigation Tabs -->
+    <div style="display:flex; border-bottom:1px solid var(--border-color); margin-bottom:20px;">
+      <div class="auth-tab active" id="tabBtnLogin" onclick="switchAuthTab('login')"><i class="fa-solid fa-right-to-bracket"></i> Login</div>
+      <div class="auth-tab" id="tabBtnRegister" onclick="switchAuthTab('register')"><i class="fa-solid fa-user-plus"></i> Register</div>
+    </div>
+
+    <!-- LOGIN FORM PANEL -->
+    <form id="loginFormPanel" onsubmit="handleUserLogin(event)">
+      <div style="margin-bottom:15px;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="name@example.com" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+      </div>
+      <div style="margin-bottom:15px;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+      </div>
+      <button type="submit" id="loginSubmitBtn" style="width:100%; background:var(--blue); color:#fff; border:0; padding:12px; border-radius:8px; font-weight:bold;">Login to Account</button>
+    </form>
+
+    <!-- REGISTER FORM PANEL -->
+    <form id="registerFormPanel" onsubmit="handleUserRegistration(event)" style="display:none;">
+      <div style="margin-bottom:12px;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">Select Account Role</label>
+        <select id="regRole" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); font-weight:bold;">
+          <option value="worker">🇦🇪 Azad Worker / Candidate</option>
+          <option value="supplier">🚚 Manpower Supplier</option>
+          <option value="company">🏢 Client Company</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">Full Name / Company Name</label>
+        <input type="text" id="regName" required placeholder="Your Name or Company Name" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">Email Address</label>
+        <input type="email" id="regEmail" required placeholder="name@example.com" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+      </div>
+      <div style="margin-bottom:15px;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">Password (Min 6 Characters)</label>
+        <input type="password" id="regPassword" required minlength="6" placeholder="••••••••" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+      </div>
+      <button type="submit" id="regSubmitBtn" style="width:100%; background:var(--emerald2); color:#fff; border:0; padding:12px; border-radius:8px; font-weight:bold;">Create Free Account</button>
+    </form>
+
+    <!-- SOCIAL & PHONE LOGIN DIVIDER -->
+    <div style="text-align: center; margin: 15px 0; color: var(--muted); font-size: 11px; position: relative;">
+      <span style="background: var(--card-bg); padding: 0 10px; position: relative; z-index: 1; font-weight: bold;">OR CONNECT WITH</span>
+      <hr style="border: 0; border-top: 1px solid var(--border-color); position: absolute; top: 50%; left: 0; width: 100%; z-index: 0; margin: 0;">
+    </div>
+
+    <!-- GOOGLE GMAIL LOGIN BUTTON -->
+    <button type="button" onclick="loginWithGoogle()" style="width: 100%; background: #fff; color: #333; border: 1px solid var(--border-color); padding: 11px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+      <i class="fa-brands fa-google" style="color: #ea4335; font-size: 16px;"></i> Continue with Google (Gmail)
+    </button>
+
+    <!-- PHONE NUMBER OTP LOGIN SECTION -->
+    <div style="background: var(--light); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+      <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">📱 Phone Number Login (OTP)</label>
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <input type="tel" id="otpPhoneInput" placeholder="+971501234567" style="flex:1; padding:9px; border-radius:8px; border:1px solid var(--border-color); font-size:13px;">
+        <button type="button" onclick="sendPhoneOtpUser()" style="background:var(--blue); color:#fff; border:0; padding:9px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px;">Send OTP</button>
+      </div>
+      
+      <div id="otpVerifySection" style="display:none; margin-top:8px;">
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="otpTokenInput" placeholder="Enter 6-digit OTP" style="flex:1; padding:9px; border-radius:8px; border:1px solid var(--border-color); font-size:13px;">
+          <button type="button" onclick="verifyPhoneOtpUser()" style="background:var(--emerald2); color:#fff; border:0; padding:9px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px;">Verify & Login</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- MULTI-COUNTRY CURRENCY CONVERTER POPUP MODAL -->
 <div class="azad-modal" id="currencyModal">
@@ -1371,12 +1451,11 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- UPDATED TIMESHEET POPUP MODAL WITH MONTH/YEAR HEADER & PRESENT/ABSENT SUMMARY BOX -->
+<!-- UPDATED TIMESHEET POPUP MODAL -->
 <div class="azad-modal" id="timesheetModal">
   <div class="azad-modal-content" style="padding: 10px; background: transparent; border: none; box-shadow: none;">
     <div class="timesheet-panel-card" style="position: relative;" id="pdfPrintArea">
       
-      <!-- BRANDED HEADER INCLUDED IN PDF DOWNLOAD WITH MONTH & YEAR -->
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
@@ -1402,7 +1481,6 @@ textarea{min-height:115px;resize:vertical}
       <div class="ts-clock-time" id="tsClock">--:--:--</div>
       <div class="ts-date-sub" id="tsDate">Loading...</div>
       
-      <!-- PRESENT / ABSENT SUMMARY BOX -->
       <div class="ts-summary-bar">
         <div class="ts-summary-item">
           <span>🟢 Present</span>
@@ -1442,7 +1520,6 @@ textarea{min-height:115px;resize:vertical}
         </button>
       </div>
 
-      <!-- EXPORT BUTTONS -->
       <div style="display:flex; gap:8px; margin-bottom: 12px;">
         <button onclick="downloadTimesheetDirectImage()" type="button" style="flex:1; background:#3b82f6; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; box-shadow:0 3px 10px rgba(59,130,246,0.3);">
           🖼️ Download Image (.png)
@@ -1492,7 +1569,7 @@ textarea{min-height:115px;resize:vertical}
       </div>
       <div class="form-group">
         <label>Select Company Logo / Photo (Image format)</label>
-        <input type="file" id="m_supp_photo" accept="image/*" required style="padding: 9px; background: var(--light);">
+        <input type="file" id="m_supp_photo" accept="image/*" style="padding: 9px; background: var(--light);">
       </div>
       <div class="form-group">
         <label>Contact Person</label>
@@ -1510,10 +1587,9 @@ textarea{min-height:115px;resize:vertical}
         <label>Total Workers Available</label>
         <input type="number" id="m_supp_workers" min="1" placeholder="e.g. 25">
       </div>
-      <!-- Document / PDF Upload Field for Supplier Modal -->
       <div class="form-group">
         <label>Upload Original Documents (PDF format)</label>
-        <input type="file" id="m_supp_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
+        <input type="file" id="m_supp_pdf" accept=".pdf" multiple style="padding: 9px; background: var(--light);">
       </div>
       <button type="submit" class="submit-btn" id="m_supp_btn">Submit Supplier Details</button>
     </form>
@@ -1561,48 +1637,20 @@ textarea{min-height:115px;resize:vertical}
           <option value="Ajman">Ajman</option>
         </select>
       </div>
-      <!-- Select Photo Option -->
       <div class="form-group">
         <label>Select Profile Photo (Image format)</label>
-        <input type="file" id="m_azad_photo" accept="image/*" required style="padding: 9px; background: var(--light);">
+        <input type="file" id="m_azad_photo" accept="image/*" style="padding: 9px; background: var(--light);">
       </div>
-      <!-- Document / PDF Upload Field for Azad Modal -->
       <div class="form-group">
         <label>Upload Experience & Emirates ID (PDF format)</label>
-        <input type="file" id="m_azad_pdf" accept=".pdf" multiple required style="padding: 9px; background: var(--light);">
+        <input type="file" id="m_azad_pdf" accept=".pdf" multiple style="padding: 9px; background: var(--light);">
       </div>
       <button type="submit" class="submit-btn" id="m_azad_btn" style="background:var(--emerald2);">Submit Azad Worker Details</button>
     </form>
   </div>
 </div>
 
-<!-- MULTI-ACCOUNT AUTH SELECTION MODAL -->
-<div class="azad-modal" id="authSelectionModal">
-  <div class="azad-modal-content" style="max-width: 450px; text-align: center;">
-    <span class="azad-close-btn" onclick="closeAuthSelectionModal()">&times;</span>
-    <h3 style="color:var(--blue); margin-bottom:8px; font-weight:800;">🔐 Choose Account Type</h3>
-    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Aap kis role ke tahat register ya login karna chahte hain?</p>
-
-    <div style="display:flex; flex-direction:column; gap:12px;">
-      <!-- Option 1: Worker -->
-      <button onclick="closeAuthSelectionModal(); openAzadModal();" style="background:#10b981; color:#fff; border:0; padding:14px; border-radius:10px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(16,185,129,0.3);">
-        <i class="fa-solid fa-user-gear"></i> 🇦🇪 Azad Visa Worker / Candidate
-      </button>
-
-      <!-- Option 2: Supplier -->
-      <button onclick="closeAuthSelectionModal(); openSupplierModal();" style="background:#2563eb; color:#fff; border:0; padding:14px; border-radius:10px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(37,99,235,0.3);">
-        <i class="fa-solid fa-truck-field"></i> 🚚 Manpower Supplier Company
-      </button>
-
-      <!-- Option 3: Company / Client -->
-      <button onclick="closeAuthSelectionModal(); window.location.hash='#requirements';" style="background:#f59e0b; color:#1e293b; border:0; padding:14px; border-radius:10px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
-        <i class="fa-solid fa-building"></i> 🏢 Client Company (Post Requirement)
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- SUCCESS POPUP MODAL (Done ✅) -->
+<!-- SUCCESS POPUP MODAL -->
 <div id="successPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center;">
     <div style="background:var(--card-bg); border-radius:16px; padding:35px 30px; max-width:350px; width:90%; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.3);">
         <div style="font-size:36px; font-weight:bold; color:#16a34a; margin-bottom:10px;">Done ✅</div>
@@ -1627,6 +1675,186 @@ textarea{min-height:115px;resize:vertical}
   let currentPublicTab = 'companies';
   let rawPublicData = []; 
   let currentPairExchangeRate = 26.05;
+
+  /* ADVANCED LOGIN & AUTHENTICATION MODAL FUNCTIONS */
+  function openAdvanceAuthModal(tab = 'login') {
+    document.getElementById('advanceAuthModal').style.display = 'flex';
+    switchAuthTab(tab);
+  }
+  function closeAdvanceAuthModal() {
+    document.getElementById('advanceAuthModal').style.display = 'none';
+  }
+
+  function switchAuthTab(tab) {
+    const loginBtn = document.getElementById('tabBtnLogin');
+    const regBtn = document.getElementById('tabBtnRegister');
+    const loginPanel = document.getElementById('loginFormPanel');
+    const regPanel = document.getElementById('registerFormPanel');
+
+    if (tab === 'login') {
+      loginBtn.classList.add('active');
+      regBtn.classList.remove('active');
+      loginPanel.style.display = 'block';
+      regPanel.style.display = 'none';
+    } else {
+      regBtn.classList.add('active');
+      loginBtn.classList.remove('active');
+      regPanel.style.display = 'block';
+      loginPanel.style.display = 'none';
+    }
+  }
+
+  /* 1. GOOGLE OAUTH LOGIN */
+  async function loginWithGoogle() {
+    const { data, error } = await _supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+    if (error) {
+      showToast('Google Login Error: ' + error.message, 'error');
+    }
+  }
+
+  /* 2. SEND PHONE OTP */
+  async function sendPhoneOtpUser() {
+    const phone = document.getElementById('otpPhoneInput').value.trim();
+    if (!phone) {
+      showToast('Please enter a valid phone number (e.g. +971501234567)', 'error');
+      return;
+    }
+    
+    showToast('Sending OTP to phone...');
+    const { data, error } = await _supabase.auth.signInWithOtp({ phone: phone });
+    
+    if (error) {
+      showToast('OTP Send Error: ' + error.message, 'error');
+    } else {
+      showToast('OTP sent successfully via SMS!');
+      document.getElementById('otpVerifySection').style.display = 'block';
+    }
+  }
+
+  /* 3. VERIFY PHONE OTP */
+  async function verifyPhoneOtpUser() {
+    const phone = document.getElementById('otpPhoneInput').value.trim();
+    const token = document.getElementById('otpTokenInput').value.trim();
+    
+    if (!token) {
+      showToast('Please enter the 6-digit OTP code', 'error');
+      return;
+    }
+
+    showToast('Verifying OTP...');
+    const { data, error } = await _supabase.auth.verifyOtp({
+      phone: phone,
+      token: token,
+      type: 'sms'
+    });
+
+    if (error) {
+      showToast('OTP Verification Failed: ' + error.message, 'error');
+    } else {
+      showToast('Phone login successful!');
+      closeAdvanceAuthModal();
+      checkActiveUserSession();
+    }
+  }
+
+  /* EMAIL REGISTER LOGIC */
+  async function handleUserRegistration(e) {
+    e.preventDefault();
+    const btn = document.getElementById('regSubmitBtn');
+    btn.disabled = true; btn.innerText = 'Creating Account...';
+
+    const role = document.getElementById('regRole').value;
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+
+    try {
+      const { data, error } = await _supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: { full_name: name, role: role }
+        }
+      });
+
+      if (error) throw error;
+
+      showToast('Account Created Successfully! You can now log in.');
+      switchAuthTab('login');
+      document.getElementById('registerFormPanel').reset();
+    } catch (err) {
+      showToast('Registration Error: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.innerText = 'Create Free Account';
+    }
+  }
+
+  /* EMAIL LOGIN LOGIC */
+  async function handleUserLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('loginSubmitBtn');
+    btn.disabled = true; btn.innerText = 'Logging in...';
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+      const { data, error } = await _supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) throw error;
+
+      showToast('Logged in successfully!');
+      closeAdvanceAuthModal();
+      checkActiveUserSession();
+    } catch (err) {
+      showToast('Login Error: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.innerText = 'Login to Account';
+    }
+  }
+
+  /* CHECK SESSION LOGIC */
+  async function checkActiveUserSession() {
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    const navName = document.getElementById('navProfileName');
+    const dropName = document.getElementById('dropUserName');
+    const dropRole = document.getElementById('dropUserRole');
+    const menuLogin = document.getElementById('menuLoginOption');
+    const menuLogout = document.getElementById('menuLogoutOption');
+
+    if (session && session.user) {
+      const user = session.user;
+      const userName = user.user_metadata.full_name || user.email.split('@')[0];
+      const userRole = user.user_metadata.role || 'Member';
+
+      if (navName) navName.innerText = userName;
+      if (dropName) dropName.innerText = userName;
+      if (dropRole) dropRole.innerText = userRole.toUpperCase();
+
+      if (menuLogin) menuLogin.style.display = 'none';
+      if (menuLogout) menuLogout.style.display = 'block';
+    } else {
+      updateNavProfileState();
+    }
+  }
+
+  async function logoutUserSession() {
+    await _supabase.auth.signOut();
+    localStorage.removeItem('selected_profile_data');
+    localStorage.removeItem('selected_profile_type');
+    showToast('Account Logged Out.');
+    checkActiveUserSession();
+    closeProfileDropdown();
+  }
 
   /* IMAGE COMPRESSION HELPER FUNCTION (Under 200KB) */
   function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
@@ -1889,7 +2117,7 @@ textarea{min-height:115px;resize:vertical}
 
     loadPublicLeaderboard();
     fetchDynamicPairRate();
-    updateNavProfileState();
+    checkActiveUserSession();
   });
 
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
@@ -1961,16 +2189,8 @@ textarea{min-height:115px;resize:vertical}
     if (profileDataRaw) {
       window.location.href = 'worker-profile.html';
     } else {
-      openAuthSelectionModal();
+      openAdvanceAuthModal('login');
     }
-  }
-
-  function logoutUserProfile() {
-    localStorage.removeItem('selected_profile_data');
-    localStorage.removeItem('selected_profile_type');
-    updateNavProfileState();
-    closeProfileDropdown();
-    showToast('Profile Logged Out Successfully!');
   }
 
   function openTimesheetModal() { document.getElementById('timesheetModal').style.display = 'flex'; }
@@ -1981,9 +2201,6 @@ textarea{min-height:115px;resize:vertical}
 
   function openAzadModal() { document.getElementById('azadModal').style.display = 'flex'; }
   function closeAzadModal() { document.getElementById('azadModal').style.display = 'none'; }
-
-  function openAuthSelectionModal() { document.getElementById('authSelectionModal').style.display = 'flex'; }
-  function closeAuthSelectionModal() { document.getElementById('authSelectionModal').style.display = 'none'; }
 
   function showSuccessPopup(customMessage = "Aapki information successfully database mein save ho gayi hai!") {
       const popup = document.getElementById('successPopup');
@@ -2249,12 +2466,12 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('file-name-label').style.color = "#e2e8f0";
   }
 
-  /* UPDATED COMPANY FORM SUBMISSION WITH COMPRESSION */
+  /* COMPANY FORM SUBMISSION */
   async function submitCompanyForm(e) {
     e.preventDefault();
     const btn = document.getElementById('comp_btn');
     btn.disabled = true; 
-    btn.innerText = 'Compressing & Submitting...';
+    btn.innerText = 'Submitting...';
 
     try {
       const companyName = document.getElementById('comp_name').value.trim();
@@ -2298,19 +2515,6 @@ textarea{min-height:115px;resize:vertical}
       const { error } = await _supabase.from('companies').insert([payload]);
       if (error) throw error;
 
-      const sheetData = new URLSearchParams();
-      sheetData.append('companyName', companyName);
-      sheetData.append('contactPerson', contactPerson);
-      sheetData.append('email', email);
-      sheetData.append('phone', phone);
-      sheetData.append('requirement', requirementDetails);
-
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: sheetData
-      }).catch(err => console.log('Google Sheet sync note:', err));
-
       showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
       document.getElementById('companyForm').reset();
       loadPublicLeaderboard();
@@ -2324,12 +2528,12 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* UPDATED SUPPLIER FORM SUBMISSION WITH COMPRESSION */
+  /* SUPPLIER FORM SUBMISSION */
   async function submitModalSupplier(e) {
     e.preventDefault();
     const btn = document.getElementById('m_supp_btn');
     btn.disabled = true; 
-    btn.innerText = 'Compressing & Registering...';
+    btn.innerText = 'Registering...';
 
     try {
       const suppName = document.getElementById('m_supp_name').value.trim();
@@ -2387,12 +2591,12 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* UPDATED AZAD WORKER FORM SUBMISSION WITH COMPRESSION */
+  /* AZAD WORKER FORM SUBMISSION */
   async function submitModalAzadWorker(e) {
     e.preventDefault();
     const btn = document.getElementById('m_azad_btn');
     btn.disabled = true; 
-    btn.innerText = 'Compressing Photo & Registering...';
+    btn.innerText = 'Registering...';
 
     try {
       const fullName = document.getElementById('m_azad_name').value.trim();
@@ -2438,7 +2642,7 @@ textarea{min-height:115px;resize:vertical}
       updateNavProfileState();
 
       closeAzadModal();
-      showSuccessPopup('Done ✅ - Azad worker registration & photo upload successful.');
+      showSuccessPopup('Done ✅ - Azad worker registration successful.');
       document.getElementById('azadModal').querySelector('form').reset();
       loadPublicLeaderboard();
       if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
@@ -2638,13 +2842,6 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  window.addEventListener('load', async () => {
-    const session = await _supabase.auth.getSession();
-    if (session.data.session) {
-      document.getElementById('admin').style.display = 'block';
-    }
-  });
-
 /* PWA INSTALL PROMPT LOGIC */
 let deferredPrompt;
 window.addEventListener('DOMContentLoaded', () => {
@@ -2672,7 +2869,7 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-  /* ADVANCED TIMESHEET SCRIPT WITH COMPLETE ASCENDING DATES & CORRECT ABSENT/PRESENT COUNT */
+  /* ADVANCED TIMESHEET SCRIPT */
   (function initTimesheet(){
     const KEY = 'elite_workforce_timesheet_v2';
     const ACTIVE_KEY = 'elite_workforce_timesheet_active_v2';
@@ -2868,7 +3065,6 @@ document.addEventListener('click', async (e) => {
         }
     };
 
-    /* DOWNLOAD IMAGE WITH COMPLETE ASCENDING ORDER (1 OCT TO TODAY) & RED ABSENT ROWS */
     window.downloadTimesheetDirectImage = function() {
         if (history.length === 0 && !active) {
             alert('No attendance records found to generate image!');
@@ -2960,7 +3156,6 @@ document.addEventListener('click', async (e) => {
                 </div>
             </div>
 
-            <!-- Present / Absent Summary Header -->
             <div style="display:flex; gap:15px; background:#f1f5f9; padding:10px 14px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1; font-family:Arial, sans-serif;">
                 <div style="flex:1; text-align:center;">
                     <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Present Days</span>
