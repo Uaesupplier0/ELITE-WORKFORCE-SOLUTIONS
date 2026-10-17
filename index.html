@@ -891,6 +891,7 @@ textarea{min-height:115px;resize:vertical}
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <button onclick="openAdvanceAuthModal('register')" class="btn btn-primary" style="padding: 10px 16px;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
         </div>
+        <!-- JOIN AS SUPPLIER BUTTON CALLS openSupplierModal() DIRECTLY -->
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <button onclick="openSupplierModal()" class="btn btn-outline" style="padding: 10px 16px;"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
         </div>
@@ -1547,7 +1548,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- SUPPLIER POPUP MODAL -->
+<!-- SUPPLIER POPUP MODAL (OPENED BY "JOIN AS SUPPLIER" BUTTON) -->
 <div class="azad-modal" id="supplierModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeSupplierModal()">&times;</span>
