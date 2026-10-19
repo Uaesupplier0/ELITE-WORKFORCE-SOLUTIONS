@@ -1407,6 +1407,30 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
+<!-- GOOGLE ROLE SELECTION MODAL -->
+<div class="azad-modal" id="googleRoleModal">
+  <div class="azad-modal-content" style="max-width: 420px; text-align: center;">
+    <h3 style="color:var(--blue); margin-bottom:10px; font-weight:800;">Welcome! Select Your Role</h3>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">
+      Aapka Google Login safal raha! Kripya apna account role chunein takay hum aapke dashboard ko setup kar sakein.
+    </p>
+
+    <form onsubmit="saveGoogleUserRole(event)">
+      <div style="margin-bottom:20px; text-align: left;">
+        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:8px;">Choose Account Type</label>
+        <select id="googleUserRoleSelect" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--border-color); font-weight:bold;" required>
+          <option value="worker">🇦🇪 Azad Worker / Candidate</option>
+          <option value="supplier">🚚 Manpower Supplier</option>
+          <option value="company">🏢 Client Company</option>
+        </select>
+      </div>
+      <button type="submit" id="saveRoleBtn" style="width:100%; background:var(--blue); color:#fff; border:0; padding:12px; border-radius:8px; font-weight:bold;">
+        Save Role & Continue
+      </button>
+    </form>
+  </div>
+</div>
+
 <!-- MULTI-COUNTRY CURRENCY CONVERTER POPUP MODAL -->
 <div class="azad-modal" id="currencyModal">
   <div class="azad-modal-content">
@@ -1697,6 +1721,15 @@ textarea{min-height:115px;resize:vertical}
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // Realtime Authentication State Change Listener
+  _supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+      checkActiveUserSession();
+    } else if (event === 'SIGNED_OUT') {
+      updateNavProfileState();
+    }
+  });
+
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKz6idXSfDwJWQpVUbONMXY1ihY6oU1hB7yyDnZZgsngnOqQIWigdhCjlQJIancHAZ/exec';
 
   let currentTab = 'companies';
@@ -1732,16 +1765,45 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* 1. GOOGLE OAUTH LOGIN */
+  /* 1. GOOGLE OAUTH LOGIN WITH REDIRECT FIX */
   async function loginWithGoogle() {
+    const redirectUrl = window.location.origin + window.location.pathname;
+    
     const { data, error } = await _supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin
+        redirectTo: redirectUrl
       }
     });
     if (error) {
       showToast('Google Login Error: ' + error.message, 'error');
+    }
+  }
+
+  /* SAVE GOOGLE USER ROLE */
+  async function saveGoogleUserRole(e) {
+    e.preventDefault();
+    const btn = document.getElementById('saveRoleBtn');
+    btn.disabled = true;
+    btn.innerText = 'Saving Role...';
+
+    const selectedRole = document.getElementById('googleUserRoleSelect').value;
+
+    try {
+      const { data, error } = await _supabase.auth.updateUser({
+        data: { role: selectedRole }
+      });
+
+      if (error) throw error;
+
+      showToast('Account Role set to ' + selectedRole.toUpperCase());
+      document.getElementById('googleRoleModal').style.display = 'none';
+      checkActiveUserSession();
+    } catch (err) {
+      showToast('Error updating role: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerText = 'Save Role & Continue';
     }
   }
 
@@ -1849,11 +1911,12 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* CHECK SESSION LOGIC */
+  /* CHECK SESSION LOGIC WITH GOOGLE AVATAR & AUTO ROLE PROMPT */
   async function checkActiveUserSession() {
     const { data: { session } } = await _supabase.auth.getSession();
 
     const navName = document.getElementById('navProfileName');
+    const navAvatar = document.getElementById('navProfileAvatar');
     const dropName = document.getElementById('dropUserName');
     const dropRole = document.getElementById('dropUserRole');
     const menuLogin = document.getElementById('menuLoginOption');
@@ -1861,12 +1924,26 @@ textarea{min-height:115px;resize:vertical}
 
     if (session && session.user) {
       const user = session.user;
-      const userName = user.user_metadata.full_name || user.email.split('@')[0];
-      const userRole = user.user_metadata.role || 'Member';
+      const userName = user.user_metadata.full_name || user.user_metadata.name || user.email.split('@')[0];
+      const userRole = user.user_metadata.role;
+      const googleAvatar = user.user_metadata.avatar_url || user.user_metadata.picture;
+
+      // AGAR ROLE SET NAHI HAI TOH ROLE SELECTION MODAL PROMPT SHOW KAREIN
+      if (!userRole) {
+        document.getElementById('googleRoleModal').style.display = 'flex';
+      }
 
       if (navName) navName.innerText = userName;
       if (dropName) dropName.innerText = userName;
-      if (dropRole) dropRole.innerText = userRole.toUpperCase();
+      if (dropRole) dropRole.innerText = (userRole || 'Role Pending').toUpperCase();
+
+      if (navAvatar) {
+        if (googleAvatar) {
+          navAvatar.innerHTML = `<img src="${googleAvatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+        } else {
+          navAvatar.innerText = userName.charAt(0).toUpperCase();
+        }
+      }
 
       if (menuLogin) menuLogin.style.display = 'none';
       if (menuLogout) menuLogout.style.display = 'block';
