@@ -1328,7 +1328,7 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </footer>
 
-<!-- ADVANCED LOGIN / REGISTER / GOOGLE / PHONE OTP MODAL -->
+<!-- ADVANCED LOGIN / REGISTER / GOOGLE / FACEBOOK MODAL -->
 <div class="azad-modal" id="advanceAuthModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeAdvanceAuthModal()">&times;</span>
@@ -1377,42 +1377,31 @@ textarea{min-height:115px;resize:vertical}
       <button type="submit" id="regSubmitBtn" style="width:100%; background:var(--emerald2); color:#fff; border:0; padding:12px; border-radius:8px; font-weight:bold;">Create Free Account</button>
     </form>
 
-    <!-- SOCIAL & PHONE LOGIN DIVIDER -->
-    <div style="text-align: center; margin: 15px 0; color: var(--muted); font-size: 11px; position: relative;">
+    <!-- SOCIAL LOGIN DIVIDER -->
+    <div style="text-align: center; margin: 20px 0 15px 0; color: var(--muted); font-size: 11px; position: relative;">
       <span style="background: var(--card-bg); padding: 0 10px; position: relative; z-index: 1; font-weight: bold;">OR CONNECT WITH</span>
       <hr style="border: 0; border-top: 1px solid var(--border-color); position: absolute; top: 50%; left: 0; width: 100%; z-index: 0; margin: 0;">
     </div>
 
     <!-- GOOGLE GMAIL LOGIN BUTTON -->
-    <button type="button" onclick="loginWithGoogle()" style="width: 100%; background: #fff; color: #333; border: 1px solid var(--border-color); padding: 11px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    <button type="button" onclick="loginWithGoogle()" style="width: 100%; background: #fff; color: #333; border: 1px solid var(--border-color); padding: 11px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
       <i class="fa-brands fa-google" style="color: #ea4335; font-size: 16px;"></i> Continue with Google (Gmail)
     </button>
 
-    <!-- PHONE NUMBER OTP LOGIN SECTION -->
-    <div style="background: var(--light); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
-      <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">📱 Phone Number Login (OTP)</label>
-      <div style="display:flex; gap:8px; margin-bottom:8px;">
-        <input type="tel" id="otpPhoneInput" placeholder="+971501234567" style="flex:1; padding:9px; border-radius:8px; border:1px solid var(--border-color); font-size:13px;">
-        <button type="button" onclick="sendPhoneOtpUser()" style="background:var(--blue); color:#fff; border:0; padding:9px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px;">Send OTP</button>
-      </div>
-      
-      <div id="otpVerifySection" style="display:none; margin-top:8px;">
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="otpTokenInput" placeholder="Enter 6-digit OTP" style="flex:1; padding:9px; border-radius:8px; border:1px solid var(--border-color); font-size:13px;">
-          <button type="button" onclick="verifyPhoneOtpUser()" style="background:var(--emerald2); color:#fff; border:0; padding:9px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px;">Verify & Login</button>
-        </div>
-      </div>
-    </div>
+    <!-- FACEBOOK LOGIN BUTTON -->
+    <button type="button" onclick="loginWithFacebook()" style="width: 100%; background: #1877f2; color: #ffffff; border: 0; padding: 11px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(24,119,242,0.3);">
+      <i class="fa-brands fa-facebook" style="color: #ffffff; font-size: 18px;"></i> Continue with Facebook
+    </button>
 
   </div>
 </div>
 
-<!-- GOOGLE ROLE SELECTION MODAL -->
+<!-- GOOGLE / FACEBOOK ROLE SELECTION MODAL -->
 <div class="azad-modal" id="googleRoleModal">
   <div class="azad-modal-content" style="max-width: 420px; text-align: center;">
     <h3 style="color:var(--blue); margin-bottom:10px; font-weight:800;">Welcome! Select Your Role</h3>
     <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">
-      Aapka Google Login safal raha! Kripya apna account role chunein takay hum aapke dashboard ko setup kar sakein.
+      Aapka Social Login safal raha! Kripya apna account role chunein takay hum aapke dashboard ko setup kar sakein.
     </p>
 
     <form onsubmit="saveGoogleUserRole(event)">
@@ -1765,7 +1754,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* 1. GOOGLE OAUTH LOGIN WITH REDIRECT FIX */
+  /* 1. GOOGLE OAUTH LOGIN */
   async function loginWithGoogle() {
     const redirectUrl = window.location.origin + window.location.pathname;
     
@@ -1780,7 +1769,22 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* SAVE GOOGLE USER ROLE */
+  /* 2. FACEBOOK OAUTH LOGIN */
+  async function loginWithFacebook() {
+    const redirectUrl = window.location.origin + window.location.pathname;
+    
+    const { data, error } = await _supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: redirectUrl
+      }
+    });
+    if (error) {
+      showToast('Facebook Login Error: ' + error.message, 'error');
+    }
+  }
+
+  /* SAVE GOOGLE / FACEBOOK USER ROLE */
   async function saveGoogleUserRole(e) {
     e.preventDefault();
     const btn = document.getElementById('saveRoleBtn');
@@ -1804,51 +1808,6 @@ textarea{min-height:115px;resize:vertical}
     } finally {
       btn.disabled = false;
       btn.innerText = 'Save Role & Continue';
-    }
-  }
-
-  /* 2. SEND PHONE OTP */
-  async function sendPhoneOtpUser() {
-    const phone = document.getElementById('otpPhoneInput').value.trim();
-    if (!phone) {
-      showToast('Please enter a valid phone number (e.g. +971501234567)', 'error');
-      return;
-    }
-    
-    showToast('Sending OTP to phone...');
-    const { data, error } = await _supabase.auth.signInWithOtp({ phone: phone });
-    
-    if (error) {
-      showToast('OTP Send Error: ' + error.message, 'error');
-    } else {
-      showToast('OTP sent successfully via SMS!');
-      document.getElementById('otpVerifySection').style.display = 'block';
-    }
-  }
-
-  /* 3. VERIFY PHONE OTP */
-  async function verifyPhoneOtpUser() {
-    const phone = document.getElementById('otpPhoneInput').value.trim();
-    const token = document.getElementById('otpTokenInput').value.trim();
-    
-    if (!token) {
-      showToast('Please enter the 6-digit OTP code', 'error');
-      return;
-    }
-
-    showToast('Verifying OTP...');
-    const { data, error } = await _supabase.auth.verifyOtp({
-      phone: phone,
-      token: token,
-      type: 'sms'
-    });
-
-    if (error) {
-      showToast('OTP Verification Failed: ' + error.message, 'error');
-    } else {
-      showToast('Phone login successful!');
-      closeAdvanceAuthModal();
-      checkActiveUserSession();
     }
   }
 
@@ -1911,7 +1870,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* CHECK SESSION LOGIC WITH GOOGLE AVATAR & AUTO ROLE PROMPT */
+  /* CHECK SESSION LOGIC WITH GOOGLE / FACEBOOK AVATAR & AUTO ROLE PROMPT */
   async function checkActiveUserSession() {
     const { data: { session } } = await _supabase.auth.getSession();
 
@@ -1926,7 +1885,7 @@ textarea{min-height:115px;resize:vertical}
       const user = session.user;
       const userName = user.user_metadata.full_name || user.user_metadata.name || user.email.split('@')[0];
       const userRole = user.user_metadata.role;
-      const googleAvatar = user.user_metadata.avatar_url || user.user_metadata.picture;
+      const socialAvatar = user.user_metadata.avatar_url || user.user_metadata.picture;
 
       // AGAR ROLE SET NAHI HAI TOH ROLE SELECTION MODAL PROMPT SHOW KAREIN
       if (!userRole) {
@@ -1938,8 +1897,8 @@ textarea{min-height:115px;resize:vertical}
       if (dropRole) dropRole.innerText = (userRole || 'Role Pending').toUpperCase();
 
       if (navAvatar) {
-        if (googleAvatar) {
-          navAvatar.innerHTML = `<img src="${googleAvatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+        if (socialAvatar) {
+          navAvatar.innerHTML = `<img src="${socialAvatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
         } else {
           navAvatar.innerText = userName.charAt(0).toUpperCase();
         }
