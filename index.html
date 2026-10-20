@@ -7,9 +7,14 @@
 <meta name="keywords" content="timesheet, live timesheet clock, gps attendance, currency converter, currency rate UAE, AED to INR, manpower supplier UAE, electrician supplier UAE, fitter supplier UAE, welder supplier UAE, skilled manpower UAE, workforce solutions UAE">
 <meta name="author" content="Manjur Ansari">
 <meta name="robots" content="index, follow">
+
+<!-- Meta Open Graph Tags for Facebook & Social Sharing -->
 <meta property="og:title" content="Elite Workforce Solutions | UAE Workforce Network">
 <meta property="og:description" content="Connecting UAE companies with manpower suppliers and skilled workforce.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/">
+<meta property="og:image" content="https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+
 <title>Elite Workforce Solutions | Live Timesheet, Currency Converter & UAE Manpower</title>
 
 <!-- Google Search & Device Responsive Favicons -->
@@ -1322,11 +1327,70 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </section>
 
+<!-- META COMPLIANT FOOTER WITH LEGAL LINKS -->
 <footer>
-  <div class="copyright" style="text-align:center; padding:25px; font-size:14px; color:var(--muted); background:var(--navy);">
-    &copy; 2026 Elite Workforce Solutions. All rights reserved. Developed by Manjur Ansari.
+  <div style="background:var(--navy); padding:35px 20px; color:var(--muted); text-align:center; font-size:13px; border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:15px; font-weight:700;">
+      <a href="javascript:void(0)" onclick="openPolicyModal('privacy')" style="color:#cbd5e1; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#cbd5e1'">Privacy Policy</a>
+      <span>•</span>
+      <a href="javascript:void(0)" onclick="openPolicyModal('terms')" style="color:#cbd5e1; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#cbd5e1'">Terms of Service</a>
+      <span>•</span>
+      <a href="javascript:void(0)" onclick="openPolicyModal('deletion')" style="color:#cbd5e1; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#cbd5e1'">User Data Deletion</a>
+    </div>
+    <div class="copyright">
+      &copy; 2026 Elite Workforce Solutions. All rights reserved. Developed by Manjur Ansari.
+    </div>
   </div>
 </footer>
+
+<!-- META COMPLIANT PRIVACY POLICY, TERMS & DATA DELETION MODAL -->
+<div class="azad-modal" id="policyModal">
+  <div class="azad-modal-content" style="max-width: 650px;">
+    <span class="azad-close-btn" onclick="closePolicyModal()">&times;</span>
+    
+    <!-- PRIVACY POLICY CONTENT -->
+    <div id="policyPrivacyContent" style="display:none;">
+      <h3 style="color:var(--blue); margin-bottom:10px; font-weight:800;"><i class="fa-solid fa-user-shield"></i> Privacy Policy</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:15px;">Last updated: October 2026</p>
+      <div style="font-size:13px; color:var(--text); line-height:1.6; display:flex; flex-direction:column; gap:12px;">
+        <p><strong>Elite Workforce Solutions</strong> respect your privacy and are committed to protecting your personal data when you use our web platform and Facebook Login integration.</p>
+        <p><strong>1. Information We Collect:</strong> When you register or sign in using Facebook Login, we collect your basic public profile details (Full Name, Profile Picture) and Email Address.</p>
+        <p><strong>2. How We Use Data:</strong> Your profile data is used solely to authenticate your identity, manage your account session, and allow you to submit manpower requirements or candidate profiles.</p>
+        <p><strong>3. Data Security:</strong> All authentication tokens and user information are secured via encrypted connections and managed safely using Supabase backend infrastructure.</p>
+        <p><strong>4. Contact Us:</strong> For any privacy-related queries, email us at <strong>mohdmanjur022@gmail.com</strong>.</p>
+      </div>
+    </div>
+
+    <!-- TERMS OF SERVICE CONTENT -->
+    <div id="policyTermsContent" style="display:none;">
+      <h3 style="color:var(--blue); margin-bottom:10px; font-weight:800;"><i class="fa-solid fa-file-contract"></i> Terms of Service</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:15px;">Last updated: October 2026</p>
+      <div style="font-size:13px; color:var(--text); line-height:1.6; display:flex; flex-direction:column; gap:12px;">
+        <p>By accessing and using <strong>Elite Workforce Solutions</strong>, you agree to comply with these terms.</p>
+        <p><strong>1. User Responsibilities:</strong> Users must provide accurate details when posting company requirements, registering as suppliers, or applying as workers.</p>
+        <p><strong>2. Fair Use:</strong> Misuse of attendance tools, submitting fake trade licenses, or spamming the public directory is strictly prohibited.</p>
+        <p><strong>3. Account Termination:</strong> We reserve the right to remove non-compliant listings or restrict users violating platform guidelines.</p>
+      </div>
+    </div>
+
+    <!-- USER DATA DELETION CONTENT (FACEBOOK MANDATORY REQUIREMENT) -->
+    <div id="policyDeletionContent" style="display:none;">
+      <h3 style="color:var(--blue); margin-bottom:10px; font-weight:800;"><i class="fa-solid fa-trash-can"></i> User Data Deletion Instructions</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:15px;">Facebook Data Deletion Request</p>
+      <div style="font-size:13px; color:var(--text); line-height:1.6; display:flex; flex-direction:column; gap:12px;">
+        <p>According to Facebook Platform Rules, we provide clear instructions for users who wish to remove their data associated with our Facebook App (App ID: 2662165270909241).</p>
+        <p><strong>How to Delete Your Data:</strong></p>
+        <ol style="margin-left:20px; display:flex; flex-direction:column; gap:6px;">
+          <li>Go to your Facebook Account <strong>Settings & Privacy</strong> &gt; <strong>Settings</strong>.</li>
+          <li>Look for <strong>Apps and Websites</strong> to see all apps linked to your Facebook account.</li>
+          <li>Find and select <strong>Elite Workforce Solutions</strong>.</li>
+          <li>Click the <strong>Remove</strong> button to revoke access and delete stored activity.</li>
+          <li>Alternatively, send a direct email request to <strong>mohdmanjur022@gmail.com</strong> with your registered email address, and our team will purge your record within 48 hours.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ADVANCED LOGIN / REGISTER / GOOGLE / FACEBOOK MODAL -->
 <div class="azad-modal" id="advanceAuthModal">
@@ -1709,6 +1773,17 @@ textarea{min-height:115px;resize:vertical}
   const SUPABASE_URL = 'https://maakqzczkhkoimlmnvws.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Policy Modal Handler Functions (Meta Compliance)
+  function openPolicyModal(type) {
+    document.getElementById('policyModal').style.display = 'flex';
+    document.getElementById('policyPrivacyContent').style.display = type === 'privacy' ? 'block' : 'none';
+    document.getElementById('policyTermsContent').style.display = type === 'terms' ? 'block' : 'none';
+    document.getElementById('policyDeletionContent').style.display = type === 'deletion' ? 'block' : 'none';
+  }
+  function closePolicyModal() {
+    document.getElementById('policyModal').style.display = 'none';
+  }
 
   // Realtime Authentication State Change Listener
   _supabase.auth.onAuthStateChange((event, session) => {
@@ -3341,7 +3416,7 @@ document.addEventListener('click', async (e) => {
         }
 
         const ws = XLSX.utils.aoa_to_sheet(excelData);
-        ws['!cols'] = [{wch:15}, {wch:12}, {wch:15}, {wch:15}, {wch:20}, {wch:40}];
+        ws['!cols'] = [{wch:15}, {wch:12}, {wch:15}, {wch:20}, {wch:40}];
         
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
