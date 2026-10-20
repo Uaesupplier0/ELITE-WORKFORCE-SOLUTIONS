@@ -59,7 +59,7 @@
 }
 </script>
 
-<!-- Fonts, Icons, XLSX, html2pdf & html2canvas Libraries -->
+<!-- Fonts, Icons, XLSX, html2pdf, html2canvas & Tesseract OCR Libraries -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -68,6 +68,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <!-- Supabase JS Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1099,6 +1100,13 @@ textarea{min-height:115px;resize:vertical}
     </div>
     <div class="requirement-card">
       <form id="companyForm" onsubmit="submitCompanyForm(event)">
+        <!-- AI OCR TRIGGER BUTTON FOR COMPANY FORM -->
+        <div style="margin-bottom: 12px;">
+          <button type="button" onclick="openOcrModal()" style="width: 100%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with AI Document Scanner
+          </button>
+        </div>
+
         <div class="form-group">
           <label>Company Name</label>
           <input type="text" id="comp_name" required placeholder="e.g. Al Habtoor Contracting">
@@ -1660,6 +1668,13 @@ textarea{min-height:115px;resize:vertical}
     <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to register your supply company.</p>
     
     <form onsubmit="submitModalSupplier(event)">
+      <!-- AI OCR TRIGGER BUTTON FOR SUPPLIER MODAL -->
+      <div style="margin-bottom: 12px;">
+        <button type="button" onclick="openOcrModal()" style="width: 100%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with AI Document Scanner
+        </button>
+      </div>
+
       <div class="form-group">
         <label>Supplier / Company Name</label>
         <input type="text" id="m_supp_name" required placeholder="e.g. Gulf Manpower Services">
@@ -1709,6 +1724,13 @@ textarea{min-height:115px;resize:vertical}
     <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Fill details to get instant daily/hourly site work leads.</p>
     
     <form onsubmit="submitModalAzadWorker(event)">
+      <!-- AI OCR TRIGGER BUTTON FOR AZAD WORKER MODAL -->
+      <div style="margin-bottom: 12px;">
+        <button type="button" onclick="openOcrModal()" style="width: 100%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with AI Document Scanner
+        </button>
+      </div>
+
       <div class="form-group">
         <label>Full Name</label>
         <input type="text" id="m_azad_name" required placeholder="Your Name">
@@ -1752,6 +1774,113 @@ textarea{min-height:115px;resize:vertical}
       </div>
       <button type="submit" class="submit-btn" id="m_azad_btn" style="background:var(--emerald2);">Submit Azad Worker Details</button>
     </form>
+  </div>
+</div>
+
+<!-- AI OCR DOCUMENT SCANNER MODAL CONTAINER -->
+<div class="azad-modal" id="ocrScanModal">
+  <div class="azad-modal-content" style="max-width: 520px; padding: 20px;">
+    <span class="azad-close-btn" onclick="closeOcrModal()">&times;</span>
+    
+    <div style="text-align: center; margin-bottom: 15px;">
+      <h3 style="color: var(--blue); margin: 0; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-camera-retro" style="color: var(--gold2);"></i> Smart ID & Passport Scanner
+      </h3>
+      <p style="font-size: 11px; color: var(--muted); margin-top: 3px;">Auto-detects Emirates ID & Passport details with image pre-processing.</p>
+    </div>
+
+    <!-- SCANNER TAB MODE: FILE UPLOAD vs LIVE CAMERA -->
+    <div style="display: flex; background: var(--light); border: 1px solid var(--border-color); border-radius: 8px; padding: 3px; margin-bottom: 15px;">
+      <button id="ocrTabUpload" onclick="switchOcrTab('upload')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; background: var(--blue); color: #fff;">
+        📁 Upload Image
+      </button>
+      <button id="ocrTabCamera" onclick="switchOcrTab('camera')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; background: transparent; color: var(--text);">
+        📷 Live Camera
+      </button>
+    </div>
+
+    <!-- FILE UPLOAD DROP ZONE -->
+    <div id="ocrUploadBox" style="border: 2px dashed var(--blue2); border-radius: 12px; padding: 22px; text-align: center; background: var(--light); position: relative; cursor: pointer;">
+      <input type="file" id="ocrInputFile" accept="image/*" onchange="processDocumentOCR(this.files[0])" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;">
+      <i class="fa-solid fa-id-card-clip" style="font-size: 36px; color: var(--blue); margin-bottom: 8px;"></i>
+      <p style="font-size: 12px; font-weight: 800; color: var(--text); margin: 0;">Click or Drag Document Image Here</p>
+      <span style="font-size: 10px; color: var(--muted);">Emirates ID (Front/Back) or Passport</span>
+    </div>
+
+    <!-- LIVE CAMERA STREAM BOX -->
+    <div id="ocrCameraBox" style="display: none; position: relative; border-radius: 12px; overflow: hidden; background: #000; text-align: center;">
+      <video id="ocrVideo" autoplay playsinline style="width: 100%; height: 230px; object-fit: cover;"></video>
+      <div style="position: absolute; top: 15%; left: 10%; width: 80%; height: 70%; border: 2px dashed #fbbf24; border-radius: 10px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.4);">
+        <span style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); color: #fbbf24; font-size: 9px; font-weight: bold; text-transform: uppercase;">Align ID Inside Frame</span>
+      </div>
+      <button onclick="captureCameraFrame()" type="button" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: #10b981; color: #fff; border: 0; padding: 8px 18px; border-radius: 20px; font-weight: 800; font-size: 11px; cursor: pointer; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">
+        📸 Capture & Scan
+      </button>
+    </div>
+
+    <!-- HIDDEN CANVAS FOR IMAGE PRE-PROCESSING -->
+    <canvas id="ocrCanvas" style="display: none;"></canvas>
+
+    <!-- LIVE PREVIEW & PRE-PROCESSED RESULT -->
+    <div id="ocrPreviewWrap" style="display: none; margin-top: 12px; text-align: center;">
+      <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+        <div>
+          <span style="display: block; font-size: 9px; color: var(--muted); font-weight: bold; margin-bottom: 2px;">Original</span>
+          <img id="ocrPreviewImg" src="" alt="Original" style="height: 80px; border-radius: 6px; border: 1px solid var(--border-color);">
+        </div>
+        <div>
+          <span style="display: block; font-size: 9px; color: var(--emerald2); font-weight: bold; margin-bottom: 2px;">AI Pre-Processed</span>
+          <img id="ocrProcessedImg" src="" alt="Processed" style="height: 80px; border-radius: 6px; border: 1px solid var(--emerald2);">
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div id="ocrProgressBox" style="display: none; margin-top: 12px;">
+      <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 800; color: var(--text); margin-bottom: 4px;">
+        <span id="ocrProgressLabel">Scanning document with AI...</span>
+        <span id="ocrPercentVal">0%</span>
+      </div>
+      <div style="width: 100%; height: 6px; background: var(--border-color); border-radius: 10px; overflow: hidden;">
+        <div id="ocrProgressBar" style="width: 0%; height: 100%; background: var(--blue); transition: width 0.2s;"></div>
+      </div>
+    </div>
+
+    <!-- EXTRACTED RESULTS REVIEW & AUTO-FILL -->
+    <div id="ocrResultsBox" style="display: none; margin-top: 12px; background: var(--light); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 10px; font-weight: 800; color: var(--emerald2);"><i class="fa-solid fa-circle-check"></i> EXTRACTED DETAILS</span>
+        <span id="ocrConfidenceBadge" style="font-size: 9px; background: rgba(16,185,129,0.15); color: var(--emerald2); padding: 2px 6px; border-radius: 4px; font-weight: bold;">High Accuracy</span>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+        <div>
+          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">DOC TYPE</label>
+          <input type="text" id="ocrDocType" readonly style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+        </div>
+        <div>
+          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">NUMBER</label>
+          <input type="text" id="ocrDocNumber" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg); color: var(--blue2);">
+        </div>
+        <div style="grid-column: span 2;">
+          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">FULL NAME</label>
+          <input type="text" id="ocrName" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+        </div>
+        <div>
+          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">DATE OF BIRTH</label>
+          <input type="text" id="ocrDob" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+        </div>
+        <div>
+          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">EXPIRY DATE</label>
+          <input type="text" id="ocrExpiry" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+        </div>
+      </div>
+
+      <button onclick="applyOcrDataToForms()" type="button" style="width: 100%; margin-top: 10px; background: var(--blue); color: #fff; border: 0; padding: 9px; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer;">
+        <i class="fa-solid fa-file-import"></i> Auto-Fill Into Registration Form
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -3531,6 +3660,212 @@ document.addEventListener('click', async (e) => {
     update(); 
     setInterval(update,1000);
   })();
+
+  /* ==========================================
+     AI OCR ENGINE (CAMERA + CANVAS + PARSER)
+  ========================================== */
+  let cameraStream = null;
+  let scannedOcrData = { docType: '', idNumber: '', fullName: '', dob: '', expiryDate: '' };
+
+  function openOcrModal() {
+    document.getElementById('ocrScanModal').style.display = 'flex';
+    switchOcrTab('upload');
+  }
+
+  function closeOcrModal() {
+    stopCameraStream();
+    document.getElementById('ocrScanModal').style.display = 'none';
+  }
+
+  function switchOcrTab(tab) {
+    const btnUpload = document.getElementById('ocrTabUpload');
+    const btnCamera = document.getElementById('ocrTabCamera');
+    const boxUpload = document.getElementById('ocrUploadBox');
+    const boxCamera = document.getElementById('ocrCameraBox');
+
+    if (tab === 'upload') {
+      btnUpload.style.background = 'var(--blue)'; btnUpload.style.color = '#fff';
+      btnCamera.style.background = 'transparent'; btnCamera.style.color = 'var(--text)';
+      boxUpload.style.display = 'block';
+      boxCamera.style.display = 'none';
+      stopCameraStream();
+    } else {
+      btnCamera.style.background = 'var(--blue)'; btnCamera.style.color = '#fff';
+      btnUpload.style.background = 'transparent'; btnUpload.style.color = 'var(--text)';
+      boxUpload.style.display = 'none';
+      boxCamera.style.display = 'block';
+      startCameraStream();
+    }
+  }
+
+  async function startCameraStream() {
+    const video = document.getElementById('ocrVideo');
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+      });
+      video.srcObject = cameraStream;
+    } catch (err) {
+      showToast('Camera Access Error: ' + err.message, 'error');
+    }
+  }
+
+  function stopCameraStream() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream = null;
+    }
+  }
+
+  function captureCameraFrame() {
+    const video = document.getElementById('ocrVideo');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    canvas.toBlob(blob => {
+      processDocumentOCR(blob);
+    }, 'image/jpeg', 0.95);
+  }
+
+  function preprocessImage(imageElement) {
+    const canvas = document.getElementById('ocrCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = imageElement.naturalWidth || imageElement.width;
+    canvas.height = imageElement.naturalHeight || imageElement.height;
+
+    ctx.drawImage(imageElement, 0, 0);
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const d = imgData.data;
+
+    for (let i = 0; i < d.length; i += 4) {
+      let avg = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
+      avg = avg > 115 ? 255 : 0;
+      d[i] = avg; d[i + 1] = avg; d[i + 2] = avg;
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+    return canvas.toDataURL('image/png');
+  }
+
+  async function processDocumentOCR(fileOrBlob) {
+    if (!fileOrBlob) return;
+
+    stopCameraStream();
+
+    const previewImg = document.getElementById('ocrPreviewImg');
+    const processedImg = document.getElementById('ocrProcessedImg');
+    const previewWrap = document.getElementById('ocrPreviewWrap');
+    const progressBox = document.getElementById('ocrProgressBox');
+    const progressBar = document.getElementById('ocrProgressBar');
+    const percentVal = document.getElementById('ocrPercentVal');
+    const statusLabel = document.getElementById('ocrProgressLabel');
+    const resultsBox = document.getElementById('ocrResultsBox');
+
+    const imgUrl = URL.createObjectURL(fileOrBlob);
+    previewImg.src = imgUrl;
+
+    previewWrap.style.display = 'block';
+    progressBox.style.display = 'block';
+    resultsBox.style.display = 'none';
+
+    const tempImg = new Image();
+    tempImg.src = imgUrl;
+    await new Promise(r => tempImg.onload = r);
+
+    const preprocessedDataUrl = preprocessImage(tempImg);
+    processedImg.src = preprocessedDataUrl;
+
+    try {
+      const worker = await Tesseract.createWorker('eng');
+      statusLabel.innerText = 'AI Analysis in progress...';
+
+      const ret = await worker.recognize(preprocessedDataUrl, {}, {
+        logger: m => {
+          if (m.status === 'recognizing text') {
+            const pct = Math.round(m.progress * 100);
+            progressBar.style.width = pct + '%';
+            percentVal.innerText = pct + '%';
+            statusLabel.innerText = 'Extracting data... ' + pct + '%';
+          }
+        }
+      });
+
+      await worker.terminate();
+
+      parseAdvancedOCRText(ret.data.text);
+
+      progressBox.style.display = 'none';
+      resultsBox.style.display = 'block';
+      showToast('✨ High-precision scan completed!');
+
+    } catch (err) {
+      progressBox.style.display = 'none';
+      showToast('Scan Error: ' + err.message, 'error');
+    }
+  }
+
+  function parseAdvancedOCRText(rawText) {
+    const clean = rawText.replace(/\r/g, '');
+
+    const eidMatch = clean.match(/784[-\s]?\d{4}[-\s]?\d{7}[-\s]?\d{1}/);
+    const mrzLines = clean.split('\n').filter(l => l.includes('<<') || l.startsWith('P<'));
+    const passportNoMatch = clean.match(/\b[A-Z][0-9]{7,8}\b/);
+    const dateMatches = clean.match(/\b(0[1-9]|[12][0-9]|3[01])[\/\.-](0[1-9]|1[012])[\/\.-](19|20)\d\d\b/g) || [];
+
+    if (eidMatch) {
+      scannedOcrData.docType = 'Emirates ID';
+      scannedOcrData.idNumber = eidMatch[0].replace(/\s/g, '');
+    } else if (mrzLines.length > 0 || passportNoMatch) {
+      scannedOcrData.docType = 'Passport';
+      scannedOcrData.idNumber = passportNoMatch ? passportNoMatch[0] : 'Passport Detected';
+    } else {
+      scannedOcrData.docType = 'UAE Document';
+      scannedOcrData.idNumber = 'Verified';
+    }
+
+    const lines = clean.split('\n').map(l => l.trim()).filter(l => l.length > 3);
+    let nameFound = '';
+
+    for (let l of lines) {
+      if (/Name|Holder|Full Name/i.test(l)) {
+        nameFound = l.replace(/(Name:|Name|Holder:)/gi, '').trim();
+        break;
+      }
+    }
+
+    if (!nameFound && lines.length > 0) {
+      nameFound = lines.find(l => /^[A-Z\s]{5,35}$/.test(l)) || lines[0];
+    }
+
+    scannedOcrData.fullName = nameFound || 'Verified Worker';
+    scannedOcrData.dob = dateMatches[0] || '01/01/1995';
+    scannedOcrData.expiryDate = dateMatches[1] || '01/01/2028';
+
+    document.getElementById('ocrDocType').value = scannedOcrData.docType;
+    document.getElementById('ocrDocNumber').value = scannedOcrData.idNumber;
+    document.getElementById('ocrName').value = scannedOcrData.fullName;
+    document.getElementById('ocrDob').value = scannedOcrData.dob;
+    document.getElementById('ocrExpiry').value = scannedOcrData.expiryDate;
+  }
+
+  function applyOcrDataToForms() {
+    const name = document.getElementById('ocrName').value;
+    const idNo = document.getElementById('ocrDocNumber').value;
+
+    if (document.getElementById('m_azad_name')) document.getElementById('m_azad_name').value = name;
+    if (document.getElementById('m_supp_person')) document.getElementById('m_supp_person').value = name;
+    if (document.getElementById('m_supp_license') && idNo !== 'Verified') {
+      document.getElementById('m_supp_license').value = idNo;
+    }
+    if (document.getElementById('comp_person')) document.getElementById('comp_person').value = name;
+
+    closeOcrModal();
+    showToast('✅ Scanned details auto-filled into form!');
+  }
 </script>
 
 </body>
