@@ -768,6 +768,62 @@ textarea{min-height:115px;resize:vertical}
   .about-grid, .careers-grid, .contact-grid {grid-template-columns: 1fr !important;}
   .hero h1 {font-size: 34px;}
 }
+
+/* =============================================================
+   POINTS 2 & 3: SMART ID SCANNER POPUP & HD VIDEO EXPANSION
+   ============================================================= */
+#ocrScanModal {
+  z-index: 99999 !important;
+  backdrop-filter: blur(8px) !important;
+  background: rgba(2, 6, 23, 0.75) !important;
+  padding: 12px !important;
+}
+
+#ocrScanModal .azad-modal-content {
+  width: 95% !important;
+  max-width: 680px !important; /* Scaled popup width for high visibility */
+  max-height: 92vh !important;
+  border-radius: 24px !important;
+  padding: 24px !important;
+  background: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35) !important;
+  overflow-y: auto;
+}
+
+.dark #ocrScanModal .azad-modal-content {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+#ocrCameraBox {
+  position: relative !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  background: #020617 !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4) !important;
+}
+
+#ocrVideo {
+  width: 100% !important;
+  height: 380px !important; /* Camera screen size increased to 380px HD */
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Smart framing box overlay */
+.ocr-scan-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 88%;
+  height: 72%;
+  border: 2.5px dashed #fbbf24;
+  border-radius: 16px;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55), 0 0 15px rgba(251, 191, 36, 0.4);
+}
 </style>
 </head>
 <body class="">
@@ -1777,43 +1833,45 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- AI OCR DOCUMENT SCANNER MODAL CONTAINER -->
+<!-- AI OCR DOCUMENT SCANNER MODAL CONTAINER (UPDATED POINT 2 & 3) -->
 <div class="azad-modal" id="ocrScanModal">
-  <div class="azad-modal-content" style="max-width: 520px; padding: 20px;">
+  <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeOcrModal()">&times;</span>
     
-    <div style="text-align: center; margin-bottom: 15px;">
-      <h3 style="color: var(--blue); margin: 0; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <div style="text-align: center; margin-bottom: 18px;">
+      <h3 style="color: var(--blue); margin: 0; font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <i class="fa-solid fa-camera-retro" style="color: var(--gold2);"></i> Smart ID & Passport Scanner
       </h3>
-      <p style="font-size: 11px; color: var(--muted); margin-top: 3px;">Auto-detects Emirates ID & Passport details with image pre-processing.</p>
+      <p style="font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 0;">Auto-detects Emirates ID & Passport details with image pre-processing.</p>
     </div>
 
     <!-- SCANNER TAB MODE: FILE UPLOAD vs LIVE CAMERA -->
-    <div style="display: flex; background: var(--light); border: 1px solid var(--border-color); border-radius: 8px; padding: 3px; margin-bottom: 15px;">
-      <button id="ocrTabUpload" onclick="switchOcrTab('upload')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; background: var(--blue); color: #fff;">
+    <div style="display: flex; background: var(--light); border: 1px solid var(--border-color); border-radius: 12px; padding: 4px; margin-bottom: 18px;">
+      <button id="ocrTabUpload" onclick="switchOcrTab('upload')" type="button" style="flex: 1; border: 0; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; background: var(--blue); color: #fff;">
         📁 Upload Image
       </button>
-      <button id="ocrTabCamera" onclick="switchOcrTab('camera')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; background: transparent; color: var(--text);">
-        📷 Live Camera
+      <button id="ocrTabCamera" onclick="switchOcrTab('camera')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; background: transparent; color: var(--text);">
+        📷 Live Camera HD
       </button>
     </div>
 
     <!-- FILE UPLOAD DROP ZONE -->
-    <div id="ocrUploadBox" style="border: 2px dashed var(--blue2); border-radius: 12px; padding: 22px; text-align: center; background: var(--light); position: relative; cursor: pointer;">
+    <div id="ocrUploadBox" style="border: 2px dashed var(--blue2); border-radius: 16px; padding: 35px 20px; text-align: center; background: var(--light); position: relative; cursor: pointer;">
       <input type="file" id="ocrInputFile" accept="image/*" onchange="processDocumentOCR(this.files[0])" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;">
-      <i class="fa-solid fa-id-card-clip" style="font-size: 36px; color: var(--blue); margin-bottom: 8px;"></i>
-      <p style="font-size: 12px; font-weight: 800; color: var(--text); margin: 0;">Click or Drag Document Image Here</p>
-      <span style="font-size: 10px; color: var(--muted);">Emirates ID (Front/Back) or Passport</span>
+      <i class="fa-solid fa-id-card-clip" style="font-size: 42px; color: var(--blue); margin-bottom: 10px;"></i>
+      <p style="font-size: 14px; font-weight: 800; color: var(--text); margin: 0;">Click or Drag Document Image Here</p>
+      <span style="font-size: 11px; color: var(--muted);">Emirates ID (Front/Back) or Passport</span>
     </div>
 
-    <!-- LIVE CAMERA STREAM BOX -->
-    <div id="ocrCameraBox" style="display: none; position: relative; border-radius: 12px; overflow: hidden; background: #000; text-align: center;">
-      <video id="ocrVideo" autoplay playsinline style="width: 100%; height: 230px; object-fit: cover;"></video>
-      <div style="position: absolute; top: 15%; left: 10%; width: 80%; height: 70%; border: 2px dashed #fbbf24; border-radius: 10px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.4);">
-        <span style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); color: #fbbf24; font-size: 9px; font-weight: bold; text-transform: uppercase;">Align ID Inside Frame</span>
+    <!-- EXPANDED LIVE CAMERA STREAM BOX WITH HD RESOLUTION FRAME -->
+    <div id="ocrCameraBox" style="display: none;">
+      <video id="ocrVideo" autoplay playsinline></video>
+      <div class="ocr-scan-frame">
+        <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #fbbf24; color: #0f172a; font-size: 10px; font-weight: 900; padding: 2px 10px; border-radius: 10px; letter-spacing: 0.5px; white-space: nowrap;">
+          ALIGN ID INSIDE FRAME
+        </span>
       </div>
-      <button onclick="captureCameraFrame()" type="button" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: #10b981; color: #fff; border: 0; padding: 8px 18px; border-radius: 20px; font-weight: 800; font-size: 11px; cursor: pointer; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">
+      <button onclick="captureCameraFrame()" type="button" style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: #10b981; color: #fff; border: 0; padding: 10px 24px; border-radius: 25px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 4px 16px rgba(16,185,129,0.5);">
         📸 Capture & Scan
       </button>
     </div>
@@ -1822,61 +1880,61 @@ textarea{min-height:115px;resize:vertical}
     <canvas id="ocrCanvas" style="display: none;"></canvas>
 
     <!-- LIVE PREVIEW & PRE-PROCESSED RESULT -->
-    <div id="ocrPreviewWrap" style="display: none; margin-top: 12px; text-align: center;">
-      <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+    <div id="ocrPreviewWrap" style="display: none; margin-top: 14px; text-align: center;">
+      <div style="display: flex; gap: 12px; justify-content: center; align-items: center;">
         <div>
-          <span style="display: block; font-size: 9px; color: var(--muted); font-weight: bold; margin-bottom: 2px;">Original</span>
-          <img id="ocrPreviewImg" src="" alt="Original" style="height: 80px; border-radius: 6px; border: 1px solid var(--border-color);">
+          <span style="display: block; font-size: 10px; color: var(--muted); font-weight: bold; margin-bottom: 4px;">Original</span>
+          <img id="ocrPreviewImg" src="" alt="Original" style="height: 90px; border-radius: 8px; border: 1px solid var(--border-color);">
         </div>
         <div>
-          <span style="display: block; font-size: 9px; color: var(--emerald2); font-weight: bold; margin-bottom: 2px;">AI Pre-Processed</span>
-          <img id="ocrProcessedImg" src="" alt="Processed" style="height: 80px; border-radius: 6px; border: 1px solid var(--emerald2);">
+          <span style="display: block; font-size: 10px; color: var(--emerald2); font-weight: bold; margin-bottom: 4px;">AI Pre-Processed</span>
+          <img id="ocrProcessedImg" src="" alt="Processed" style="height: 90px; border-radius: 8px; border: 1px solid var(--emerald2);">
         </div>
       </div>
     </div>
 
     <!-- PROGRESS BAR -->
-    <div id="ocrProgressBox" style="display: none; margin-top: 12px;">
-      <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 800; color: var(--text); margin-bottom: 4px;">
+    <div id="ocrProgressBox" style="display: none; margin-top: 14px;">
+      <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--text); margin-bottom: 4px;">
         <span id="ocrProgressLabel">Scanning document with AI...</span>
         <span id="ocrPercentVal">0%</span>
       </div>
-      <div style="width: 100%; height: 6px; background: var(--border-color); border-radius: 10px; overflow: hidden;">
+      <div style="width: 100%; height: 8px; background: var(--border-color); border-radius: 10px; overflow: hidden;">
         <div id="ocrProgressBar" style="width: 0%; height: 100%; background: var(--blue); transition: width 0.2s;"></div>
       </div>
     </div>
 
     <!-- EXTRACTED RESULTS REVIEW & AUTO-FILL -->
-    <div id="ocrResultsBox" style="display: none; margin-top: 12px; background: var(--light); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <span style="font-size: 10px; font-weight: 800; color: var(--emerald2);"><i class="fa-solid fa-circle-check"></i> EXTRACTED DETAILS</span>
-        <span id="ocrConfidenceBadge" style="font-size: 9px; background: rgba(16,185,129,0.15); color: var(--emerald2); padding: 2px 6px; border-radius: 4px; font-weight: bold;">High Accuracy</span>
+    <div id="ocrResultsBox" style="display: none; margin-top: 14px; background: var(--light); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 11px; font-weight: 800; color: var(--emerald2);"><i class="fa-solid fa-circle-check"></i> EXTRACTED DETAILS</span>
+        <span id="ocrConfidenceBadge" style="font-size: 10px; background: rgba(16,185,129,0.15); color: var(--emerald2); padding: 3px 8px; border-radius: 6px; font-weight: bold;">High Accuracy</span>
       </div>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
         <div>
-          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">DOC TYPE</label>
-          <input type="text" id="ocrDocType" readonly style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">DOC TYPE</label>
+          <input type="text" id="ocrDocType" readonly style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg);">
         </div>
         <div>
-          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">NUMBER</label>
-          <input type="text" id="ocrDocNumber" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg); color: var(--blue2);">
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">NUMBER</label>
+          <input type="text" id="ocrDocNumber" style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg); color: var(--blue2);">
         </div>
         <div style="grid-column: span 2;">
-          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">FULL NAME</label>
-          <input type="text" id="ocrName" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">FULL NAME</label>
+          <input type="text" id="ocrName" style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg);">
         </div>
         <div>
-          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">DATE OF BIRTH</label>
-          <input type="text" id="ocrDob" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">DATE OF BIRTH</label>
+          <input type="text" id="ocrDob" style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg);">
         </div>
         <div>
-          <label style="color: var(--muted); font-size: 9px; font-weight: bold;">EXPIRY DATE</label>
-          <input type="text" id="ocrExpiry" style="padding: 5px; font-size: 10px; font-weight: 800; background: var(--card-bg);">
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">EXPIRY DATE</label>
+          <input type="text" id="ocrExpiry" style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg);">
         </div>
       </div>
 
-      <button onclick="applyOcrDataToForms()" type="button" style="width: 100%; margin-top: 10px; background: var(--blue); color: #fff; border: 0; padding: 9px; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer;">
+      <button onclick="applyOcrDataToForms()" type="button" style="width: 100%; margin-top: 12px; background: var(--blue); color: #fff; border: 0; padding: 11px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
         <i class="fa-solid fa-file-import"></i> Auto-Fill Into Registration Form
       </button>
     </div>
@@ -2091,7 +2149,6 @@ textarea{min-height:115px;resize:vertical}
       const userRole = user.user_metadata.role;
       const socialAvatar = user.user_metadata.avatar_url || user.user_metadata.picture;
 
-      // AGAR ROLE SET NAHI HAI TOH ROLE SELECTION MODAL PROMPT SHOW KAREIN
       if (!userRole) {
         document.getElementById('googleRoleModal').style.display = 'flex';
       }
@@ -3661,14 +3718,18 @@ document.addEventListener('click', async (e) => {
     setInterval(update,1000);
   })();
 
-  /* ==========================================
-     AI OCR ENGINE (CAMERA + CANVAS + PARSER)
-  ========================================== */
+  /* =============================================================
+     POINTS 2 & 4: AI OCR ENGINE (HD CAMERA STREAM + CANVAS + OCR)
+  ============================================================= */
   let cameraStream = null;
   let scannedOcrData = { docType: '', idNumber: '', fullName: '', dob: '', expiryDate: '' };
 
   function openOcrModal() {
-    document.getElementById('ocrScanModal').style.display = 'flex';
+    const modal = document.getElementById('ocrScanModal');
+    if (modal) {
+      modal.style.zIndex = '99999';
+      modal.style.display = 'flex';
+    }
     switchOcrTab('upload');
   }
 
@@ -3698,11 +3759,16 @@ document.addEventListener('click', async (e) => {
     }
   }
 
+  /* Full HD (1080p / 720p) High Definition Video Stream */
   async function startCameraStream() {
     const video = document.getElementById('ocrVideo');
     try {
       cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+        video: { 
+          facingMode: 'environment', 
+          width: { ideal: 1920, min: 1280 }, 
+          height: { ideal: 1080, min: 720 } 
+        }
       });
       video.srcObject = cameraStream;
     } catch (err) {
@@ -3717,17 +3783,18 @@ document.addEventListener('click', async (e) => {
     }
   }
 
+  /* Full native camera resolution frame capture for crisp OCR */
   function captureCameraFrame() {
     const video = document.getElementById('ocrVideo');
     const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     
     canvas.toBlob(blob => {
       processDocumentOCR(blob);
-    }, 'image/jpeg', 0.95);
+    }, 'image/jpeg', 0.98);
   }
 
   function preprocessImage(imageElement) {
