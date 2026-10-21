@@ -3826,7 +3826,7 @@ document.addEventListener('click', async (e) => {
     }, 'image/jpeg', 0.99);
   }
 
-  /* Super-Resolution Upscaling & Non-Destructive Contrast Engine */
+  /* Optimized Pre-processing Engine (Prevents Memory Overflow) */
   function preprocessImage(imageElement) {
     const canvas = document.getElementById('ocrCanvas');
     const ctx = canvas.getContext('2d');
@@ -3834,10 +3834,17 @@ document.addEventListener('click', async (e) => {
     let origW = imageElement.naturalWidth || imageElement.width || 1280;
     let origH = imageElement.naturalHeight || imageElement.height || 720;
 
-    // Small document images get 2x Super-Resolution Upscaled for Tesseract accuracy
-    const scale = origW < 1920 ? 2 : 1;
-    canvas.width = origW * scale;
-    canvas.height = origH * scale;
+    // Max dimension 2000px cap - Browser freeze aur crash hone se bachata hai
+    const MAX_DIM = 2000;
+    let scale = 1;
+    if (Math.max(origW, origH) < 1000) {
+      scale = 1.8;
+    } else if (Math.max(origW, origH) > MAX_DIM) {
+      scale = MAX_DIM / Math.max(origW, origH);
+    }
+
+    canvas.width = Math.round(origW * scale);
+    canvas.height = Math.round(origH * scale);
 
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
@@ -3846,23 +3853,19 @@ document.addEventListener('click', async (e) => {
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const d = imgData.data;
 
-    // High Contrast Grayscale without deleting text edges
+    // Grayscale & dynamic contrast adjustment
     for (let i = 0; i < d.length; i += 4) {
       let gray = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
-      
-      // Dynamic Contrast Masking
-      gray = ((gray - 128) * 1.5) + 128;
+      gray = ((gray - 128) * 1.4) + 128;
       gray = Math.min(255, Math.max(0, gray));
-
-      d[i] = gray; 
-      d[i + 1] = gray; 
-      d[i + 2] = gray;
+      d[i] = gray; d[i + 1] = gray; d[i + 2] = gray;
     }
 
     ctx.putImageData(imgData, 0, 0);
     return canvas.toDataURL('image/png');
   }
 
+  /* Updated High-Accuracy Tesseract v5 Engine with Live Progress */
   async function processDocumentOCR(fileOrBlob) {
     if (!fileOrBlob) return;
 
@@ -3884,30 +3887,60 @@ document.addEventListener('click', async (e) => {
     progressBox.style.display = 'block';
     resultsBox.style.display = 'none';
 
+    // Step 1: Initial UI State Update
+    progressBar.style.width = '10%';
+    percentVal.innerText = '10%';
+    statusLabel.innerText = 'Preparing document...';
+
     const tempImg = new Image();
     tempImg.src = imgUrl;
     await new Promise(r => tempImg.onload = r);
 
+    // Step 2: Image Optimization
     const preprocessedDataUrl = preprocessImage(tempImg);
     processedImg.src = preprocessedDataUrl;
 
-    try {
-      const worker = await Tesseract.createWorker('eng');
-      statusLabel.innerText = 'AI Analysis in progress...';
+    statusLabel.innerText = 'Connecting to AI Engine...';
+    progressBar.style.width = '20%';
+    percentVal.innerText = '20%';
 
-      const ret = await worker.recognize(preprocessedDataUrl, {}, {
-        logger: m => {
-          if (m.status === 'recognizing text') {
-            const pct = Math.round(m.progress * 100);
-            progressBar.style.width = pct + '%';
-            percentVal.innerText = pct + '%';
-            statusLabel.innerText = 'Extracting data... ' + pct + '%';
+    try {
+      // Step 3: Tesseract.recognize Direct Stream
+      const ret = await Tesseract.recognize(
+        preprocessedDataUrl,
+        'eng',
+        {
+          logger: m => {
+            if (m.status === 'loading tesseract core') {
+              statusLabel.innerText = 'Loading AI Core Engine...';
+              progressBar.style.width = '30%';
+              percentVal.innerText = '30%';
+            } else if (m.status === 'initializing tesseract') {
+              statusLabel.innerText = 'Initializing OCR Scanner...';
+              progressBar.style.width = '45%';
+              percentVal.innerText = '45%';
+            } else if (m.status === 'loading language traineddata') {
+              const p = Math.round((m.progress || 0) * 100);
+              statusLabel.innerText = `Downloading AI Data (${p}%)...`;
+              const calcPct = 45 + Math.round(p * 0.25);
+              progressBar.style.width = calcPct + '%';
+              percentVal.innerText = calcPct + '%';
+            } else if (m.status === 'recognizing text') {
+              const p = Math.round((m.progress || 0) * 100);
+              statusLabel.innerText = `Extracting Text (${p}%)...`;
+              const calcPct = 70 + Math.round(p * 0.30);
+              progressBar.style.width = calcPct + '%';
+              percentVal.innerText = calcPct + '%';
+            }
           }
         }
-      });
+      );
 
-      await worker.terminate();
+      if (!ret || !ret.data || !ret.data.text) {
+        throw new Error('No readable text found in document.');
+      }
 
+      // Step 4: Display Results
       parseAdvancedOCRText(ret.data.text);
 
       progressBox.style.display = 'none';
@@ -3915,8 +3948,9 @@ document.addEventListener('click', async (e) => {
       showToast('✨ High-precision scan completed!');
 
     } catch (err) {
+      console.error('OCR Processing Error:', err);
       progressBox.style.display = 'none';
-      showToast('Scan Error: ' + err.message, 'error');
+      showToast('Scan Error: ' + (err.message || 'Analysis failed. Try a clearer image.'), 'error');
     }
   }
 
