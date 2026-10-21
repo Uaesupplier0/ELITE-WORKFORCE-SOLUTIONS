@@ -1855,7 +1855,7 @@ textarea{min-height:115px;resize:vertical}
     
     <div style="text-align: center; margin-bottom: 12px;">
       <h3 style="color: var(--blue); margin: 0; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <i class="fa-solid fa-id-card-clip" style="color: var(--gold2);"></i> Multi-Side Smart Document Scanner
+        <i class="fa-solid fa-id-card-clip" style="color: var(--gold2);"></i> Advanced Multi-Side Smart Document Scanner
       </h3>
       <p id="ocrStepIndicator" style="font-size: 12px; font-weight: bold; color: var(--emerald2); margin-top: 4px; margin-bottom: 0;">Step 1: Scan Front Side</p>
     </div>
@@ -1866,7 +1866,7 @@ textarea{min-height:115px;resize:vertical}
         📁 Upload Image
       </button>
       <button id="ocrTabCamera" onclick="switchOcrTab('camera')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; background: transparent; color: var(--text);">
-        📷 Live Camera HD
+        📷 Live Camera HD (Auto-Capture)
       </button>
     </div>
 
@@ -1878,7 +1878,7 @@ textarea{min-height:115px;resize:vertical}
       <span style="font-size: 11px; color: var(--muted);">Emirates ID or Passport</span>
     </div>
 
-    <!-- EXPANDED LIVE CAMERA STREAM BOX WITH GREEN LIGHT GLOW FRAME -->
+    <!-- EXPANDED LIVE CAMERA STREAM BOX WITH TORCH & AUTO-CAPTURE -->
     <div id="ocrCameraBox" style="display: none;">
       <video id="ocrVideo" autoplay playsinline></video>
       <div class="ocr-scan-frame" id="ocrFramingBox">
@@ -1886,9 +1886,16 @@ textarea{min-height:115px;resize:vertical}
           ALIGN FRONT SIDE INSIDE FRAME
         </span>
       </div>
-      <button onclick="captureCameraFrame()" type="button" style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: #10b981; color: #fff; border: 0; padding: 10px 24px; border-radius: 25px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 4px 16px rgba(16,185,129,0.5);">
-        📸 Capture & Scan
-      </button>
+
+      <!-- CAMERA CONTROLS BAR (TORCH & CAPTURE) -->
+      <div style="position: absolute; bottom: 16px; left: 0; width: 100%; display: flex; justify-content: center; gap: 12px; padding: 0 15px;">
+        <button onclick="toggleTorchLight()" id="torchBtn" type="button" style="background: rgba(15,23,42,0.85); color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 16px; border-radius: 25px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-bolt"></i> Flash: OFF
+        </button>
+        <button onclick="captureCameraFrame()" type="button" style="background: #10b981; color: #fff; border: 0; padding: 10px 24px; border-radius: 25px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 4px 16px rgba(16,185,129,0.5);">
+          📸 Capture & Scan
+        </button>
+      </div>
     </div>
 
     <!-- HIDDEN CANVAS -->
@@ -1918,7 +1925,7 @@ textarea{min-height:115px;resize:vertical}
           <input type="text" id="ocrDocType" readonly style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg);">
         </div>
         <div>
-          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">ID NUMBER</label>
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">ID NUMBER / MRZ</label>
           <input type="text" id="ocrDocNumber" style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg); color: var(--blue2);">
         </div>
         <div style="grid-column: span 2;">
@@ -3720,12 +3727,14 @@ document.addEventListener('click', async (e) => {
   })();
 
   /* =============================================================
-     MULTI-SIDE SMART OCR SCANNER & GREEN LIGHT ANIMATION ENGINE
+     ADVANCED MULTI-SIDE SMART OCR SCANNER & AUTO-CAPTURE ENGINE
   ============================================================= */
   let cameraStream = null;
   let currentScanSide = 'front'; // 'front' or 'back'
   let frontScanData = null;
   let backScanData = null;
+  let autoCaptureTimer = null;
+  let torchState = false;
 
   function openOcrModal() {
     currentScanSide = 'front';
@@ -3803,12 +3812,17 @@ document.addEventListener('click', async (e) => {
           await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {});
         }
       }
+
+      // Start Blur Detection & Auto-Capture Loop
+      startAutoCaptureLoop();
+
     } catch (err) {
       try {
         cameraStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }
         });
         video.srcObject = cameraStream;
+        startAutoCaptureLoop();
       } catch (e) {
         showToast('Camera Access Error: ' + err.message, 'error');
       }
@@ -3816,13 +3830,92 @@ document.addEventListener('click', async (e) => {
   }
 
   function stopCameraStream() {
+    if (autoCaptureTimer) {
+      clearInterval(autoCaptureTimer);
+      autoCaptureTimer = null;
+    }
     if (cameraStream) {
       cameraStream.getTracks().forEach(track => track.stop());
       cameraStream = null;
     }
+    torchState = false;
+  }
+
+  async function toggleTorchLight() {
+    if (!cameraStream) return;
+    const track = cameraStream.getVideoTracks()[0];
+    try {
+      torchState = !torchState;
+      await track.applyConstraints({ advanced: [{ torch: torchState }] });
+      const btn = document.getElementById('torchBtn');
+      if (btn) {
+        btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Flash: ${torchState ? 'ON' : 'OFF'}`;
+        btn.style.color = torchState ? '#10b981' : '#fbbf24';
+        btn.style.borderColor = torchState ? '#10b981' : '#fbbf24';
+      }
+    } catch (e) {
+      showToast('Flashlight not supported on this device.', 'error');
+    }
+  }
+
+  // Smart Auto-Capture & Blur Check Loop
+  function startAutoCaptureLoop() {
+    if (autoCaptureTimer) clearInterval(autoCaptureTimer);
+    
+    let stableCount = 0;
+    autoCaptureTimer = setInterval(() => {
+      const video = document.getElementById('ocrVideo');
+      const framingBox = document.getElementById('ocrFramingBox');
+      if (!video || video.paused || video.ended) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 300; canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, 300, 200);
+
+      const imgData = ctx.getImageData(0, 0, 300, 200);
+      let sharpnessScore = calculateImageSharpness(imgData);
+
+      // If image is sharp enough, trigger Green Glow and Auto-Capture after stability
+      if (sharpnessScore > 35) {
+        stableCount++;
+        if (framingBox) framingBox.classList.add('green-glow-animation');
+        
+        if (stableCount >= 3) { // 3 stable frames detected
+          clearInterval(autoCaptureTimer);
+          autoCaptureTimer = null;
+          showToast('📸 Sharp document detected! Auto-capturing...');
+          captureCameraFrame();
+        }
+      } else {
+        stableCount = 0;
+        if (framingBox) framingBox.classList.remove('green-glow-animation');
+      }
+    }, 600);
+  }
+
+  function calculateImageSharpness(imgData) {
+    const d = imgData.data;
+    let sum = 0;
+    let count = 0;
+    for (let y = 1; y < imgData.height - 1; y++) {
+      for (let x = 1; x < imgData.width - 1; x++) {
+        let idx = (y * imgData.width + x) * 4;
+        let gx = Math.abs(d[idx + 4] - d[idx - 4]);
+        let gy = Math.abs(d[idx + imgData.width * 4] - d[idx - imgData.width * 4]);
+        sum += (gx + gy);
+        count++;
+      }
+    }
+    return sum / count;
   }
 
   function captureCameraFrame() {
+    if (autoCaptureTimer) {
+      clearInterval(autoCaptureTimer);
+      autoCaptureTimer = null;
+    }
+
     const video = document.getElementById('ocrVideo');
     const canvas = document.createElement('canvas');
 
@@ -3849,7 +3942,7 @@ document.addEventListener('click', async (e) => {
     let origW = imageElement.naturalWidth || imageElement.width || 1280;
     let origH = imageElement.naturalHeight || imageElement.height || 720;
 
-    const MAX_DIM = 2000;
+    const MAX_DIM = 2200;
     let scale = 1;
     if (Math.max(origW, origH) < 1000) {
       scale = 1.8;
@@ -3869,7 +3962,7 @@ document.addEventListener('click', async (e) => {
 
     for (let i = 0; i < d.length; i += 4) {
       let gray = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
-      gray = ((gray - 128) * 1.4) + 128;
+      gray = ((gray - 128) * 1.5) + 128;
       gray = Math.min(255, Math.max(0, gray));
       d[i] = gray; d[i + 1] = gray; d[i + 2] = gray;
     }
@@ -3881,7 +3974,6 @@ document.addEventListener('click', async (e) => {
   async function processDocumentOCR(fileOrBlob) {
     if (!fileOrBlob) return;
 
-    // Trigger Green Light Detection Animation on framing box
     const framingBox = document.getElementById('ocrFramingBox');
     if (framingBox) {
       framingBox.classList.add('green-glow-animation');
@@ -3935,9 +4027,8 @@ document.addEventListener('click', async (e) => {
         frontScanData = parsedData;
         showToast('✅ Front Side Scanned Successfully!');
         
-        // Prompt for Back Side
         setTimeout(() => {
-          if (confirm("Front Side scanned successfully! Now please scan the **Back Side** of your ID / Document.")) {
+          if (confirm("Front Side scanned successfully! Now please scan the **Back Side** (containing MRZ barcode) of your Emirates ID / Passport.")) {
             currentScanSide = 'back';
             updateOcrUIState();
             progressBox.style.display = 'none';
@@ -3950,7 +4041,7 @@ document.addEventListener('click', async (e) => {
 
       } else {
         backScanData = parsedData;
-        showToast('✅ Back Side Scanned Successfully!');
+        showToast('✅ Back Side & MRZ Scanned Successfully!');
         finalizeOcrResults(frontScanData, backScanData);
       }
 
@@ -3966,6 +4057,7 @@ document.addEventListener('click', async (e) => {
     const clean = rawText.replace(/\r/g, '');
     const eidMatch = clean.match(/784[-\s]?\d{4}[-\s]?\d{7}[-\s]?\d{1}/) || clean.match(/\b784\d{12}\b/);
     const passportNoMatch = clean.match(/\b[A-Z][0-9]{7,8}\b/);
+    const mrzMatch = clean.match(/I<ARE|P<[A-Z]{3}[A-Z0-9<]+/) || clean.match(/[0-9]{6}[0-9MFS][0-9]{7}/);
     const dateMatches = clean.match(/\b(0[1-9]|[12][0-9]|3[01])[\/\.-](0[1-9]|1[012])[\/\.-](19|20)\d\d\b/g) || [];
 
     let docType = 'Emirates ID';
@@ -3977,6 +4069,9 @@ document.addEventListener('click', async (e) => {
     } else if (passportNoMatch) {
       docType = 'Passport';
       idNumber = passportNoMatch[0];
+    } else if (mrzMatch) {
+      docType = 'MRZ Document / ID';
+      idNumber = mrzMatch[0];
     } else {
       idNumber = clean.match(/\d{8,15}/) ? clean.match(/\d{8,15}/)[0] : 'Verified Number';
     }
@@ -4010,13 +4105,13 @@ document.addEventListener('click', async (e) => {
     document.getElementById('ocrProgressBox').style.display = 'none';
     document.getElementById('ocrResultsBox').style.display = 'block';
 
-    document.getElementById('ocrDocType').value = front.docType || 'Emirates ID (Front & Back)';
-    document.getElementById('ocrDocNumber').value = front.idNumber !== 'Verified' ? front.idNumber : back.idNumber;
+    document.getElementById('ocrDocType').value = front.docType || 'Emirates ID (Front & Back + MRZ)';
+    document.getElementById('ocrDocNumber').value = (back.idNumber !== 'N/A' && back.idNumber !== 'Verified') ? back.idNumber : front.idNumber;
     document.getElementById('ocrName').value = front.fullName;
     document.getElementById('ocrDob').value = front.dob;
-    document.getElementById('ocrExpiry').value = back.expiryDate !== 'N/A' ? back.expiryDate : front.expiryDate;
+    document.getElementById('ocrExpiry').value = (back.expiryDate !== 'N/A') ? back.expiryDate : front.expiryDate;
 
-    showToast('✨ Complete Multi-Side Scan Verified & Ready!');
+    showToast('✨ Advanced Multi-Side Scan & MRZ Parsed Successfully!');
   }
 
   function applyOcrDataToForms() {
@@ -4029,7 +4124,7 @@ document.addEventListener('click', async (e) => {
     if (document.getElementById('comp_person')) document.getElementById('comp_person').value = name;
 
     closeOcrModal();
-    showToast('✅ Complete multi-side details auto-filled into form!');
+    showToast('✅ Complete advanced scanned details auto-filled into form!');
   }
 </script>
 
