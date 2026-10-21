@@ -776,15 +776,15 @@ textarea{min-height:115px;resize:vertical}
   z-index: 99999 !important;
   backdrop-filter: blur(8px) !important;
   background: rgba(2, 6, 23, 0.8) !important;
-  padding: 4px !important;           /* Minimal margin to maximize screen size */
+  padding: 4px !important;
 }
 
 #ocrScanModal .azad-modal-content {
-  width: 100% !important;            /* Mobile screen 100% full width */
-  max-width: 950px !important;       /* Wide expanded popup for desktop/tablets */
-  max-height: 98vh !important;       /* Dynamic 98% full screen height */
+  width: 100% !important;
+  max-width: 950px !important;
+  max-height: 98vh !important;
   border-radius: 20px !important;
-  padding: 14px !important;          /* Side padding minimized to maximize camera space */
+  padding: 14px !important;
   background: #ffffff !important;
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35) !important;
   overflow-y: auto;
@@ -806,14 +806,14 @@ textarea{min-height:115px;resize:vertical}
 
 #ocrVideo {
   width: 100% !important;
-  height: 62vh !important;           /* Mobile screen height ke hisab se 62% coverage */
-  min-height: 480px !important;      /* Extra-large height for crystal clear alignment */
-  object-fit: contain !important;    /* Uncropped frame prevents edge text cutting */
+  height: 62vh !important;
+  min-height: 480px !important;
+  object-fit: contain !important;
   background: #020617 !important;
   display: block !important;
 }
 
-/* Smart framing box overlay */
+/* Smart framing box overlay with Green Light Animation */
 .ocr-scan-frame {
   position: absolute;
   top: 50%;
@@ -825,6 +825,19 @@ textarea{min-height:115px;resize:vertical}
   border-radius: 16px;
   pointer-events: none;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(251, 191, 36, 0.4);
+  transition: all 0.3s ease;
+}
+
+/* Green Light Glow Animation Class */
+.green-glow-animation {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.9) !important;
+  animation: greenPulse 1.2s infinite ease-in-out;
+}
+@keyframes greenPulse {
+  0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.5); }
+  50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.95); }
+  100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.5); }
 }
 </style>
 </head>
@@ -1161,7 +1174,7 @@ textarea{min-height:115px;resize:vertical}
         <!-- AI OCR TRIGGER BUTTON FOR COMPANY FORM -->
         <div style="margin-bottom: 12px;">
           <button type="button" onclick="openOcrModal()" style="width: 100%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
-            <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with AI Document Scanner
+            <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with Multi-Side AI Scanner
           </button>
         </div>
 
@@ -1729,7 +1742,7 @@ textarea{min-height:115px;resize:vertical}
       <!-- AI OCR TRIGGER BUTTON FOR SUPPLIER MODAL -->
       <div style="margin-bottom: 12px;">
         <button type="button" onclick="openOcrModal()" style="width: 100%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
-          <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with AI Document Scanner
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with Multi-Side AI Scanner
         </button>
       </div>
 
@@ -1785,7 +1798,7 @@ textarea{min-height:115px;resize:vertical}
       <!-- AI OCR TRIGGER BUTTON FOR AZAD WORKER MODAL -->
       <div style="margin-bottom: 12px;">
         <button type="button" onclick="openOcrModal()" style="width: 100%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
-          <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with AI Document Scanner
+          <i class="fa-solid fa-wand-magic-sparkles" style="color: #fbbf24;"></i> Auto-Fill with Multi-Side AI Scanner
         </button>
       </div>
 
@@ -1835,21 +1848,21 @@ textarea{min-height:115px;resize:vertical}
   </div>
 </div>
 
-<!-- AI OCR DOCUMENT SCANNER MODAL CONTAINER (UPDATED ULTRA-HD CAMERA STREAM) -->
+<!-- AI OCR DOCUMENT SCANNER MODAL CONTAINER (MULTI-SIDE FRONT & BACK + GREEN LIGHT ANIMATION) -->
 <div class="azad-modal" id="ocrScanModal">
   <div class="azad-modal-content">
     <span class="azad-close-btn" onclick="closeOcrModal()">&times;</span>
     
-    <div style="text-align: center; margin-bottom: 18px;">
-      <h3 style="color: var(--blue); margin: 0; font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <i class="fa-solid fa-camera-retro" style="color: var(--gold2);"></i> Smart ID & Passport Scanner
+    <div style="text-align: center; margin-bottom: 12px;">
+      <h3 style="color: var(--blue); margin: 0; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-id-card-clip" style="color: var(--gold2);"></i> Multi-Side Smart Document Scanner
       </h3>
-      <p style="font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 0;">Auto-detects Emirates ID & Passport details with image pre-processing.</p>
+      <p id="ocrStepIndicator" style="font-size: 12px; font-weight: bold; color: var(--emerald2); margin-top: 4px; margin-bottom: 0;">Step 1: Scan Front Side</p>
     </div>
 
     <!-- SCANNER TAB MODE: FILE UPLOAD vs LIVE CAMERA -->
-    <div style="display: flex; background: var(--light); border: 1px solid var(--border-color); border-radius: 12px; padding: 4px; margin-bottom: 18px;">
-      <button id="ocrTabUpload" onclick="switchOcrTab('upload')" type="button" style="flex: 1; border: 0; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; background: var(--blue); color: #fff;">
+    <div style="display: flex; background: var(--light); border: 1px solid var(--border-color); border-radius: 12px; padding: 4px; margin-bottom: 14px;">
+      <button id="ocrTabUpload" onclick="switchOcrTab('upload')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; background: var(--blue); color: #fff;">
         📁 Upload Image
       </button>
       <button id="ocrTabCamera" onclick="switchOcrTab('camera')" type="button" style="flex: 1; border: 0; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; background: transparent; color: var(--text);">
@@ -1858,19 +1871,19 @@ textarea{min-height:115px;resize:vertical}
     </div>
 
     <!-- FILE UPLOAD DROP ZONE -->
-    <div id="ocrUploadBox" style="border: 2px dashed var(--blue2); border-radius: 16px; padding: 35px 20px; text-align: center; background: var(--light); position: relative; cursor: pointer;">
+    <div id="ocrUploadBox" style="border: 2px dashed var(--blue2); border-radius: 16px; padding: 25px 20px; text-align: center; background: var(--light); position: relative; cursor: pointer;">
       <input type="file" id="ocrInputFile" accept="image/*" onchange="processDocumentOCR(this.files[0])" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;">
-      <i class="fa-solid fa-id-card-clip" style="font-size: 42px; color: var(--blue); margin-bottom: 10px;"></i>
-      <p style="font-size: 14px; font-weight: 800; color: var(--text); margin: 0;">Click or Drag Document Image Here</p>
-      <span style="font-size: 11px; color: var(--muted);">Emirates ID (Front/Back) or Passport</span>
+      <i class="fa-solid fa-cloud-arrow-up" style="font-size: 36px; color: var(--blue); margin-bottom: 8px;"></i>
+      <p style="font-size: 13px; font-weight: 800; color: var(--text); margin: 0;" id="ocrUploadPromptText">Click or Upload Front Side Image</p>
+      <span style="font-size: 11px; color: var(--muted);">Emirates ID or Passport</span>
     </div>
 
-    <!-- EXPANDED LIVE CAMERA STREAM BOX WITH HD RESOLUTION FRAME -->
+    <!-- EXPANDED LIVE CAMERA STREAM BOX WITH GREEN LIGHT GLOW FRAME -->
     <div id="ocrCameraBox" style="display: none;">
       <video id="ocrVideo" autoplay playsinline></video>
-      <div class="ocr-scan-frame">
-        <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #fbbf24; color: #0f172a; font-size: 10px; font-weight: 900; padding: 2px 10px; border-radius: 10px; letter-spacing: 0.5px; white-space: nowrap;">
-          ALIGN ID INSIDE FRAME
+      <div class="ocr-scan-frame" id="ocrFramingBox">
+        <span id="ocrFrameBadge" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #fbbf24; color: #0f172a; font-size: 10px; font-weight: 900; padding: 2px 10px; border-radius: 10px; letter-spacing: 0.5px; white-space: nowrap;">
+          ALIGN FRONT SIDE INSIDE FRAME
         </span>
       </div>
       <button onclick="captureCameraFrame()" type="button" style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: #10b981; color: #fff; border: 0; padding: 10px 24px; border-radius: 25px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 4px 16px rgba(16,185,129,0.5);">
@@ -1878,22 +1891,8 @@ textarea{min-height:115px;resize:vertical}
       </button>
     </div>
 
-    <!-- HIDDEN CANVAS FOR IMAGE PRE-PROCESSING -->
+    <!-- HIDDEN CANVAS -->
     <canvas id="ocrCanvas" style="display: none;"></canvas>
-
-    <!-- LIVE PREVIEW & PRE-PROCESSED RESULT -->
-    <div id="ocrPreviewWrap" style="display: none; margin-top: 14px; text-align: center;">
-      <div style="display: flex; gap: 12px; justify-content: center; align-items: center;">
-        <div>
-          <span style="display: block; font-size: 10px; color: var(--muted); font-weight: bold; margin-bottom: 4px;">Original</span>
-          <img id="ocrPreviewImg" src="" alt="Original" style="height: 90px; border-radius: 8px; border: 1px solid var(--border-color);">
-        </div>
-        <div>
-          <span style="display: block; font-size: 10px; color: var(--emerald2); font-weight: bold; margin-bottom: 4px;">AI Pre-Processed</span>
-          <img id="ocrProcessedImg" src="" alt="Processed" style="height: 90px; border-radius: 8px; border: 1px solid var(--emerald2);">
-        </div>
-      </div>
-    </div>
 
     <!-- PROGRESS BAR -->
     <div id="ocrProgressBox" style="display: none; margin-top: 14px;">
@@ -1906,11 +1905,11 @@ textarea{min-height:115px;resize:vertical}
       </div>
     </div>
 
-    <!-- EXTRACTED RESULTS REVIEW & AUTO-FILL -->
+    <!-- COMPLETE DETAIL POPUP & AUTO-FILL BOX -->
     <div id="ocrResultsBox" style="display: none; margin-top: 14px; background: var(--light); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <span style="font-size: 11px; font-weight: 800; color: var(--emerald2);"><i class="fa-solid fa-circle-check"></i> EXTRACTED DETAILS</span>
-        <span id="ocrConfidenceBadge" style="font-size: 10px; background: rgba(16,185,129,0.15); color: var(--emerald2); padding: 3px 8px; border-radius: 6px; font-weight: bold;">High Accuracy</span>
+        <span style="font-size: 11px; font-weight: 800; color: var(--emerald2);"><i class="fa-solid fa-circle-check"></i> COMPLETE DETAILS (FRONT & BACK SCANNED)</span>
+        <span id="ocrConfidenceBadge" style="font-size: 10px; background: rgba(16,185,129,0.15); color: var(--emerald2); padding: 3px 8px; border-radius: 6px; font-weight: bold;">Verified</span>
       </div>
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
@@ -1919,7 +1918,7 @@ textarea{min-height:115px;resize:vertical}
           <input type="text" id="ocrDocType" readonly style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg);">
         </div>
         <div>
-          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">NUMBER</label>
+          <label style="color: var(--muted); font-size: 10px; font-weight: bold;">ID NUMBER</label>
           <input type="text" id="ocrDocNumber" style="padding: 7px; font-size: 11px; font-weight: 800; background: var(--card-bg); color: var(--blue2);">
         </div>
         <div style="grid-column: span 2;">
@@ -3721,12 +3720,19 @@ document.addEventListener('click', async (e) => {
   })();
 
   /* =============================================================
-     ULTRA-HD 4K CAMERA STREAM & HIGH-ACCURACY AI OCR ENGINE
+     MULTI-SIDE SMART OCR SCANNER & GREEN LIGHT ANIMATION ENGINE
   ============================================================= */
   let cameraStream = null;
-  let scannedOcrData = { docType: '', idNumber: '', fullName: '', dob: '', expiryDate: '' };
+  let currentScanSide = 'front'; // 'front' or 'back'
+  let frontScanData = null;
+  let backScanData = null;
 
   function openOcrModal() {
+    currentScanSide = 'front';
+    frontScanData = null;
+    backScanData = null;
+    updateOcrUIState();
+
     const modal = document.getElementById('ocrScanModal');
     if (modal) {
       modal.style.zIndex = '99999';
@@ -3761,11 +3767,25 @@ document.addEventListener('click', async (e) => {
     }
   }
 
-  /* 4K Ultra-HD Camera Stream + Hardware Auto-Focus */
+  function updateOcrUIState() {
+    const stepLabel = document.getElementById('ocrStepIndicator');
+    const uploadPrompt = document.getElementById('ocrUploadPromptText');
+    const frameBadge = document.getElementById('ocrFrameBadge');
+
+    if (currentScanSide === 'front') {
+      if (stepLabel) stepLabel.innerText = "Step 1: Scan Front Side";
+      if (uploadPrompt) uploadPrompt.innerText = "Click or Upload Front Side Image";
+      if (frameBadge) frameBadge.innerText = "ALIGN FRONT SIDE INSIDE FRAME";
+    } else {
+      if (stepLabel) stepLabel.innerText = "Step 2: Scan Back Side";
+      if (uploadPrompt) uploadPrompt.innerText = "Click or Upload Back Side Image";
+      if (frameBadge) frameBadge.innerText = "ALIGN BACK SIDE INSIDE FRAME";
+    }
+  }
+
   async function startCameraStream() {
     const video = document.getElementById('ocrVideo');
     try {
-      // Requested 4K / 1080p Ultra-HD Resolution & Hardware Focus
       cameraStream = await navigator.mediaDevices.getUserMedia({
         video: { 
           facingMode: 'environment', 
@@ -3776,7 +3796,6 @@ document.addEventListener('click', async (e) => {
       });
       video.srcObject = cameraStream;
 
-      // Enable Continuous Hardware Auto-Focus if supported by phone sensor
       const track = cameraStream.getVideoTracks()[0];
       if (track && track.getCapabilities) {
         const caps = track.getCapabilities();
@@ -3785,7 +3804,6 @@ document.addEventListener('click', async (e) => {
         }
       }
     } catch (err) {
-      // Fallback to Standard 1080p HD stream
       try {
         cameraStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }
@@ -3804,7 +3822,6 @@ document.addEventListener('click', async (e) => {
     }
   }
 
-  /* Full Native Hardware Pixel Sensor Capture (100% Quality) */
   function captureCameraFrame() {
     const video = document.getElementById('ocrVideo');
     const canvas = document.createElement('canvas');
@@ -3820,13 +3837,11 @@ document.addEventListener('click', async (e) => {
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(video, 0, 0, width, height);
     
-    // Capture JPEG at maximum 0.99 clarity quality
     canvas.toBlob(blob => {
       processDocumentOCR(blob);
     }, 'image/jpeg', 0.99);
   }
 
-  /* Optimized Pre-processing Engine (Prevents Memory Overflow) */
   function preprocessImage(imageElement) {
     const canvas = document.getElementById('ocrCanvas');
     const ctx = canvas.getContext('2d');
@@ -3834,7 +3849,6 @@ document.addEventListener('click', async (e) => {
     let origW = imageElement.naturalWidth || imageElement.width || 1280;
     let origH = imageElement.naturalHeight || imageElement.height || 720;
 
-    // Max dimension 2000px cap - Browser freeze aur crash hone se bachata hai
     const MAX_DIM = 2000;
     let scale = 1;
     if (Math.max(origW, origH) < 1000) {
@@ -3853,7 +3867,6 @@ document.addEventListener('click', async (e) => {
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const d = imgData.data;
 
-    // Grayscale & dynamic contrast adjustment
     for (let i = 0; i < d.length; i += 4) {
       let gray = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
       gray = ((gray - 128) * 1.4) + 128;
@@ -3865,15 +3878,17 @@ document.addEventListener('click', async (e) => {
     return canvas.toDataURL('image/png');
   }
 
-  /* Updated High-Accuracy Tesseract v5 Engine with Live Progress */
   async function processDocumentOCR(fileOrBlob) {
     if (!fileOrBlob) return;
 
+    // Trigger Green Light Detection Animation on framing box
+    const framingBox = document.getElementById('ocrFramingBox');
+    if (framingBox) {
+      framingBox.classList.add('green-glow-animation');
+    }
+
     stopCameraStream();
 
-    const previewImg = document.getElementById('ocrPreviewImg');
-    const processedImg = document.getElementById('ocrProcessedImg');
-    const previewWrap = document.getElementById('ocrPreviewWrap');
     const progressBox = document.getElementById('ocrProgressBox');
     const progressBar = document.getElementById('ocrProgressBar');
     const percentVal = document.getElementById('ocrPercentVal');
@@ -3881,123 +3896,127 @@ document.addEventListener('click', async (e) => {
     const resultsBox = document.getElementById('ocrResultsBox');
 
     const imgUrl = URL.createObjectURL(fileOrBlob);
-    previewImg.src = imgUrl;
-
-    previewWrap.style.display = 'block';
     progressBox.style.display = 'block';
     resultsBox.style.display = 'none';
 
-    // Step 1: Initial UI State Update
     progressBar.style.width = '10%';
     percentVal.innerText = '10%';
-    statusLabel.innerText = 'Preparing document...';
+    statusLabel.innerText = `Processing ${currentScanSide.toUpperCase()} Side with AI...`;
 
     const tempImg = new Image();
     tempImg.src = imgUrl;
     await new Promise(r => tempImg.onload = r);
 
-    // Step 2: Image Optimization
     const preprocessedDataUrl = preprocessImage(tempImg);
-    processedImg.src = preprocessedDataUrl;
-
-    statusLabel.innerText = 'Connecting to AI Engine...';
-    progressBar.style.width = '20%';
-    percentVal.innerText = '20%';
 
     try {
-      // Step 3: Tesseract.recognize Direct Stream
       const ret = await Tesseract.recognize(
         preprocessedDataUrl,
         'eng',
         {
           logger: m => {
-            if (m.status === 'loading tesseract core') {
-              statusLabel.innerText = 'Loading AI Core Engine...';
-              progressBar.style.width = '30%';
-              percentVal.innerText = '30%';
-            } else if (m.status === 'initializing tesseract') {
-              statusLabel.innerText = 'Initializing OCR Scanner...';
-              progressBar.style.width = '45%';
-              percentVal.innerText = '45%';
-            } else if (m.status === 'loading language traineddata') {
+            if (m.status === 'recognizing text') {
               const p = Math.round((m.progress || 0) * 100);
-              statusLabel.innerText = `Downloading AI Data (${p}%)...`;
-              const calcPct = 45 + Math.round(p * 0.25);
-              progressBar.style.width = calcPct + '%';
-              percentVal.innerText = calcPct + '%';
-            } else if (m.status === 'recognizing text') {
-              const p = Math.round((m.progress || 0) * 100);
-              statusLabel.innerText = `Extracting Text (${p}%)...`;
-              const calcPct = 70 + Math.round(p * 0.30);
-              progressBar.style.width = calcPct + '%';
-              percentVal.innerText = calcPct + '%';
+              statusLabel.innerText = `Scanning ${currentScanSide.toUpperCase()} (${p}%)...`;
+              progressBar.style.width = (40 + Math.round(p * 0.5)) + '%';
+              percentVal.innerText = (40 + Math.round(p * 0.5)) + '%';
             }
           }
         }
       );
 
       if (!ret || !ret.data || !ret.data.text) {
-        throw new Error('No readable text found in document.');
+        throw new Error('No readable text found.');
       }
 
-      // Step 4: Display Results
-      parseAdvancedOCRText(ret.data.text);
+      const parsedData = parseAdvancedOCRText(ret.data.text);
 
-      progressBox.style.display = 'none';
-      resultsBox.style.display = 'block';
-      showToast('✨ High-precision scan completed!');
+      if (currentScanSide === 'front') {
+        frontScanData = parsedData;
+        showToast('✅ Front Side Scanned Successfully!');
+        
+        // Prompt for Back Side
+        setTimeout(() => {
+          if (confirm("Front Side scanned successfully! Now please scan the **Back Side** of your ID / Document.")) {
+            currentScanSide = 'back';
+            updateOcrUIState();
+            progressBox.style.display = 'none';
+            if (framingBox) framingBox.classList.remove('green-glow-animation');
+            switchOcrTab('camera');
+          } else {
+            finalizeOcrResults(frontScanData, { idNumber: 'N/A', expiryDate: 'N/A' });
+          }
+        }, 300);
+
+      } else {
+        backScanData = parsedData;
+        showToast('✅ Back Side Scanned Successfully!');
+        finalizeOcrResults(frontScanData, backScanData);
+      }
 
     } catch (err) {
       console.error('OCR Processing Error:', err);
       progressBox.style.display = 'none';
-      showToast('Scan Error: ' + (err.message || 'Analysis failed. Try a clearer image.'), 'error');
+      if (framingBox) framingBox.classList.remove('green-glow-animation');
+      showToast('Scan Error: ' + (err.message || 'Analysis failed.'), 'error');
     }
   }
 
-  /* Flexible High-Accuracy OCR Text Extractor */
   function parseAdvancedOCRText(rawText) {
     const clean = rawText.replace(/\r/g, '');
-
-    // Flexible Match: Emirates ID (15 digits or standard hyphen format)
     const eidMatch = clean.match(/784[-\s]?\d{4}[-\s]?\d{7}[-\s]?\d{1}/) || clean.match(/\b784\d{12}\b/);
     const passportNoMatch = clean.match(/\b[A-Z][0-9]{7,8}\b/);
     const dateMatches = clean.match(/\b(0[1-9]|[12][0-9]|3[01])[\/\.-](0[1-9]|1[012])[\/\.-](19|20)\d\d\b/g) || [];
 
+    let docType = 'Emirates ID';
+    let idNumber = 'Verified';
+
     if (eidMatch) {
-      scannedOcrData.docType = 'Emirates ID';
-      scannedOcrData.idNumber = eidMatch[0].replace(/\s/g, '');
+      docType = 'Emirates ID';
+      idNumber = eidMatch[0].replace(/\s/g, '');
     } else if (passportNoMatch) {
-      scannedOcrData.docType = 'Passport';
-      scannedOcrData.idNumber = passportNoMatch[0];
+      docType = 'Passport';
+      idNumber = passportNoMatch[0];
     } else {
-      scannedOcrData.docType = 'ID Document';
-      scannedOcrData.idNumber = clean.match(/\d{8,15}/) ? clean.match(/\d{8,15}/)[0] : 'Scanned Successfully';
+      idNumber = clean.match(/\d{8,15}/) ? clean.match(/\d{8,15}/)[0] : 'Verified Number';
     }
 
     const lines = clean.split('\n').map(l => l.trim()).filter(l => l.length > 3);
     let nameFound = '';
-
     for (let l of lines) {
       if (/Name|Holder|Full Name|Given Name/i.test(l)) {
         nameFound = l.replace(/(Name:|Name|Holder:|Given Name:)/gi, '').trim();
         break;
       }
     }
-
     if (!nameFound) {
       const capLine = lines.find(l => /^[A-Z\s]{4,30}$/.test(l) && !/UNITED|ARAB|EMIRATES|NATIONAL|IDENTITY/i.test(l));
       nameFound = capLine || (lines[0] ? lines[0] : 'Verified Worker');
     }
 
-    scannedOcrData.fullName = nameFound.replace(/[^a-zA-Z\s]/g, '').trim() || 'Verified Worker';
-    scannedOcrData.dob = dateMatches[0] || '01/01/1995';
-    scannedOcrData.expiryDate = dateMatches[1] || '01/01/2028';
+    return {
+      docType: docType,
+      idNumber: idNumber,
+      fullName: nameFound.replace(/[^a-zA-Z\s]/g, '').trim() || 'Verified Worker',
+      dob: dateMatches[0] || '01/01/1995',
+      expiryDate: dateMatches[1] || '01/01/2028'
+    };
+  }
 
-    document.getElementById('ocrDocType').value = scannedOcrData.docType;
-    document.getElementById('ocrDocNumber').value = scannedOcrData.idNumber;
-    document.getElementById('ocrName').value = scannedOcrData.fullName;
-    document.getElementById('ocrDob').value = scannedOcrData.dob;
-    document.getElementById('ocrExpiry').value = scannedOcrData.expiryDate;
+  function finalizeOcrResults(front, back) {
+    const framingBox = document.getElementById('ocrFramingBox');
+    if (framingBox) framingBox.classList.remove('green-glow-animation');
+
+    document.getElementById('ocrProgressBox').style.display = 'none';
+    document.getElementById('ocrResultsBox').style.display = 'block';
+
+    document.getElementById('ocrDocType').value = front.docType || 'Emirates ID (Front & Back)';
+    document.getElementById('ocrDocNumber').value = front.idNumber !== 'Verified' ? front.idNumber : back.idNumber;
+    document.getElementById('ocrName').value = front.fullName;
+    document.getElementById('ocrDob').value = front.dob;
+    document.getElementById('ocrExpiry').value = back.expiryDate !== 'N/A' ? back.expiryDate : front.expiryDate;
+
+    showToast('✨ Complete Multi-Side Scan Verified & Ready!');
   }
 
   function applyOcrDataToForms() {
@@ -4006,13 +4025,11 @@ document.addEventListener('click', async (e) => {
 
     if (document.getElementById('m_azad_name')) document.getElementById('m_azad_name').value = name;
     if (document.getElementById('m_supp_person')) document.getElementById('m_supp_person').value = name;
-    if (document.getElementById('m_supp_license') && idNo !== 'Verified') {
-      document.getElementById('m_supp_license').value = idNo;
-    }
+    if (document.getElementById('m_supp_license')) document.getElementById('m_supp_license').value = idNo;
     if (document.getElementById('comp_person')) document.getElementById('comp_person').value = name;
 
     closeOcrModal();
-    showToast('✅ Scanned details auto-filled into form!');
+    showToast('✅ Complete multi-side details auto-filled into form!');
   }
 </script>
 
