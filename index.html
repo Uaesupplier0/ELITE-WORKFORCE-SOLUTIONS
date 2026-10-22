@@ -806,9 +806,9 @@ textarea{min-height:115px;resize:vertical}
 
 #ocrVideo {
   width: 100% !important;
-  height: 62vh !important;
+  height: 65vh !important;
   min-height: 480px !important;
-  object-fit: contain !important;
+  object-fit: cover !important; /* Vertical black lines removed completely */
   background: #020617 !important;
   display: block !important;
 }
@@ -819,9 +819,9 @@ textarea{min-height:115px;resize:vertical}
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 92% !important;
-  height: 60% !important;
-  max-width: 600px;
+  width: 96% !important; /* Full width expanded */
+  height: 68% !important;
+  max-width: 100% !important;
   border: 2px dashed #fbbf24;
   border-radius: 16px;
   pointer-events: none;
