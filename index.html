@@ -1900,6 +1900,9 @@ textarea{min-height:115px;resize:vertical}
       </div>
     </div>
 
+    <!-- PHOTO PREVIEW CONTAINER (DOUBLE CHECK FEATURE) -->
+    <div id="ocrPhotoPreviewBox" style="display: none; text-align: center; padding: 15px; background: var(--card-bg); border-radius: 12px;"></div>
+
     <!-- HIDDEN CANVAS -->
     <canvas id="ocrCanvas" style="display: none;"></canvas>
 
@@ -3928,29 +3931,75 @@ document.addEventListener('click', async (e) => {
     return sum / count;
   }
 
+  // 1. Capture Frame with Preview Step
   function captureCameraFrame() {
-    if (autoCaptureTimer) {
-      clearInterval(autoCaptureTimer);
-      autoCaptureTimer = null;
-    }
+      if (autoCaptureTimer) {
+          clearInterval(autoCaptureTimer);
+          autoCaptureTimer = null;
+      }
 
-    const video = document.getElementById('ocrVideo');
-    const canvas = document.createElement('canvas');
+      const video = document.getElementById('ocrVideo');
+      const canvas = document.createElement('canvas');
+      const width = video.videoWidth || 1920;
+      const height = video.videoHeight || 1080;
 
-    const width = video.videoWidth || 1920;
-    const height = video.videoHeight || 1080;
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(video, 0, 0, width, height);
+      
+      canvas.toBlob(blob => {
+          const previewUrl = URL.createObjectURL(blob);
+          showPhotoPreviewModal(blob, previewUrl);
+      }, 'image/jpeg', 0.99);
+  }
 
-    canvas.width = width;
-    canvas.height = height;
+  // 2. Photo Preview Dialog / Modal UI Handler
+  function showPhotoPreviewModal(blob, imgUrl) {
+      stopCameraStream();
+      const boxCamera = document.getElementById('ocrCameraBox');
+      
+      let previewDiv = document.getElementById('ocrPhotoPreviewBox');
+      if (!previewDiv) {
+          previewDiv = document.createElement('div');
+          previewDiv.id = 'ocrPhotoPreviewBox';
+          previewDiv.style.cssText = 'text-align:center; padding:15px; background:var(--card-bg); border-radius:12px;';
+          boxCamera.parentNode.insertBefore(previewDiv, boxCamera.nextSibling);
+      }
+      
+      boxCamera.style.display = 'none';
+      previewDiv.style.display = 'block';
+      
+      previewDiv.innerHTML = `
+          <h4 style="color:var(--blue); margin-bottom:10px; font-weight:800;">🔍 Double-Check Captured Photo</h4>
+          <img src="${imgUrl}" style="max-height:280px; width:100%; object-fit:contain; border-radius:8px; border:2px solid var(--border-color); margin-bottom:12px;">
+          <div style="display:flex; gap:10px;">
+              <button onclick="retakeScanPhoto()" type="button" style="flex:1; background:#ef4444; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                  🔄 Retake Photo
+              </button>
+              <button onclick="confirmAndProcessOCR()" type="button" style="flex:1; background:#10b981; color:#fff; border:0; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                  ✅ Confirm & Scan
+              </button>
+          </div>
+      `;
+      window.pendingOcrBlob = blob;
+  }
 
-    const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(video, 0, 0, width, height);
-    
-    canvas.toBlob(blob => {
-      processDocumentOCR(blob);
-    }, 'image/jpeg', 0.99);
+  function retakeScanPhoto() {
+      const previewDiv = document.getElementById('ocrPhotoPreviewBox');
+      if (previewDiv) previewDiv.style.display = 'none';
+      document.getElementById('ocrCameraBox').style.display = 'block';
+      startCameraStream();
+  }
+
+  function confirmAndProcessOCR() {
+      const previewDiv = document.getElementById('ocrPhotoPreviewBox');
+      if (previewDiv) previewDiv.style.display = 'none';
+      if (window.pendingOcrBlob) {
+          processDocumentOCR(window.pendingOcrBlob);
+      }
   }
 
   function preprocessImage(imageElement) {
@@ -4136,7 +4185,7 @@ document.addEventListener('click', async (e) => {
     const name = document.getElementById('ocrName').value;
     const idNo = document.getElementById('ocrDocNumber').value;
 
-    if (document.getElementById('m_azad_name')) document.getElementById('m_azad_name').value = name;
+    if (document.getElementById('m_azad_name')) document.getElementById('m_az_name').value = name;
     if (document.getElementById('m_supp_person')) document.getElementById('m_supp_person').value = name;
     if (document.getElementById('m_supp_license')) document.getElementById('m_supp_license').value = idNo;
     if (document.getElementById('comp_person')) document.getElementById('comp_person').value = name;
