@@ -813,14 +813,15 @@ textarea{min-height:115px;resize:vertical}
   display: block !important;
 }
 
-/* Smart framing box overlay with Green Light Animation */
+/* Smart framing box overlay with Green Light Animation - Updated Wide & Landscape */
 .ocr-scan-frame {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  height: 82%;
+  width: 92% !important;
+  height: 60% !important;
+  max-width: 600px;
   border: 2px dashed #fbbf24;
   border-radius: 16px;
   pointer-events: none;
@@ -831,6 +832,7 @@ textarea{min-height:115px;resize:vertical}
 /* Green Light Glow Animation Class */
 .green-glow-animation {
   border-color: #10b981 !important;
+  border-style: solid !important;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.9) !important;
   animation: greenPulse 1.2s infinite ease-in-out;
 }
@@ -3727,7 +3729,7 @@ document.addEventListener('click', async (e) => {
   })();
 
   /* =============================================================
-     ADVANCED MULTI-SIDE SMART OCR SCANNER & AUTO-CAPTURE ENGINE
+     ADVANCED MULTI-SIDE SMART OCR SCANNER & AUTO-CAPTURE ENGINE (UPDATED SENSITIVITY)
   ============================================================= */
   let cameraStream = null;
   let currentScanSide = 'front'; // 'front' or 'back'
@@ -3813,7 +3815,6 @@ document.addEventListener('click', async (e) => {
         }
       }
 
-      // Start Blur Detection & Auto-Capture Loop
       startAutoCaptureLoop();
 
     } catch (err) {
@@ -3858,7 +3859,7 @@ document.addEventListener('click', async (e) => {
     }
   }
 
-  // Smart Auto-Capture & Blur Check Loop
+  // Smart Auto-Capture & Green Light Trigger Loop (Optimized Sensitivity)
   function startAutoCaptureLoop() {
     if (autoCaptureTimer) clearInterval(autoCaptureTimer);
     
@@ -3876,22 +3877,26 @@ document.addEventListener('click', async (e) => {
       const imgData = ctx.getImageData(0, 0, 300, 200);
       let sharpnessScore = calculateImageSharpness(imgData);
 
-      // If image is sharp enough, trigger Green Glow and Auto-Capture after stability
-      if (sharpnessScore > 35) {
+      // Threshold is set lower and sensitivity increased to trigger green light immediately
+      if (sharpnessScore > 18) {
         stableCount++;
-        if (framingBox) framingBox.classList.add('green-glow-animation');
+        if (framingBox) {
+          framingBox.classList.add('green-glow-animation');
+        }
         
-        if (stableCount >= 3) { // 3 stable frames detected
+        if (stableCount >= 2) { 
           clearInterval(autoCaptureTimer);
           autoCaptureTimer = null;
-          showToast('📸 Sharp document detected! Auto-capturing...');
+          showToast('📸 ID detected inside frame! Capturing...');
           captureCameraFrame();
         }
       } else {
         stableCount = 0;
-        if (framingBox) framingBox.classList.remove('green-glow-animation');
+        if (framingBox) {
+          framingBox.classList.remove('green-glow-animation');
+        }
       }
-    }, 600);
+    }, 500);
   }
 
   function calculateImageSharpness(imgData) {
