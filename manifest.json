@@ -6,6 +6,8 @@
   "display": "standalone",
   "orientation": "portrait",
   "categories": ["business", "productivity", "utilities"],
+  "prefer_related_applications": false,
+  "iarc_rating_id": "urn:iarc:rated:all",
   "background_color": "#0b3d91",
   "theme_color": "#0b3d91",
   "description": "Connecting UAE companies with manpower suppliers and skilled workforce.",
