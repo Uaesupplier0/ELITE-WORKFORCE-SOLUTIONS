@@ -11,6 +11,9 @@
   "categories": ["business", "productivity", "utilities"],
   "prefer_related_applications": false,
   "iarc_rating_id": "urn:iarc:rated:all",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "shortcuts": [
     {
       "name": "Home",
