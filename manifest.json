@@ -5,36 +5,22 @@
   "display": "standalone",
   "name": "Elite Workforce Solutions",
   "orientation": "any",
-  "scope": "/",
+  "scope": "/ELITE-WORKFORCE-SOLUTIONS/",
   "short_name": "Elite Workforce",
-  "start_url": "/",
+  "start_url": "/ELITE-WORKFORCE-SOLUTIONS/",
   "theme_color": "#0b3d91",
   "icons": [
     {
       "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png",
       "type": "image/png",
-      "sizes": "16x16",
-      "isSquare": true,
-      "isPng": true,
-      "isWebp": false,
-      "isJpg": false,
-      "width": 16,
-      "is512x512": false,
-      "is256x256": false,
-      "is192x192": false
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png",
-      "type": "image/jpeg",
-      "sizes": "1024x1024",
-      "isSquare": true,
-      "isPng": true,
-      "isWebp": false,
-      "isJpg": true,
-      "width": 1024,
-      "is512x512": false,
-      "is256x256": false,
-      "is192x192": false
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "id": "/ELITE-WORKFORCE-SOLUTIONS/"
