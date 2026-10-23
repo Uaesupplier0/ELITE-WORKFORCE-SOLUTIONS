@@ -4,6 +4,8 @@
   "start_url": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/index.html",
   "scope": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/",
   "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["business", "productivity", "utilities"],
   "background_color": "#0b3d91",
   "theme_color": "#0b3d91",
   "description": "Connecting UAE companies with manpower suppliers and skilled workforce.",
