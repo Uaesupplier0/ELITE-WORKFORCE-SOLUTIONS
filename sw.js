@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ews-cache-v2';
+const CACHE_NAME = 'ews-cache-v3';
 const urlsToCache = [
   '/ELITE-WORKFORCE-SOLUTIONS/',
   '/ELITE-WORKFORCE-SOLUTIONS/index.html',
