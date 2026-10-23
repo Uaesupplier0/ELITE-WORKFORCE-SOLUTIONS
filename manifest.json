@@ -1,23 +1,21 @@
 {
   "background_color": "#0b3d91",
-  "description": "Elite Workforce Solutions connects UAE companies with manpower suppliers, skilled workforce (electricians, fitters, welders, HVAC) and provides Live Timesheet Clock, GPS Attendance, and Real-time Currency Converter.",
-  "dir": "ltr",
+  "description": "Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce.",
   "display": "standalone",
   "name": "Elite Workforce Solutions",
-  "orientation": "any",
-  "scope": "/ELITE-WORKFORCE-SOLUTIONS/",
   "short_name": "Elite Workforce",
   "start_url": "/ELITE-WORKFORCE-SOLUTIONS/",
+  "scope": "/ELITE-WORKFORCE-SOLUTIONS/",
   "theme_color": "#0b3d91",
   "icons": [
     {
-      "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png",
+      "src": "/ELITE-WORKFORCE-SOLUTIONS/logo.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png",
+      "src": "/ELITE-WORKFORCE-SOLUTIONS/logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
