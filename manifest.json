@@ -10,13 +10,13 @@
   "icons": [
     {
       "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png",
-      "type": "image/jpeg",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
       "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png",
-      "type": "image/jpeg",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }
