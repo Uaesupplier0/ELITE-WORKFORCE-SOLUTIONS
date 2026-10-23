@@ -11,6 +11,22 @@
   "categories": ["business", "productivity", "utilities"],
   "prefer_related_applications": false,
   "iarc_rating_id": "urn:iarc:rated:all",
+  "shortcuts": [
+    {
+      "name": "Home",
+      "url": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/index.html",
+      "icons": [{ "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/index.html",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
   "background_color": "#0b3d91",
   "theme_color": "#0b3d91",
   "description": "Connecting UAE companies with manpower suppliers and skilled workforce.",
