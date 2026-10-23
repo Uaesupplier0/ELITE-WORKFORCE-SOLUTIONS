@@ -18,26 +18,26 @@
 <title>Elite Workforce Solutions | Live Timesheet, Currency Converter & UAE Manpower</title>
 
 <!-- Google Search & Device Responsive Favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="logo.png">
-<link rel="icon" type="image/png" sizes="32x32" href="logo.png">
-<link rel="icon" type="image/png" sizes="48x48" href="logo.png">
-<link rel="icon" type="image/png" sizes="96x96" href="logo.png">
-<link rel="icon" type="image/png" sizes="192x192" href="logo.png">
-<link rel="icon" type="image/png" sizes="512x512" href="logo.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
 
 <!-- Apple iOS Devices Auto-Adjustment -->
-<link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
+<link rel="apple-touch-icon" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
 
 <!-- Fallback & Shortcut Icon -->
-<link rel="shortcut icon" href="logo.png" type="image/x-icon">
+<link rel="shortcut icon" href="/ELITE-WORKFORCE-SOLUTIONS/logo.png" type="image/x-icon">
 
 <!-- Meta Theme Color for Browsers -->
 <meta name="theme-color" content="#0b3d91">
 <meta name="msapplication-TileColor" content="#0b3d91">
-<meta name="msapplication-TileImage" content="logo.png">
+<meta name="msapplication-TileImage" content="/ELITE-WORKFORCE-SOLUTIONS/logo.png">
 
-<!-- PWA Manifest Link (FIXED FOR GITHUB PAGES SUB-PATH) -->
+<!-- PWA Manifest Link -->
 <link rel="manifest" href="/ELITE-WORKFORCE-SOLUTIONS/manifest.json">
 
 <script type="application/ld+json">
@@ -808,7 +808,7 @@ textarea{min-height:115px;resize:vertical}
   width: 100% !important;
   height: 65vh !important;
   min-height: 480px !important;
-  object-fit: cover !important; /* Vertical black lines removed completely */
+  object-fit: cover !important;
   background: #020617 !important;
   display: block !important;
 }
@@ -819,7 +819,7 @@ textarea{min-height:115px;resize:vertical}
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 96% !important; /* Full width expanded */
+  width: 96% !important;
   height: 68% !important;
   max-width: 100% !important;
   border: 2px dashed #fbbf24;
@@ -853,7 +853,7 @@ textarea{min-height:115px;resize:vertical}
 <header>
   <nav class="navbar">
     <a href="#home" class="brand-logo">
-      <img src="logo.png" alt="Elite Workforce">
+      <img src="/ELITE-WORKFORCE-SOLUTIONS/logo.png" alt="Elite Workforce">
       <div class="brand-text-wrap">
         <span class="brand-title">ELITE</span>
         <span class="brand-subtitle">WORKFORCE SOLUTIONS</span>
@@ -1644,7 +1644,7 @@ textarea{min-height:115px;resize:vertical}
       
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #fbbf24; padding-bottom:12px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:10px;">
-          <img src="logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
+          <img src="/ELITE-WORKFORCE-SOLUTIONS/logo.png" alt="Logo" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px;">
           <div>
             <h2 style="font-size:16px; font-weight:900; color:#fbbf24; margin:0; line-height:1.1;">ELITE WORKFORCE SOLUTIONS</h2>
             <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Attendance & Timesheet Report — <strong id="tsHeaderMonthYear" style="color:#ffffff;">October 2026</strong></span>
@@ -3258,7 +3258,7 @@ document.addEventListener('click', async (e) => {
     }
     function sendNotification(text) {
         if ("Notification" in window && Notification.permission === "granted") {
-            new Notification("Elite Workforce Timesheet", { body: text, icon: "logo.png" });
+            new Notification("Elite Workforce Timesheet", { body: text, icon: "/ELITE-WORKFORCE-SOLUTIONS/logo.png" });
         }
     }
 
@@ -3732,10 +3732,10 @@ document.addEventListener('click', async (e) => {
   })();
 
   /* =============================================================
-     ADVANCED MULTI-SIDE SMART OCR SCANNER & AUTO-CAPTURE ENGINE (UPDATED SENSITIVITY)
+     ADVANCED MULTI-SIDE SMART OCR SCANNER & AUTO-CAPTURE ENGINE
   ============================================================= */
   let cameraStream = null;
-  let currentScanSide = 'front'; // 'front' or 'back'
+  let currentScanSide = 'front'; 
   let frontScanData = null;
   let backScanData = null;
   let autoCaptureTimer = null;
@@ -3862,7 +3862,6 @@ document.addEventListener('click', async (e) => {
     }
   }
 
-  // Smart Auto-Capture & Green Light Trigger Loop (Updated with Document Validation)
   function startAutoCaptureLoop() {
     if (autoCaptureTimer) clearInterval(autoCaptureTimer);
     
@@ -3880,10 +3879,8 @@ document.addEventListener('click', async (e) => {
       const imgData = ctx.getImageData(0, 0, 300, 200);
       const d = imgData.data;
 
-      // 1. Sharpness check
       let sharpnessScore = calculateImageSharpness(imgData);
 
-      // 2. Color / Light background check (Rejects dark or plain metallic objects like iron sheets)
       let lightPixels = 0;
       for (let i = 0; i < d.length; i += 4) {
         let r = d[i], g = d[i+1], b = d[i+2];
@@ -3893,7 +3890,6 @@ document.addEventListener('click', async (e) => {
       }
       let lightRatio = lightPixels / (300 * 200);
 
-      // Tabhi trigger hoga jab proper sharpness aur document jaisa background match ho
       if (sharpnessScore > 25 && lightRatio > 0.35) {
         stableCount++;
         if (framingBox) {
@@ -3931,7 +3927,6 @@ document.addEventListener('click', async (e) => {
     return sum / count;
   }
 
-  // 1. Capture Frame with Preview Step
   function captureCameraFrame() {
       if (autoCaptureTimer) {
           clearInterval(autoCaptureTimer);
@@ -3956,7 +3951,6 @@ document.addEventListener('click', async (e) => {
       }, 'image/jpeg', 0.99);
   }
 
-  // 2. Photo Preview Dialog / Modal UI Handler
   function showPhotoPreviewModal(blob, imgUrl) {
       stopCameraStream();
       const boxCamera = document.getElementById('ocrCameraBox');
