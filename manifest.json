@@ -15,7 +15,7 @@
     {
       "name": "Home",
       "url": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/index.html",
-      "icons": [{ "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png", "sizes": "192x192" }]
+      "icons": [{ "src": "https://uaesupplier0.github.io/ELITE-WORKFORCE-SOLUTIONS/logo.png", "sizes": "512x512", "type": "image/png" }]
     }
   ],
   "share_target": {
