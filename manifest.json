@@ -1,25 +1,24 @@
 {
-  "background_color": "#0b3d91",
-  "description": "Elite Workforce Solutions connects UAE companies with manpower suppliers and skilled workforce.",
-  "display": "standalone",
   "name": "Elite Workforce Solutions",
   "short_name": "Elite Workforce",
-  "start_url": "/ELITE-WORKFORCE-SOLUTIONS/index.html",
-  "scope": "/ELITE-WORKFORCE-SOLUTIONS/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b3d91",
   "theme_color": "#0b3d91",
+  "description": "Connecting UAE companies with manpower suppliers and skilled workforce.",
   "icons": [
     {
-      "src": "/ELITE-WORKFORCE-SOLUTIONS/logo.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/ELITE-WORKFORCE-SOLUTIONS/logo.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }
-  ],
-  "id": "/ELITE-WORKFORCE-SOLUTIONS/"
+  ]
 }
