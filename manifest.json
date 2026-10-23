@@ -4,7 +4,7 @@
   "display": "standalone",
   "name": "Elite Workforce Solutions",
   "short_name": "Elite Workforce",
-  "start_url": "/ELITE-WORKFORCE-SOLUTIONS/",
+  "start_url": "/ELITE-WORKFORCE-SOLUTIONS/index.html",
   "scope": "/ELITE-WORKFORCE-SOLUTIONS/",
   "theme_color": "#0b3d91",
   "icons": [
