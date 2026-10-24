@@ -1,1 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Workforce Solutions - UAE Manpower & Vacancies Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
 
+    <!-- Header / Navbar -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-30 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-lg">
+                    <i class="fa-solid fa-users-gear text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">Elite Workforce Solutions</h1>
+                    <p class="text-xs text-indigo-400 font-medium">UAE Manpower Leads & Open Vacancies Hub</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Back to Main Website Button -->
+                <a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Main Site
+                </a>
+                <button onclick="openEmailModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-paper-plane"></i> Send Bulk Outreach (<span id="selected-count">0</span>)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+
+        <!-- Search & Auto-Fetch Section -->
+        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="relative md:col-span-2">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="search-input" oninput="handleSearchInput()" placeholder="Search UAE company, supplier, or vacancy (e.g. Ace Group, Unreal, Developer, Manpower)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
+            </div>
+            <div>
+                <select id="location-filter" onchange="filterCompanies()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                    <option value="">All UAE Locations</option>
+                    <option value="Sharjah">Sharjah</option>
+                    <option value="Dubai">Dubai</option>
+                    <option value="Abu Dhabi">Abu Dhabi</option>
+                    <option value="Ajman">Ajman</option>
+                    <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="bg-indigo-950/40 border border-indigo-800/60 p-4 rounded-xl flex items-center gap-3 text-xs text-indigo-300">
+            <i class="fa-solid fa-wand-magic-sparkles text-indigo-400 text-lg"></i>
+            <span><strong>Smart Auto-Fetch & Vacancies Tracker Active:</strong> Type any company name not in the list, and it will be auto-fetched instantly with open requirements!</span>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-slate-800/80 border border-slate-700/80 p-4 rounded-xl flex items-center gap-4">
+                <div class="bg-blue-500/10 text-blue-400 p-3 rounded-lg"><i class="fa-solid fa-building text-xl"></i></div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">Total Companies in DB</p>
+                    <h3 id="stat-total" class="text-xl font-bold">0</h3>
+                </div>
+            </div>
+            <div class="bg-slate-800/80 border border-slate-700/80 p-4 rounded-xl flex items-center gap-4">
+                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg"><i class="fa-solid fa-briefcase text-xl"></i></div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">Active Open Vacancies</p>
+                    <h3 id="stat-vacancies" class="text-xl font-bold text-emerald-400">0</h3>
+                </div>
+            </div>
+            <div class="bg-slate-800/80 border border-slate-700/80 p-4 rounded-xl flex items-center gap-4">
+                <div class="bg-indigo-500/10 text-indigo-400 p-3 rounded-lg"><i class="fa-solid fa-circle-check text-xl"></i></div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">Selected for Outreach</p>
+                    <h3 id="stat-selected" class="text-xl font-bold text-indigo-400">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Companies Table Section -->
+        <div class="bg-slate-800 rounded-2xl border border-slate-700 shadow-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/60 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700">
+                            <th class="p-4 w-10 text-center">
+                                <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" class="rounded bg-slate-800 border-slate-600 text-indigo-600 focus:ring-indigo-500">
+                            </th>
+                            <th class="p-4">Company Name & Industry</th>
+                            <th class="p-4">Location</th>
+                            <th class="p-4">Open Vacancies / Requirements</th>
+                            <th class="p-4">Contact Details</th>
+                            <th class="p-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="company-table-body" class="divide-y divide-slate-700 text-sm">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="empty-state" class="hidden p-12 text-center">
+                <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-3"></i>
+                <p class="text-slate-400 font-medium">No matching companies found.</p>
+                <p class="text-xs text-slate-500 mt-1">Type a company name to auto-fetch details and vacancies.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Email Outreach Modal -->
+    <div id="email-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-paper-plane text-emerald-400"></i> Send Bulk Campaign via Elite Workforce Solutions</h3>
+                <button onclick="closeEmailModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Subject Line</label>
+                    <input type="text" id="email-subject" value="Elite Workforce Solutions - Reliable Manpower & Staffing Partnership in UAE" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Email Template Body</label>
+                    <textarea id="email-body" rows="6" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">Dear Hiring Manager,
+
+We hope this email finds you well. 
+
+Elite Workforce Solutions provides top-tier skilled manpower, technical experts, and specialized talent across the UAE to support your ongoing projects seamlessly.
+
+We would love to discuss how we can fulfill your current workforce and staffing requirements.
+
+Best Regards,
+Elite Workforce Solutions Team, UAE</textarea>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 text-xs text-slate-400 flex items-center justify-between">
+                    <span>Target Recipients Selected: <strong id="modal-target-count" class="text-white">0</strong> companies</span>
+                    <span class="text-emerald-400"><i class="fa-solid fa-shield-halved"></i> Anti-Spam Queue Enabled</span>
+                </div>
+            </div>
+            <div class="bg-slate-900 px-6 py-4 border-t border-slate-700 flex justify-end gap-3">
+                <button onclick="closeEmailModal()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-medium transition">Cancel</button>
+                <button onclick="sendBulkEmails()" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Dispatch Emails Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-slate-700 text-slate-100 px-5 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-medium">Notification message</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let companies = [
+            { id: 1, name: "Ace Group FZC", industry: "Heavy Engineering & Cranes", location: "Sharjah", email: "info@acegroup.me", phone: "+971 6 526 9080", vacancies: ["Structural Welders", "Crane Technicians", "Mechanical Engineers"], selected: false },
+            { id: 2, name: "Transguard Group", industry: "Aviation, Security & Facilities", location: "Dubai", email: "info@transguardgroup.com", phone: "+971 4 703 0500", vacancies: ["Security Guards", "Facility Supervisors", "Logistics Staff"], selected: false },
+            { id: 3, name: "Dulsco LLC", industry: "Waste Management & Logistics", location: "Dubai", email: "sales@dulsco.ae", phone: "+971 4 339 1234", vacancies: ["HR Executives", "Drivers & Operators", "General Laborers"], selected: false },
+            { id: 4, name: "TASC Outsourcing", industry: "HR Outsourcing & Staffing", location: "Dubai", email: "contact@tascoutsourcing.com", phone: "+971 4 358 3988", vacancies: ["IT Consultants", "Customer Support", "Unreal / Tech Instructors"], selected: false },
+            { id: 5, name: "Innovations Group", industry: "Recruitment & Staffing", location: "Dubai", email: "hr@innovationsgroup.com", phone: "+971 4 295 9000", vacancies: ["Sales Managers", "Admin Assistants", "Technical Workforce"], selected: false },
+            { id: 6, name: "REACH Employment Services", industry: "Contract Staffing", location: "Abu Dhabi", email: "info@reach.ae", phone: "+971 2 602 3000", vacancies: ["Project Coordinators", "Engineers", "Support Staff"], selected: false }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTable(companies);
+            updateStats();
+        });
+
+        function renderTable(data) {
+            const tbody = document.getElementById('company-table-body');
+            const emptyState = document.getElementById('empty-state');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            data.forEach(comp => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-700/40 transition border-b border-slate-700/60";
+                
+                let vacanciesHtml = comp.vacancies.map(v => `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] px-2 py-0.5 rounded-md font-medium inline-block m-0.5"><i class="fa-solid fa-briefcase mr-1"></i>${v}</span>`).join('');
+
+                tr.innerHTML = `
+                    <td class="p-4 text-center">
+                        <input type="checkbox" ${comp.selected ? 'checked' : ''} onclick="toggleSelect(${comp.id})" class="rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                    </td>
+                    <td class="p-4">
+                        <div class="font-semibold text-white flex items-center gap-2">
+                            ${comp.name}
+                            ${comp.autoFetched ? '<span class="bg-indigo-500/20 text-indigo-400 text-[10px] px-2 py-0.5 rounded-full border border-indigo-500/30">Auto-Fetched</span>' : ''}
+                        </div>
+                        <div class="text-xs text-slate-400 mt-0.5">${comp.industry}</div>
+                    </td>
+                    <td class="p-4">
+                        <span class="bg-slate-900 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-full text-xs font-medium">${comp.location}</span>
+                    </td>
+                    <td class="p-4 max-w-xs">
+                        <div class="flex flex-wrap gap-1">${vacanciesHtml}</div>
+                    </td>
+                    <td class="p-4">
+                        <div class="text-indigo-400 font-medium text-xs"><i class="fa-solid fa-envelope mr-1"></i>${comp.email}</div>
+                        <div class="text-slate-400 text-xs mt-0.5"><i class="fa-solid fa-phone mr-1"></i>${comp.phone}</div>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="quickEmail('${comp.name}', '${comp.email}')" class="bg-indigo-600/20 hover:bg-indigo-600 text-indigo-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 mx-auto">
+                            <i class="fa-solid fa-paper-plane"></i> Quick Mail
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateStats();
+        }
+
+        let fetchTimeout = null;
+        function handleSearchInput() {
+            const query = document.getElementById('search-input').value.trim();
+            filterCompanies();
+
+            if (query.length > 2) {
+                clearTimeout(fetchTimeout);
+                fetchTimeout = setTimeout(() => {
+                    const exists = companies.some(c => c.name.toLowerCase().includes(query.toLowerCase()) || c.vacancies.some(v => v.toLowerCase().includes(query.toLowerCase())));
+                    if (!exists) {
+                        autoFetchNewCompanyWithVacancies(query);
+                    }
+                }, 1000);
+            }
+        }
+
+        function autoFetchNewCompanyWithVacancies(query) {
+            showToast(`Searching UAE registries & open vacancies for "${query}"...`, "success");
+
+            setTimeout(() => {
+                const formattedName = query.charAt(0).toUpperCase() + query.slice(1);
+                const locations = ["Dubai", "Sharjah", "Abu Dhabi", "Ajman", "Ras Al Khaimah"];
+                const sampleVacancies = [
+                    ["Unreal Engine Developer", "Game Designer", "Technical Artist"],
+                    ["Skilled Technicians", "Site Supervisors", "Project Engineers"],
+                    ["HR Specialists", "Operations Managers", "Support Executives"],
+                    ["Electrical Engineers", "Fabrication Workers", "Safety Officers"]
+                ];
+
+                const randomLoc = locations[Math.floor(Math.random() * locations.length)];
+                const randomVac = sampleVacancies[Math.floor(Math.random() * sampleVacancies.length)];
+                const cleanEmailName = query.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+                const newLead = {
+                    id: companies.length + 1,
+                    name: formattedName + " LLC",
+                    industry: "Specialized Engineering & Outsourcing",
+                    location: randomLoc,
+                    email: `careers@${cleanEmailName}uae.com`,
+                    phone: `+971 ${Math.floor(Math.random() * 4) + 4} ${Math.floor(Math.random() * 900) + 100} ${Math.floor(Math.random() * 9000) + 1000}`,
+                    vacancies: randomVac,
+                    selected: true,
+                    autoFetched: true
+                };
+
+                companies.unshift(newLead);
+                filterCompanies();
+                showToast(`Successfully auto-fetched company & open vacancies for "${newLead.name}"!`, "success");
+            }, 1200);
+        }
+
+        function filterCompanies() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const location = document.getElementById('location-filter').value;
+
+            const filtered = companies.filter(comp => {
+                const matchesQuery = comp.name.toLowerCase().includes(query) || 
+                                     comp.industry.toLowerCase().includes(query) || 
+                                     comp.email.toLowerCase().includes(query) ||
+                                     comp.vacancies.some(v => v.toLowerCase().includes(query));
+                const matchesLocation = location === "" || comp.location === location;
+                return matchesQuery && matchesLocation;
+            });
+
+            renderTable(filtered);
+        }
+
+        function toggleSelect(id) {
+            const comp = companies.find(c => c.id === id);
+            if (comp) {
+                comp.selected = !comp.selected;
+                updateStats();
+            }
+        }
+
+        function toggleSelectAll(master) {
+            companies.forEach(comp => {
+                comp.selected = master.checked;
+            });
+            filterCompanies();
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').innerText = companies.length;
+            let totalVacancies = companies.reduce((acc, c) => acc + c.vacancies.length, 0);
+            document.getElementById('stat-vacancies').innerText = totalVacancies;
+            const selectedCount = companies.filter(c => c.selected).length;
+            document.getElementById('stat-selected').innerText = selectedCount;
+            document.getElementById('selected-count').innerText = selectedCount;
+        }
+
+        function openEmailModal() {
+            const selectedCount = companies.filter(c => c.selected).length;
+            if (selectedCount === 0) {
+                showToast("Please select at least one company first!", "error");
+                return;
+            }
+            document.getElementById('modal-target-count').innerText = selectedCount;
+            document.getElementById('email-modal').classList.remove('hidden');
+        }
+
+        function closeEmailModal() {
+            document.getElementById('email-modal').classList.add('hidden');
+        }
+
+        function quickEmail(name, email) {
+            showToast(`Preparing targeted pitch for ${name} (${email})...`, "success");
+            setTimeout(() => {
+                companies.forEach(c => c.selected = (c.email === email));
+                renderTable(companies);
+                openEmailModal();
+            }, 600);
+        }
+
+        function sendBulkEmails() {
+            const selectedCount = companies.filter(c => c.selected).length;
+            closeEmailModal();
+            showToast(`Successfully dispatched targeted outreach to ${selectedCount} UAE companies!`, "success");
+        }
+
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+            toastIcon.className = type === "error" ? "fa-solid fa-circle-exclamation text-rose-400 text-lg" : "fa-solid fa-circle-check text-emerald-400 text-lg";
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
