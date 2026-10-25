@@ -919,10 +919,10 @@ textarea{min-height:115px;resize:vertical}
       <li><a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a></li>
       <li><a href="#contact" class="nav-btn" onclick="closeMenu()" data-i18n="nav_staffing">Get Staffing</a></li>
       
-      <!-- YEH ADMIN LINK AB SIRF TABHI DIKHEGA JAB AAP ADMIN HOGE -->
+      <!-- ADMIN PANEL LINK ADDED HERE -->
       <li id="adminNavLink" style="display: none;">
-        <a href="javascript:void(0)" onclick="unlockAdminPanel(); closeMenu();" style="color:var(--gold2);">
-          <i class="fa-solid fa-lock"></i> Admin
+        <a href="admin.html" style="color:var(--gold2);">
+          <i class="fa-solid fa-lock"></i> Admin Panel
         </a>
       </li>
     </ul>
@@ -1382,34 +1382,6 @@ textarea{min-height:115px;resize:vertical}
             <button type="submit" class="submit-btn" id="cont_btn">Send Message</button>
           </form>
         </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECURED ADMIN DASHBOARD SECTION -->
-<section class="admin-section" id="admin">
-  <div class="container">
-    <div class="section-title">
-      <h2>Live Database Entries (Admin Panel)</h2>
-      <p>View all live submissions from the forms above in real-time.</p>
-    </div>
-
-    <button class="admin-refresh" onclick="loadActiveTabData()"><i class="fa-solid fa-rotate-right"></i> Refresh Table</button>
-    <button class="admin-tab-btn" style="background: var(--blue2); color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: bold; margin-left: 5px;" onclick="exportAllDatabaseToExcel()">
-      <i class="fa-solid fa-file-excel"></i> Export All Database (.xlsx)
-    </button>
-    <button class="admin-logout" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-
-    <div class="admin-tabs">
-      <button class="admin-tab-btn active" onclick="switchTab('companies', this)"><i class="fa-solid fa-building"></i> Companies Data</button>
-      <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
-      <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
-      <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
-      <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
-    </div>
-
-    <div class="admin-table-wrap" id="admin-table-container">
-      <p style="padding:20px;text-align:center;">Loading database records...</p>
     </div>
   </div>
 </section>
