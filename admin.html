@@ -1,1 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Elite Workforce Solutions</title>
 
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo.png">
+
+<!-- Fonts & Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- XLSX & Supabase Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{--navy:#061b3a;--blue:#0b3d91;--blue2:#1255b3;--gold:#fbbf24;--gold2:#f59e0b;--emerald:#10b981;--emerald2:#059669;--text:#17233a;--muted:#64748b;--light:#f8fafc;--white:#fff; --card-bg:#fff; --border-color:#e7ebf0;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',Arial,sans-serif;color:var(--text);background:var(--light);margin:0;padding:0;}
+.container{max-width:1200px;margin:auto;width:100%;padding:0 15px;}
+header{background:var(--white);box-shadow:0 2px 10px rgba(0,0,0,0.08);padding:15px 20px;}
+.navbar{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;}
+.brand-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-logo img{width:38px;height:38px;object-fit:contain;border-radius:6px;}
+.brand-title{font-size:18px;font-weight:900;color:#0b1325;letter-spacing:1px;}
+
+.admin-section{padding:40px 20px;}
+.admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;color:var(--text);transition:0.2s;}
+.admin-tab-btn:hover{background:var(--blue2);color:#fff;}
+.admin-tab-btn.active{background:var(--blue);color:#fff;}
+.admin-table-wrap{overflow-x:auto;background:var(--card-bg);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border:1px solid var(--border-color);width:100%;}
+.admin-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px;min-width:600px;}
+.admin-table th{background:var(--light);padding:12px;border-bottom:2px solid var(--border-color);color:var(--muted);}
+.admin-table td{padding:12px;border-bottom:1px solid var(--border-color);color:var(--text);}
+.admin-badge{background:rgba(37,99,235,0.1);color:var(--blue2);padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold;}
+.admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;box-shadow:0 3px 10px rgba(245,158,11,0.3);}
+.admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px;}
+.admin-del-btn{background:#ef4444;color:#fff;border:0;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="navbar">
+    <a href="index.html" class="brand-logo">
+      <img src="logo.png" alt="Logo">
+      <span class="brand-title">ELITE ADMIN PANEL</span>
+    </a>
+    <a href="index.html" style="font-weight: bold; color: var(--blue2); font-size: 14px;"><i class="fa-solid fa-arrow-left"></i> Back to Website</a>
+  </div>
+</header>
+
+<div class="container">
+  <section class="admin-section">
+    <div style="margin-bottom: 25px;">
+      <h2 style="font-size: 28px; font-weight: 800; color: var(--blue); margin-bottom: 5px;">Live Database Dashboard</h2>
+      <p style="color: var(--muted); font-size: 14px;">Manage all active submissions, company requirements, suppliers, and workers in real-time.</p>
+    </div>
+
+    <button class="admin-refresh" onclick="loadActiveTabData()"><i class="fa-solid fa-rotate-right"></i> Refresh Data</button>
+    <button class="admin-tab-btn" style="background: var(--blue2); color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: bold; margin-left: 5px;" onclick="exportAllDatabaseToExcel()">
+      <i class="fa-solid fa-file-excel"></i> Export All Database (.xlsx)
+    </button>
+    <button class="admin-logout" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <div class="admin-tabs" style="margin-top: 15px;">
+      <button class="admin-tab-btn active" onclick="switchTab('companies', this)"><i class="fa-solid fa-building"></i> Companies Data</button>
+      <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
+      <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
+      <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
+      <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
+    </div>
+
+    <div class="admin-table-wrap" id="admin-table-container">
+      <p style="padding:20px;text-align:center;">Loading database records...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://maakqzczkhkoimlmnvws.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let currentTab = 'companies';
+
+  async function checkAdminAuth() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) {
+      alert("Aap logged in nahi hain! Kripya pehle website se login karein.");
+      window.location.href = 'index.html';
+      return;
+    }
+    loadActiveTabData();
+  }
+
+  async function logoutAdmin() {
+    await _supabase.auth.signOut();
+    window.location.href = 'index.html';
+  }
+
+  function switchTab(tableName, btn) {
+    currentTab = tableName;
+    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    loadActiveTabData();
+  }
+
+  function loadActiveTabData() {
+    if (currentTab === 'companies') fetchCompanies();
+    else if (currentTab === 'suppliers') fetchSuppliers();
+    else if (currentTab === 'azad_workers') fetchAzadWorkers();
+    else if (currentTab === 'contact_messages') fetchMessages();
+  }
+
+  async function fetchCompanies() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading companies...</p>';
+    const { data, error } = await _supabase.from('companies').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No company requirements posted yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function fetchSuppliers() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
+    const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email || 'N/A'}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function fetchAzadWorkers() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading Azad Workers...</p>';
+    const { data, error } = await _supabase.from('azad_workers').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No Azad workers registered yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Photo</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Photo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${workerPhoto}</td><td><b>${i.full_name}</b></td><td>${i.email || 'N/A'}</td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function fetchMessages() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading messages...</p>';
+    const { data, error } = await _supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No messages received yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Message</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_id).toLocaleDateString() || new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.name}</b></td><td>${i.email}</td><td>${i.message}</td><td><button class="admin-del-btn" onclick="deleteRecord('contact_messages', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function deleteRecord(table, id) {
+    if (confirm('Delete this entry permanently?')) {
+      const { error } = await _supabase.from(table).delete().eq('id', id);
+      if (error) alert('Error: ' + error.message);
+      else { 
+        alert('Record deleted.'); 
+        loadActiveTabData(); 
+      }
+    }
+  }
+
+  async function exportAllDatabaseToExcel() {
+    alert("Fetching all database records for export...");
+    try {
+      const { data: comps } = await _supabase.from('companies').select('*');
+      const { data: supps } = await _supabase.from('suppliers').select('*');
+      const { data: workers } = await _supabase.from('azad_workers').select('*');
+      const { data: msgs } = await _supabase.from('contact_messages').select('*');
+
+      const wb = XLSX.utils.book_new();
+
+      if (comps && comps.length > 0) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(comps), "Companies");
+      if (supps && supps.length > 0) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(supps), "Suppliers");
+      if (workers && workers.length > 0) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(workers), "Azad Workers");
+      if (msgs && msgs.length > 0) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(msgs), "Contact Messages");
+
+      XLSX.writeFile(wb, `Elite_Workforce_Complete_Database_${new Date().toISOString().slice(0,10)}.xlsx`);
+      alert("Complete database exported successfully!");
+    } catch (err) {
+      alert("Export error: " + err.message);
+    }
+  }
+
+  async function triggerBulkEmail() {
+    const targetType = prompt("Select recipient group:\n1: Azad Workers\n2: Suppliers\n3: Companies\n4: All Database\nEnter number (1-4):", "4");
+    if (!targetType) return;
+    
+    let selectedTable = targetType === '1' ? 'azad_workers' : targetType === '2' ? 'suppliers' : targetType === '3' ? 'companies' : 'all';
+    let allEmails = [];
+
+    if (selectedTable === 'all') {
+      const { data: comps } = await _supabase.from('companies').select('email');
+      const { data: supps } = await _supabase.from('suppliers').select('email');
+      const { data: workers } = await _supabase.from('azad_workers').select('email');
+      if(comps) comps.forEach(i => i.email && allEmails.push(i.email));
+      if(supps) supps.forEach(i => i.email && allEmails.push(i.email));
+      if(workers) workers.forEach(i => i.email && allEmails.push(i.email));
+    } else {
+      const { data } = await _supabase.from(selectedTable).select('email');
+      if(data) data.forEach(i => i.email && allEmails.push(i.email));
+    }
+
+    let uniqueEmails = [...new Set(allEmails)].filter(e => e && e !== 'N/A' && e.includes('@'));
+    if (uniqueEmails.length === 0) { alert("No valid emails found!"); return; }
+
+    const subject = prompt("Enter email subject:", "Update from Elite Workforce");
+    if (!subject) return;
+    const body = prompt("Enter email message:", "Hello, check our latest updates...");
+    if (!body) return;
+
+    window.location.href = `mailto:?bcc=${encodeURIComponent(uniqueEmails.join(','))}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  window.addEventListener('DOMContentLoaded', checkAdminAuth);
+</script>
+
+</body>
+</html>
