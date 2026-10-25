@@ -918,7 +918,13 @@ textarea{min-height:115px;resize:vertical}
       <li><a href="#faq" onclick="closeMenu()" data-i18n="nav_faq">FAQ</a></li>
       <li><a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a></li>
       <li><a href="#contact" class="nav-btn" onclick="closeMenu()" data-i18n="nav_staffing">Get Staffing</a></li>
-      <li><a href="javascript:void(0)" onclick="unlockAdminPanel()" style="color:var(--gold2);"><i class="fa-solid fa-lock"></i> Admin</a></li>
+      
+      <!-- YEH ADMIN LINK AB SIRF TABHI DIKHEGA JAB AAP ADMIN HOGE -->
+      <li id="adminNavLink" style="display: none;">
+        <a href="javascript:void(0)" onclick="unlockAdminPanel(); closeMenu();" style="color:var(--gold2);">
+          <i class="fa-solid fa-lock"></i> Admin
+        </a>
+      </li>
     </ul>
   </nav>
 </header>
@@ -2145,16 +2151,17 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  /* CHECK SESSION LOGIC WITH GOOGLE / FACEBOOK AVATAR & AUTO ROLE PROMPT */
+  /* CHECK SESSION LOGIC WITH ADMIN NAVBAR VISIBILITY CHECK */
   async function checkActiveUserSession() {
     const { data: { session } } = await _supabase.auth.getSession();
 
     const navName = document.getElementById('navProfileName');
     const navAvatar = document.getElementById('navProfileAvatar');
     const dropName = document.getElementById('dropUserName');
-    const dropRole = document.getElementById('dropUserRole');
+    const dropUserRole = document.getElementById('dropUserRole');
     const menuLogin = document.getElementById('menuLoginOption');
     const menuLogout = document.getElementById('menuLogoutOption');
+    const adminNavLink = document.getElementById('adminNavLink'); // Admin Navbar Button
 
     if (session && session.user) {
       const user = session.user;
@@ -2166,9 +2173,16 @@ textarea{min-height:115px;resize:vertical}
         document.getElementById('googleRoleModal').style.display = 'flex';
       }
 
+      // Agar user ka role admin hai, tabhi Admin Panel ka button dikhega
+      if (userRole === 'admin' || user.email === 'mohdmanjur022@gmail.com') {
+        if (adminNavLink) adminNavLink.style.display = 'block';
+      } else {
+        if (adminNavLink) adminNavLink.style.display = 'none';
+      }
+
       if (navName) navName.innerText = userName;
       if (dropName) dropName.innerText = userName;
-      if (dropRole) dropRole.innerText = (userRole || 'Role Pending').toUpperCase();
+      if (dropUserRole) dropUserRole.innerText = (userRole || 'Role Pending').toUpperCase();
 
       if (navAvatar) {
         if (socialAvatar) {
@@ -2181,6 +2195,7 @@ textarea{min-height:115px;resize:vertical}
       if (menuLogin) menuLogin.style.display = 'none';
       if (menuLogout) menuLogout.style.display = 'block';
     } else {
+      if (adminNavLink) adminNavLink.style.display = 'none';
       updateNavProfileState();
     }
   }
@@ -3135,7 +3150,7 @@ textarea{min-height:115px;resize:vertical}
       return;
     }
 
-    showToast(`${targetName} ke emails fetch kiye ja rahe hain...`);
+    showToast(`${targetName} ke emails fetch kiye ja rahe हैं...`);
 
     try {
       let allEmails = [];
