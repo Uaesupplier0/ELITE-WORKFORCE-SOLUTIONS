@@ -2319,7 +2319,7 @@ textarea{min-height:115px;resize:vertical}
       nav_home: "হোম", nav_about: "আমাদের সম্পর্কে", nav_board: "পাবলিক বোর্ড", nav_post: "প্রয়োজন পোস্ট করুন", nav_careers: "ক্যারিয়ার", nav_faq: "প্রশ্নাবলী", nav_contact: "যোগাযোগ", nav_staffing: "কর্মী পান",
       hero_eyebrow: "সংযুক্ত আরব আমিরাত ওয়ার্কফোর্স নেটওয়ার্ক",
       hero_title: 'কোম্পানিগুলোকে <span style="color:var(--gold)">দক্ষ কর্মীদের</span> সাথে সংযুক্ত করা',
-      hero_desc: "এলিট ওয়ার্কফোর্স সলিউশনস ইউএই কোম্পানিগুলোকে ম্যানপাওয়ার সাপ্লাইয়ার এবং দক্ষ কর্মীদের সাথে যুক্ত করে।",
+      hero_desc: "এলিট ওয়ার্কফোর্স সলিউশনস ইউएই কোম্পানিগুলোকে ম্যানপাওয়ার সাপ্লাইয়ার এবং দক্ষ কর্মীদের সাথে যুক্ত করে।",
       btn_post: "রিকোয়ারমেন্ট পোস্ট করুন", btn_supplier: "সরবরাহকারী হিসাবে যোগ দিন", btn_azad: "আজাদ ভিসা কর্মী"
     },
     rn: {
@@ -3893,7 +3893,6 @@ document.addEventListener('click', async (e) => {
       }
       let lightRatio = lightPixels / (300 * 200);
 
-      // Tabhi trigger hoga jab proper sharpness aur document jaisa background match ho
       if (sharpnessScore > 25 && lightRatio > 0.35) {
         stableCount++;
         if (framingBox) {
@@ -4102,7 +4101,7 @@ document.addEventListener('click', async (e) => {
             if (framingBox) framingBox.classList.remove('green-glow-animation');
             switchOcrTab('camera');
           } else {
-            finalizeOcrResults(frontScanData, { idNumber: 'N/A', expiryDate: 'N/A' });
+            finalizeOcrResults(frontScanData, { idNumber: '', expiryDate: '' });
           }
         }, 300);
 
@@ -4128,7 +4127,7 @@ document.addEventListener('click', async (e) => {
     const dateMatches = clean.match(/\b(0[1-9]|[12][0-9]|3[01])[\/\.-](0[1-9]|1[012])[\/\.-](19|20)\d\d\b/g) || [];
 
     let docType = 'Emirates ID';
-    let idNumber = 'Verified';
+    let idNumber = '';
 
     if (eidMatch) {
       docType = 'Emirates ID';
@@ -4140,7 +4139,7 @@ document.addEventListener('click', async (e) => {
       docType = 'MRZ Document / ID';
       idNumber = mrzMatch[0];
     } else {
-      idNumber = clean.match(/\d{8,15}/) ? clean.match(/\d{8,15}/)[0] : 'Verified Number';
+      idNumber = clean.match(/\d{8,15}/) ? clean.match(/\d{8,15}/)[0] : '';
     }
 
     const lines = clean.split('\n').map(l => l.trim()).filter(l => l.length > 3);
@@ -4153,15 +4152,15 @@ document.addEventListener('click', async (e) => {
     }
     if (!nameFound) {
       const capLine = lines.find(l => /^[A-Z\s]{4,30}$/.test(l) && !/UNITED|ARAB|EMIRATES|NATIONAL|IDENTITY/i.test(l));
-      nameFound = capLine || (lines[0] ? lines[0] : 'Verified Worker');
+      nameFound = capLine || '';
     }
 
     return {
       docType: docType,
       idNumber: idNumber,
-      fullName: nameFound.replace(/[^a-zA-Z\s]/g, '').trim() || 'Verified Worker',
-      dob: dateMatches[0] || '01/01/1995',
-      expiryDate: dateMatches[1] || '01/01/2028'
+      fullName: nameFound.replace(/[^a-zA-Z\s]/g, '').trim(),
+      dob: dateMatches[0] || '',
+      expiryDate: dateMatches[1] || ''
     };
   }
 
@@ -4170,22 +4169,31 @@ document.addEventListener('click', async (e) => {
     if (framingBox) framingBox.classList.remove('green-glow-animation');
 
     document.getElementById('ocrProgressBox').style.display = 'none';
+
+    const finalId = (back && back.idNumber) ? back.idNumber : (front ? front.idNumber : '');
+    const finalName = (front && front.fullName) ? front.fullName : '';
+
+    if (!finalId && !finalName) {
+      showToast('⚠️ Document clear nahi padha gaya. Kripya saaf photo upload karein ya dobara scan karein.', 'error');
+      return;
+    }
+
     document.getElementById('ocrResultsBox').style.display = 'block';
 
-    document.getElementById('ocrDocType').value = front.docType || 'Emirates ID (Front & Back + MRZ)';
-    document.getElementById('ocrDocNumber').value = (back.idNumber !== 'N/A' && back.idNumber !== 'Verified') ? back.idNumber : front.idNumber;
-    document.getElementById('ocrName').value = front.fullName;
-    document.getElementById('ocrDob').value = front.dob;
-    document.getElementById('ocrExpiry').value = (back.expiryDate !== 'N/A') ? back.expiryDate : front.expiryDate;
+    document.getElementById('ocrDocType').value = front.docType || 'Emirates ID';
+    document.getElementById('ocrDocNumber').value = finalId || '';
+    document.getElementById('ocrName').value = finalName || '';
+    document.getElementById('ocrDob').value = (front && front.dob) ? front.dob : '';
+    document.getElementById('ocrExpiry').value = (back && back.expiryDate) ? back.expiryDate : ((front && front.expiryDate) ? front.expiryDate : '');
 
-    showToast('✨ Advanced Multi-Side Scan & MRZ Parsed Successfully!');
+    showToast('✨ Scan completed successfully!');
   }
 
   function applyOcrDataToForms() {
     const name = document.getElementById('ocrName').value;
     const idNo = document.getElementById('ocrDocNumber').value;
 
-    if (document.getElementById('m_azad_name')) document.getElementById('m_az_name').value = name;
+    if (document.getElementById('m_azad_name')) document.getElementById('m_azad_name').value = name;
     if (document.getElementById('m_supp_person')) document.getElementById('m_supp_person').value = name;
     if (document.getElementById('m_supp_license')) document.getElementById('m_supp_license').value = idNo;
     if (document.getElementById('comp_person')) document.getElementById('comp_person').value = name;
