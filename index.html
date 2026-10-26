@@ -665,7 +665,8 @@ textarea{min-height:115px;resize:vertical}
   transform: rotate(180deg);
 }
 
-/* Public Tabs & Clickable Public Rows */
+/* Admin Tabs/Tables & Clickable Public Rows */
+.admin-section{background:var(--white);border-top:4px solid var(--navy);padding:60px 20px;display:none}
 .admin-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .admin-tab-btn{background:var(--border-color);border:0;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;color:var(--text);transition:all 0.25s;}
 .admin-tab-btn:hover { background: var(--blue2); color:#fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
@@ -685,6 +686,14 @@ textarea{min-height:115px;resize:vertical}
 }
 
 .admin-badge{background:rgba(37,99,235,0.1);color:var(--blue2);padding:3px 8px;border-radius:4px;font-size:12px;font-weight:bold}
+.admin-refresh{background:var(--gold2);border:0;padding:8px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;box-shadow: 0 3px 10px rgba(245,158,11,0.3);transition:0.25s}
+.admin-refresh:hover{filter:brightness(1.1);transform:translateY(-2px); box-shadow: 0 6px 16px rgba(245,158,11,0.5);}
+.admin-logout{background:#ef4444;color:#fff;border:0;padding:8px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;margin-left:10px;box-shadow: 0 3px 10px rgba(239,68,68,0.3);transition:0.25s}
+.admin-logout:hover{filter:brightness(1.1); transform:translateY(-2px); box-shadow: 0 6px 16px rgba(239,68,68,0.5);}
+.admin-del-btn{background:#ef4444;color:#fff;border:0;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;transition:0.2s}
+.admin-del-btn:hover{filter:brightness(1.1); transform: scale(1.08);}
+.view-pdf-btn{background:var(--blue2);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:bold;text-decoration:none;display:inline-flex;align-items:center;gap:6px; box-shadow: 0 2px 8px rgba(37,99,235,0.3); transition: all 0.25s;}
+.view-pdf-btn:hover{background:var(--blue); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(11,61,145,0.5);}
 
 /* Modal Styling with Glassmorphism / Scale Animation */
 .azad-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:center;padding:15px;backdrop-filter:blur(5px);animation: fadeIn 0.3s ease;}
@@ -799,17 +808,18 @@ textarea{min-height:115px;resize:vertical}
   width: 100% !important;
   height: 65vh !important;
   min-height: 480px !important;
-  object-fit: cover !important;
+  object-fit: cover !important; /* Vertical black lines removed completely */
   background: #020617 !important;
   display: block !important;
 }
 
+/* Smart framing box overlay with Green Light Animation - Updated Wide & Landscape */
 .ocr-scan-frame {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 96% !important;
+  width: 96% !important; /* Full width expanded */
   height: 68% !important;
   max-width: 100% !important;
   border: 2px dashed #fbbf24;
@@ -819,6 +829,7 @@ textarea{min-height:115px;resize:vertical}
   transition: all 0.3s ease;
 }
 
+/* Green Light Glow Animation Class */
 .green-glow-animation {
   border-color: #10b981 !important;
   border-style: solid !important;
@@ -908,7 +919,7 @@ textarea{min-height:115px;resize:vertical}
       <li><a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a></li>
       <li><a href="#contact" class="nav-btn" onclick="closeMenu()" data-i18n="nav_staffing">Get Staffing</a></li>
       
-      <!-- ADMIN PANEL LINK HIDDEN FROM MAIN NAVBAR (AVAILABLE ONLY VIA admin.html) -->
+      <!-- UPDATED ADMIN PANEL LINK: REDIRECTS DIRECTLY TO admin.html -->
       <li id="adminNavLink" style="display: none;">
         <a href="admin.html" style="color:var(--gold2);">
           <i class="fa-solid fa-lock"></i> Admin Panel
@@ -1963,6 +1974,7 @@ textarea{min-height:115px;resize:vertical}
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKz6idXSfDwJWQpVUbONMXY1ihY6oU1hB7yyDnZZgsngnOqQIWigdhCjlQJIancHAZ/exec';
 
+  let currentTab = 'companies';
   let currentPublicTab = 'companies';
   let rawPublicData = []; 
   let currentPairExchangeRate = 26.05;
@@ -2121,7 +2133,7 @@ textarea{min-height:115px;resize:vertical}
     const dropUserRole = document.getElementById('dropUserRole');
     const menuLogin = document.getElementById('menuLoginOption');
     const menuLogout = document.getElementById('menuLogoutOption');
-    const adminNavLink = document.getElementById('adminNavLink');
+    const adminNavLink = document.getElementById('adminNavLink'); // Admin Navbar Button
 
     if (session && session.user) {
       const user = session.user;
@@ -2133,6 +2145,7 @@ textarea{min-height:115px;resize:vertical}
         document.getElementById('googleRoleModal').style.display = 'flex';
       }
 
+      // Agar user ka role admin hai, tabhi Admin Panel ka button dikhega
       if (userRole === 'admin' || user.email === 'mohdmanjur022@gmail.com') {
         if (adminNavLink) adminNavLink.style.display = 'block';
       } else {
@@ -2209,6 +2222,41 @@ textarea{min-height:115px;resize:vertical}
       };
       reader.onerror = error => reject(error);
     });
+  }
+
+  /* EXPORT ALL DATABASE TO EXCEL FUNCTION */
+  async function exportAllDatabaseToExcel() {
+    showToast("Fetching all database records for export...");
+    try {
+      const { data: comps } = await _supabase.from('companies').select('*');
+      const { data: supps } = await _supabase.from('suppliers').select('*');
+      const { data: workers } = await _supabase.from('azad_workers').select('*');
+      const { data: msgs } = await _supabase.from('contact_messages').select('*');
+
+      const wb = XLSX.utils.book_new();
+
+      if (comps && comps.length > 0) {
+        const wsComps = XLSX.utils.json_to_sheet(comps);
+        XLSX.utils.book_append_sheet(wb, wsComps, "Companies");
+      }
+      if (supps && supps.length > 0) {
+        const wsSupps = XLSX.utils.json_to_sheet(supps);
+        XLSX.utils.book_append_sheet(wb, wsSupps, "Suppliers");
+      }
+      if (workers && workers.length > 0) {
+        const wsWorkers = XLSX.utils.json_to_sheet(workers);
+        XLSX.utils.book_append_sheet(wb, wsWorkers, "Azad Workers");
+      }
+      if (msgs && msgs.length > 0) {
+        const wsMsgs = XLSX.utils.json_to_sheet(msgs);
+        XLSX.utils.book_append_sheet(wb, wsMsgs, "Contact Messages");
+      }
+
+      XLSX.writeFile(wb, `Elite_Workforce_Complete_Database_${new Date().toISOString().slice(0,10)}.xlsx`);
+      showToast("Complete database exported successfully!");
+    } catch (err) {
+      showToast("Export error: " + err.message, "error");
+    }
   }
 
   const translations = {
@@ -2500,6 +2548,44 @@ textarea{min-height:115px;resize:vertical}
     setTimeout(() => toast.remove(), 4000);
   }
 
+  async function unlockAdminPanel() {
+    const session = await _supabase.auth.getSession();
+    if (session.data.session) {
+      document.getElementById('admin').style.display = 'block';
+      window.location.hash = "#admin";
+      loadActiveTabData();
+      return;
+    }
+
+    const email = prompt("Enter Admin Email:");
+    if (!email) return;
+
+    const password = prompt("Enter Admin Password:");
+    if (!password) return;
+
+    showToast("Authenticating...");
+
+    const { data, error } = await _supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      showToast("Login Failed: " + error.message, "error");
+    } else {
+      showToast("Admin authenticated successfully!");
+      document.getElementById('admin').style.display = 'block';
+      window.location.hash = "#admin";
+      loadActiveTabData();
+    }
+  }
+
+  async function logoutAdmin() {
+    await _supabase.auth.signOut();
+    document.getElementById('admin').style.display = 'none';
+    showToast("Logged out successfully.");
+  }
+
   function switchPublicTab(tab, btn) {
     currentPublicTab = tab;
     document.querySelectorAll('#leaderboard .admin-tab-btn').forEach(b => b.classList.remove('active'));
@@ -2757,6 +2843,7 @@ textarea{min-height:115px;resize:vertical}
       showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
       document.getElementById('companyForm').reset();
       loadPublicLeaderboard();
+      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
 
     } catch (error) {
       showToast('Error: ' + error.message, 'error');
@@ -2819,6 +2906,7 @@ textarea{min-height:115px;resize:vertical}
       showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
       document.getElementById('supplierModal').querySelector('form').reset();
       loadPublicLeaderboard();
+      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
 
     } catch (error) {
       showToast('Error: ' + error.message, 'error');
@@ -2882,6 +2970,7 @@ textarea{min-height:115px;resize:vertical}
       showSuccessPopup('Done ✅ - Azad worker registration successful.');
       document.getElementById('azadModal').querySelector('form').reset();
       loadPublicLeaderboard();
+      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
 
     } catch (error) {
       showToast('Error: ' + error.message, 'error');
@@ -2907,36 +2996,203 @@ textarea{min-height:115px;resize:vertical}
     else {
       showSuccessPopup('Done ✅ - Aapka message successfully database mein save ho gaya hai!');
       document.getElementById('contactForm').reset();
+      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
     }
     btn.disabled = false; btn.innerText = 'Send Message';
   }
 
-  /* PWA INSTALL PROMPT LOGIC */
-  let deferredPrompt;
-  window.addEventListener('DOMContentLoaded', () => {
-      const shortcutContainer = document.getElementById('shortcutContainer');
-      if (shortcutContainer) shortcutContainer.style.display = 'block';
-  });
+  function switchTab(tableName, btn) {
+    currentTab = tableName;
+    document.querySelectorAll('.admin-section .admin-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadActiveTabData();
+  }
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-  });
+  function loadActiveTabData() {
+    if (currentTab === 'companies') fetchCompanies();
+    else if (currentTab === 'suppliers') fetchSuppliers();
+    else if (currentTab === 'azad_workers') fetchAzadWorkers();
+    else if (currentTab === 'contact_messages') fetchMessages();
+  }
 
-  document.addEventListener('click', async (e) => {
-      if (e.target && e.target.closest('#installBtn')) {
-          if (deferredPrompt) {
-              deferredPrompt.prompt();
-              const { outcome } = await deferredPrompt.userChoice;
-              if (outcome === 'accepted') {
-                  showToast('Shortcut successfully added to home screen!');
-              }
-              deferredPrompt = null;
-          } else {
-              alert('To add this website to your home screen as an app:\n\n1. Tap the 3 dots (Menu) at the top right of your browser.\n2. Select "Add to Home screen" or "Install app".');
-          }
+  async function fetchCompanies() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading companies...</p>';
+    const { data, error } = await _supabase.from('companies').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No company requirements posted yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email}<br><small>${i.phone}</small></td><td>${i.location||'N/A'}</td><td>${i.requirement_details}</td><td><button class="admin-del-btn" onclick="deleteRecord('companies', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function fetchSuppliers() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
+    const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${logoImg}</td><td><b>${i.company_name}</b><br><small style="color:var(--blue);">${i.trade_license || 'No License'}</small></td><td>${i.contact_person}</td><td>${i.email || 'N/A'}<br><small>${i.phone}</small></td><td>${i.manpower_types||'N/A'}</td><td><b>${i.workers_available}</b></td><td><button class="admin-del-btn" onclick="deleteRecord('suppliers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function fetchAzadWorkers() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading Azad Visa Workers...</p>';
+    const { data, error } = await _supabase.from('azad_workers').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No Azad workers registered yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Photo</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Photo</span>`;
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td>${workerPhoto}</td><td><b>${i.full_name}</b></td><td>${i.email || 'N/A'}</td><td>${i.phone_number}</td><td><span style="color:var(--blue);font-weight:bold;">${i.trade}</span></td><td>${i.location}</td><td><button class="admin-del-btn" onclick="deleteRecord('azad_workers', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function fetchMessages() {
+    const container = document.getElementById('admin-table-container');
+    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading messages...</p>';
+    const { data, error } = await _supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
+
+    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No messages received yet.</p>'; return; }
+
+    let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Message</th><th>Action</th></tr></thead><tbody>`;
+    data.forEach(i => {
+      html += `<tr><td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td><td><b>${i.name}</b></td><td>${i.email}</td><td>${i.message}</td><td><button class="admin-del-btn" onclick="deleteRecord('contact_messages', ${i.id})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    });
+    container.innerHTML = html + '</tbody></table>';
+  }
+
+  async function deleteRecord(table, id) {
+    if (confirm('Delete this entry permanently?')) {
+      const { error } = await _supabase.from(table).delete().eq('id', id);
+      if (error) showToast('Error: ' + error.message, 'error');
+      else { 
+        showToast('Record deleted.'); 
+        loadActiveTabData(); 
+        loadPublicLeaderboard(); 
       }
-  });
+    }
+  }
+
+  async function triggerBulkEmail() {
+    const targetType = prompt(
+      "Kise email bhejna hai?\n\n" +
+      "1: Sirf Azad Workers ko\n" +
+      "2: Sirf Suppliers ko\n" +
+      "3: Sirf Companies ko\n" +
+      "4: Sabhi (All Database) ko ek sath\n\n" +
+      "Number enter karein (1, 2, 3 ya 4):", "4"
+    );
+
+    if (!targetType) return;
+
+    let selectedTable = '';
+    let targetName = '';
+
+    if (targetType === '1') {
+      selectedTable = 'azad_workers';
+      targetName = 'Azad Workers';
+    } else if (targetType === '2') {
+      selectedTable = 'suppliers';
+      targetName = 'Suppliers';
+    } else if (targetType === '3') {
+      selectedTable = 'companies';
+      targetName = 'Companies';
+    } else if (targetType === '4') {
+      selectedTable = 'all';
+      targetName = 'All Users & Companies';
+    } else {
+      showToast("Galat choice select ki gayi!", "error");
+      return;
+    }
+
+    showToast(`${targetName} ke emails fetch kiye ja rahe हैं...`);
+
+    try {
+      let allEmails = [];
+
+      if (selectedTable === 'all') {
+        const { data: comps } = await _supabase.from('companies').select('email');
+        const { data: supps } = await _supabase.from('suppliers').select('email');
+        const { data: workers } = await _supabase.from('azad_workers').select('email');
+        const { data: msgs } = await _supabase.from('contact_messages').select('email');
+
+        if (comps) comps.forEach(i => i.email && allEmails.push(i.email));
+        if (supps) supps.forEach(i => i.email && allEmails.push(i.email));
+        if (workers) workers.forEach(i => i.email && allEmails.push(i.email));
+        if (msgs) msgs.forEach(i => i.email && allEmails.push(i.email));
+      } else {
+        const { data, error } = await _supabase.from(selectedTable).select('email');
+        if (error) throw error;
+        if (data) data.forEach(i => i.email && allEmails.push(i.email));
+      }
+
+      let uniqueEmails = [...new Set(allEmails)].filter(e => e && e !== 'N/A' && e.includes('@'));
+
+      if (uniqueEmails.length === 0) {
+        showToast(`${targetName} mein koi valid email address nahi mila!`, "error");
+        return;
+      }
+
+      const subject = prompt(`[${targetName}] Total ${uniqueEmails.length} emails mil gaye hain.\nEmail ka Subject enter karein:`, "Urgent Requirement Update from Elite Workforce");
+      if (!subject) return;
+
+      const body = prompt(`[${targetName}] Email ka Message enter karein:`, "Hello, we have urgent site requirements available. Please check...");
+      if (!body) return;
+
+      const bccList = uniqueEmails.join(',');
+      const mailtoLink = `mailto:?bcc=${encodeURIComponent(bccList)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      window.location.href = mailtoLink;
+      showToast(`Email client open ho gaya (${uniqueEmails.length} ${targetName} recipients ke sath)!`);
+
+    } catch (error) {
+      showToast("Error fetching emails: " + error.message, "error");
+    }
+  }
+
+/* PWA INSTALL PROMPT LOGIC */
+let deferredPrompt;
+window.addEventListener('DOMContentLoaded', () => {
+    const shortcutContainer = document.getElementById('shortcutContainer');
+    if (shortcutContainer) shortcutContainer.style.display = 'block';
+});
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+document.addEventListener('click', async (e) => {
+    if (e.target && e.target.closest('#installBtn')) {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                showToast('Shortcut successfully added to home screen!');
+            }
+            deferredPrompt = null;
+        } else {
+            alert('To add this website to your home screen as an app:\n\n1. Tap the 3 dots (Menu) at the top right of your browser.\n2. Select "Add to Home screen" or "Install app".');
+        }
+    }
+});
 
   /* ADVANCED TIMESHEET SCRIPT */
   (function initTimesheet(){
@@ -3466,7 +3722,7 @@ textarea{min-height:115px;resize:vertical}
      ADVANCED MULTI-SIDE SMART OCR SCANNER & AUTO-CAPTURE ENGINE (UPDATED SENSITIVITY)
   ============================================================= */
   let cameraStream = null;
-  let currentScanSide = 'front';
+  let currentScanSide = 'front'; // 'front' or 'back'
   let frontScanData = null;
   let backScanData = null;
   let autoCaptureTimer = null;
@@ -3593,6 +3849,7 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
+  // Smart Auto-Capture & Green Light Trigger Loop (Updated with Document Validation)
   function startAutoCaptureLoop() {
     if (autoCaptureTimer) clearInterval(autoCaptureTimer);
     
@@ -3610,8 +3867,10 @@ textarea{min-height:115px;resize:vertical}
       const imgData = ctx.getImageData(0, 0, 300, 200);
       const d = imgData.data;
 
+      // 1. Sharpness check
       let sharpnessScore = calculateImageSharpness(imgData);
 
+      // 2. Color / Light background check (Rejects dark or plain metallic objects like iron sheets)
       let lightPixels = 0;
       for (let i = 0; i < d.length; i += 4) {
         let r = d[i], g = d[i+1], b = d[i+2];
@@ -3658,6 +3917,7 @@ textarea{min-height:115px;resize:vertical}
     return sum / count;
   }
 
+  // 1. Capture Frame with Preview Step
   function captureCameraFrame() {
       if (autoCaptureTimer) {
           clearInterval(autoCaptureTimer);
@@ -3682,6 +3942,7 @@ textarea{min-height:115px;resize:vertical}
       }, 'image/jpeg', 0.99);
   }
 
+  // 2. Photo Preview Dialog / Modal UI Handler
   function showPhotoPreviewModal(blob, imgUrl) {
       stopCameraStream();
       const boxCamera = document.getElementById('ocrCameraBox');
