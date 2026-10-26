@@ -841,9 +841,36 @@ textarea{min-height:115px;resize:vertical}
   50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.95); }
   100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.5); }
 }
+
+/* PRIVATE CRM FLOATING BUTTON */
+#privateCrmBtn {
+  display: none; 
+  position: fixed; 
+  left: 0; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  background-color: #ffc107; 
+  color: #000; 
+  padding: 10px 15px; 
+  writing-mode: vertical-rl; 
+  text-orientation: mixed; 
+  font-weight: bold; 
+  border-top-right-radius: 5px; 
+  border-bottom-right-radius: 5px; 
+  z-index: 99999; 
+  cursor: pointer; 
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+#privateCrmBtn:hover { background-color: #ffca2c; padding-left: 18px; }
 </style>
 </head>
 <body class="">
+
+<!-- PRIVATE CRM BUTTON -->
+<div id="privateCrmBtn" onclick="openPrivateCrm()">
+  🔒 Private CRM
+</div>
 
 <!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/971500000000" target="_blank" class="floating-whatsapp" title="Chat with us on WhatsApp">
@@ -1948,6 +1975,19 @@ textarea{min-height:115px;resize:vertical}
 
 <!-- SUPABASE LOGIC & EVENT HANDLERS -->
 <script>
+  // PRIVATE CRM BUTTON SCRIPT
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === 'true') {
+    localStorage.setItem('isMyPrivateAccess', 'granted');
+  }
+  if (localStorage.getItem('isMyPrivateAccess') === 'granted') {
+    const crmBtn = document.getElementById('privateCrmBtn');
+    if(crmBtn) crmBtn.style.display = 'block';
+  }
+  function openPrivateCrm() {
+    window.location.href = 'private-crm.html'; 
+  }
+
   const SUPABASE_URL = 'https://maakqzczkhkoimlmnvws.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
