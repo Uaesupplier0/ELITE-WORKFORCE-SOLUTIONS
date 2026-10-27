@@ -2230,6 +2230,20 @@ textarea{min-height:115px;resize:vertical}
       } else {
         if (adminNavLink) adminNavLink.style.display = 'none';
       }
+          // Private CRM Button Visibility Check
+    const crmButton = document.getElementById('privateCrmBtn');
+    const allowedEmails = [
+      'mohdmanjur022@gmail.com',
+      'mohdmanjur021@gmail.com'
+    ];
+    
+    if (crmButton) {
+      if (user && allowedEmails.includes(user.email)) {
+        crmButton.style.display = 'flex'; // Sirf aapki dono emails ke liye dikhega
+      } else {
+        crmButton.style.display = 'none'; // Baaki sabhi ke liye gayab rahega
+      }
+    }
 
       if (navName) navName.innerText = userName;
       if (dropName) dropName.innerText = userName;
