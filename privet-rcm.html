@@ -403,7 +403,7 @@
   async function exportAllDatabaseToExcel() {
     showToast("Fetching all database records for export...");
     try {
-      The { data: comps } = await _supabase.from('companies').select('*');
+      const { data: comps } = await _supabase.from('companies').select('*');
       const { data: supps } = await _supabase.from('suppliers').select('*');
       const { data: workers } = await _supabase.from('azad_workers').select('*');
       const { data: msgs } = await _supabase.from('contact_messages').select('*');
