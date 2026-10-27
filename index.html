@@ -887,82 +887,9 @@ textarea{min-height:115px;resize:vertical}
   50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.95); }
   100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.5); }
 }
-
-/* CUSTOM POPUP STYLING FOR PLEASE LOGIN */
-.custom-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-}
-.custom-popup-box {
-  background: #ffffff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  max-width: 320px;
-  width: 90%;
-  font-family: Arial, sans-serif;
-}
-.custom-popup-box h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #222;
-  font-size: 20px;
-  font-weight: 800;
-}
-.custom-popup-box p {
-  margin-bottom: 20px;
-  color: #555;
-  font-size: 14px;
-}
-.custom-popup-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-.c-btn-cancel {
-  flex: 1;
-  background: #f1f1f1;
-  color: #333;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.c-btn-ok {
-  flex: 1;
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
 </style>
 </head>
 <body class="">
-
-<!-- PLEASE LOGIN POPUP MODAL -->
-<div id="pleaseLoginPopup" class="custom-popup-overlay" style="display: none;">
-  <div class="custom-popup-box">
-    <h3>Please Login</h3>
-    <p>Aage badhne ke liye pehle login karein.</p>
-    <div class="custom-popup-buttons">
-      <button onclick="closePleaseLoginPopup()" class="c-btn-cancel">Cancel</button>
-      <button onclick="redirectToLoginPage()" class="c-btn-ok">OK</button>
-    </div>
-  </div>
-</div>
 
 <!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/971500000000" target="_blank" class="floating-whatsapp" title="Chat with us on WhatsApp">
@@ -2102,46 +2029,6 @@ textarea{min-height:115px;resize:vertical}
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // PLEASE LOGIN POPUP FUNCTIONS
-  function closePleaseLoginPopup() {
-    document.getElementById('pleaseLoginPopup').style.display = 'none';
-  }
-
-  function redirectToLoginPage() {
-    document.getElementById('pleaseLoginPopup').style.display = 'none';
-    openAdvanceAuthModal('login');
-  }
-
-  // FIXED INTERCEPTOR: Click par check karega ki user logged-in hai ya nahi
-  document.addEventListener('click', async (e) => {
-    // Sirf buttons aur clickable links ko target karein
-    const target = e.target.closest('button, a');
-    if (!target) return;
-
-    // In cheezon par click karne par login check nahi hona chahiye (jaise login/register modal, close buttons, menu toggles)
-    if (
-      target.id === 'navProfileBtn' || 
-      target.closest('#navProfileDropdown') || 
-      target.closest('#advanceAuthModal') || 
-      target.closest('#pleaseLoginPopup') ||
-      target.classList.contains('menu-btn') ||
-      target.getAttribute('href')?.startsWith('#') ||
-      target.getAttribute('onclick')?.includes('open') ||
-      target.getAttribute('onclick')?.includes('auth') ||
-      target.getAttribute('onclick')?.includes('Login') ||
-      target.getAttribute('onclick')?.includes('Register')
-    ) {
-      return;
-    }
-
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session) {
-      e.preventDefault();
-      e.stopPropagation();
-      document.getElementById('pleaseLoginPopup').style.display = 'flex';
-    }
-  }, true);
-
   // Policy Modal Handler Functions (Meta Compliance)
   function openPolicyModal(type) {
     document.getElementById('policyModal').style.display = 'flex';
@@ -2335,25 +2222,26 @@ textarea{min-height:115px;resize:vertical}
         document.getElementById('googleRoleModal').style.display = 'flex';
       }
 
+      // Agar user ka role admin hai, tabhi Admin Panel ka button dikhega
       if (userRole === 'admin' || user.email === 'mohdmanjur022@gmail.com') {
         if (adminNavLink) adminNavLink.style.display = 'block';
       } else {
         if (adminNavLink) adminNavLink.style.display = 'none';
       }
-
-      const crmButton = document.getElementById('privateCrmBtn');
-      const allowedEmails = [
-        'mohdmanjur022@gmail.com',
-        'mohdmanjur021@gmail.com'
-      ];
-      
-      if (crmButton) {
-        if (user && allowedEmails.includes(user.email)) {
-          crmButton.style.display = 'flex';
-        } else {
-          crmButton.style.display = 'none';
-        }
+          // Private CRM Button Visibility Check
+    const crmButton = document.getElementById('privateCrmBtn');
+    const allowedEmails = [
+      'mohdmanjur022@gmail.com',
+      'mohdmanjur021@gmail.com'
+    ];
+    
+    if (crmButton) {
+      if (user && allowedEmails.includes(user.email)) {
+        crmButton.style.display = 'flex'; // Sirf aapki dono emails ke liye dikhega
+      } else {
+        crmButton.style.display = 'none'; // Baaki sabhi ke liye gayab rahega
       }
+    }
 
       if (navName) navName.innerText = userName;
       if (dropName) dropName.innerText = userName;
@@ -4402,21 +4290,22 @@ document.addEventListener('click', async (e) => {
         .catch(err => console.log('Service Worker registration failed:', err));
     });
   }
-  
-  async function loadLatestTickerLead() {
-    try {
-      const { data, error } = await _supabase.from('companies').select('requirement_details').order('created_at', { ascending: false }).limit(1);
-      if(data && data.length > 0 && data[0].requirement_details) {
-        document.getElementById('liveTickerText').innerText = "⚡ LIVE REQUIREMENT: " + data[0].requirement_details;
-      }
-    } catch(e) {
-      console.error(e);
+  // FETCH LATEST LEAD FOR TICKER BANNER
+async function loadLatestTickerLead() {
+  try {
+    const { data, error } = await _supabase.from('companies').select('requirement_details').order('created_at', { ascending: false }).limit(1);
+    if(data && data.length > 0 && data[0].requirement_details) {
+      document.getElementById('liveTickerText').innerText = "⚡ LIVE REQUIREMENT: " + data[0].requirement_details;
     }
+  } catch(e) {
+    console.error(e);
   }
+}
 
-  window.addEventListener('DOMContentLoaded', () => {
-    loadLatestTickerLead();
-  });
+window.addEventListener('DOMContentLoaded', () => {
+  loadLatestTickerLead();
+});
+
 </script>
 
 </body>
