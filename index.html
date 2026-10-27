@@ -841,36 +841,9 @@ textarea{min-height:115px;resize:vertical}
   50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.95); }
   100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.5); }
 }
-
-/* PRIVATE CRM FLOATING BUTTON */
-#privateCrmBtn {
-  display: block; 
-  position: fixed; 
-  left: 0; 
-  top: 50%; 
-  transform: translateY(-50%); 
-  background-color: #ffc107; 
-  color: #000; 
-  padding: 10px 15px; 
-  writing-mode: vertical-rl; 
-  text-orientation: mixed; 
-  font-weight: bold; 
-  border-top-right-radius: 5px; 
-  border-bottom-right-radius: 5px; 
-  z-index: 99999; 
-  cursor: pointer; 
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-  transition: 0.3s;
-}
-#privateCrmBtn:hover { background-color: #ffca2c; padding-left: 18px; }
 </style>
 </head>
 <body class="">
-
-<!-- PRIVATE CRM BUTTON -->
-<div id="privateCrmBtn" onclick="openPrivateCrm()">
-  🔒 Private CRM
-</div>
 
 <!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/971500000000" target="_blank" class="floating-whatsapp" title="Chat with us on WhatsApp">
@@ -946,10 +919,10 @@ textarea{min-height:115px;resize:vertical}
       <li><a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a></li>
       <li><a href="#contact" class="nav-btn" onclick="closeMenu()" data-i18n="nav_staffing">Get Staffing</a></li>
       
-      <!-- UPDATED ADMIN PANEL LINK: REDIRECTS DIRECTLY TO admin.html -->
+      <!-- YEH ADMIN LINK AB SIRF TABHI DIKHEGA JAB AAP ADMIN HOGE -->
       <li id="adminNavLink" style="display: none;">
-        <a href="admin.html" style="color:var(--gold2);">
-          <i class="fa-solid fa-lock"></i> Admin Panel
+        <a href="javascript:void(0)" onclick="unlockAdminPanel(); closeMenu();" style="color:var(--gold2);">
+          <i class="fa-solid fa-lock"></i> Admin
         </a>
       </li>
     </ul>
@@ -1409,6 +1382,34 @@ textarea{min-height:115px;resize:vertical}
             <button type="submit" class="submit-btn" id="cont_btn">Send Message</button>
           </form>
         </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURED ADMIN DASHBOARD SECTION -->
+<section class="admin-section" id="admin">
+  <div class="container">
+    <div class="section-title">
+      <h2>Live Database Entries (Admin Panel)</h2>
+      <p>View all live submissions from the forms above in real-time.</p>
+    </div>
+
+    <button class="admin-refresh" onclick="loadActiveTabData()"><i class="fa-solid fa-rotate-right"></i> Refresh Table</button>
+    <button class="admin-tab-btn" style="background: var(--blue2); color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: bold; margin-left: 5px;" onclick="exportAllDatabaseToExcel()">
+      <i class="fa-solid fa-file-excel"></i> Export All Database (.xlsx)
+    </button>
+    <button class="admin-logout" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" onclick="switchTab('companies', this)"><i class="fa-solid fa-building"></i> Companies Data</button>
+      <button class="admin-tab-btn" onclick="switchTab('suppliers', this)"><i class="fa-solid fa-truck-field"></i> Suppliers Data</button>
+      <button class="admin-tab-btn" onclick="switchTab('azad_workers', this)"><i class="fa-solid fa-user-gear"></i> Azad Workers</button>
+      <button class="admin-tab-btn" onclick="switchTab('contact_messages', this)"><i class="fa-solid fa-envelope"></i> Contact Messages</button>
+      <button class="admin-tab-btn" style="background: var(--emerald2); color: #fff;" onclick="triggerBulkEmail()"><i class="fa-solid fa-paper-plane"></i> Send Bulk Email</button>
+    </div>
+
+    <div class="admin-table-wrap" id="admin-table-container">
+      <p style="padding:20px;text-align:center;">Loading database records...</p>
     </div>
   </div>
 </section>
@@ -1975,19 +1976,6 @@ textarea{min-height:115px;resize:vertical}
 
 <!-- SUPABASE LOGIC & EVENT HANDLERS -->
 <script>
-  // PRIVATE CRM BUTTON SCRIPT
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('admin') === 'true') {
-    localStorage.setItem('isMyPrivateAccess', 'granted');
-  }
-  if (localStorage.getItem('isMyPrivateAccess') === 'granted') {
-    const crmBtn = document.getElementById('privateCrmBtn');
-    if(crmBtn) crmBtn.style.display = 'block';
-  }
-  function openPrivateCrm() {
-    window.location.href = 'private-crm.html'; 
-  }
-
   const SUPABASE_URL = 'https://maakqzczkhkoimlmnvws.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
