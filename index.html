@@ -1052,12 +1052,12 @@ textarea{min-height:115px;resize:vertical}
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
           <button onclick="openAdvanceAuthModal('register')" class="btn btn-primary" style="padding: 10px 16px;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
         </div>
-        <!-- JOIN AS SUPPLIER BUTTON CALLS openSupplierModal() DIRECTLY -->
+        <!-- JOIN AS SUPPLIER BUTTON CALLS CHECK FUNCTION -->
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
-          <button onclick="openSupplierModal()" class="btn btn-outline" style="padding: 10px 16px;"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
+          <button onclick="checkUserAuthBeforeAction(() => openSupplierModal())" class="btn btn-outline" style="padding: 10px 16px;"><i class="fa-solid fa-truck-field"></i> Join as Supplier</button>
         </div>
         <div class="hero-timesheet-box" style="min-width: unset; padding: 6px;">
-          <button onclick="openAzadModal()" class="btn btn-azad-hero" style="padding: 10px 16px;" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
+          <button onclick="checkUserAuthBeforeAction(() => openAzadModal())" class="btn btn-azad-hero" style="padding: 10px 16px;" data-i18n="btn_azad"><i class="fa-solid fa-id-card"></i> 🇦🇪 Azad Visa Worker</button>
         </div>
       </div>
 
@@ -2643,7 +2643,11 @@ textarea{min-height:115px;resize:vertical}
     }
   }
 
-  function openTimesheetModal() { document.getElementById('timesheetModal').style.display = 'flex'; }
+  function openTimesheetModal() { 
+    checkUserAuthBeforeAction(() => {
+      document.getElementById('timesheetModal').style.display = 'flex'; 
+    });
+  }
   function closeTimesheetModal() { document.getElementById('timesheetModal').style.display = 'none'; }
 
   function openSupplierModal() { document.getElementById('supplierModal').style.display = 'flex'; }
@@ -2856,11 +2860,13 @@ textarea{min-height:115px;resize:vertical}
 
     document.querySelectorAll('#publicTableBody tr').forEach(row => {
       row.addEventListener('click', () => {
-        const idx = row.getAttribute('data-index');
-        const selectedItem = dataList[idx];
-        localStorage.setItem('selected_profile_type', currentPublicTab);
-        localStorage.setItem('selected_profile_data', JSON.stringify(selectedItem));
-        window.location.href = `worker-profile.html?type=${currentPublicTab}`;
+        checkUserAuthBeforeAction(() => {
+          const idx = row.getAttribute('data-index');
+          const selectedItem = dataList[idx];
+          localStorage.setItem('selected_profile_type', currentPublicTab);
+          localStorage.setItem('selected_profile_data', JSON.stringify(selectedItem));
+          window.location.href = `worker-profile.html?type=${currentPublicTab}`;
+        });
       });
     });
   }
@@ -2910,10 +2916,12 @@ textarea{min-height:115px;resize:vertical}
 
   function handleCareerFormSubmit(event) {
       event.preventDefault();
-      showSuccessPopup("Done ✅ - Aapka career application successfully submit ho gaya hai!");
-      event.target.reset();
-      document.getElementById('file-name-label').innerText = "Click or Drag & Drop PDF Resume Here";
-      document.getElementById('file-name-label').style.color = "#e2e8f0";
+      checkUserAuthBeforeAction(() => {
+          showSuccessPopup("Done ✅ - Aapka career application successfully submit ho gaya hai!");
+          event.target.reset();
+          document.getElementById('file-name-label').innerText = "Click or Drag & Drop PDF Resume Here";
+          document.getElementById('file-name-label').style.color = "#e2e8f0";
+      });
   }
 
   /* COMPANY FORM SUBMISSION WITH AUTH CHECK */
@@ -3113,23 +3121,25 @@ textarea{min-height:115px;resize:vertical}
 
   async function submitContactForm(e) {
     e.preventDefault();
-    const btn = document.getElementById('cont_btn');
-    btn.disabled = true; btn.innerText = 'Sending...';
+    checkUserAuthBeforeAction(async () => {
+      const btn = document.getElementById('cont_btn');
+      btn.disabled = true; btn.innerText = 'Sending...';
 
-    const payload = {
-      name: document.getElementById('cont_name').value.trim(),
-      email: document.getElementById('cont_email').value.trim(),
-      message: document.getElementById('cont_msg').value.trim()
-    };
+      const payload = {
+        name: document.getElementById('cont_name').value.trim(),
+        email: document.getElementById('cont_email').value.trim(),
+        message: document.getElementById('cont_msg').value.trim()
+      };
 
-    const { error } = await _supabase.from('contact_messages').insert([payload]);
-    if (error) { showToast('Error: ' + error.message, 'error'); } 
-    else {
-      showSuccessPopup('Done ✅ - Aapka message successfully database mein save ho gaya hai!');
-      document.getElementById('contactForm').reset();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-    }
-    btn.disabled = false; btn.innerText = 'Send Message';
+      const { error } = await _supabase.from('contact_messages').insert([payload]);
+      if (error) { showToast('Error: ' + error.message, 'error'); } 
+      else {
+        showSuccessPopup('Done ✅ - Aapka message successfully database mein save ho gaya hai!');
+        document.getElementById('contactForm').reset();
+        if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+      }
+      btn.disabled = false; btn.innerText = 'Send Message';
+    });
   }
 
   function switchTab(tableName, btn) {
@@ -3510,169 +3520,175 @@ document.addEventListener('click', async (e) => {
     }
 
     window.performDirectClock = async function(type) {
-        if (type === 'Clock In') {
-            if (active) {
-                alert('You are already checked in!');
-                return;
+        checkUserAuthBeforeAction(async () => {
+            if (type === 'Clock In') {
+                if (active) {
+                    alert('You are already checked in!');
+                    return;
+                }
+                await checkIn();
+            } else {
+                if (!active) {
+                    alert('You are not checked in yet!');
+                    return;
+                }
+                await checkOut();
             }
-            await checkIn();
-        } else {
-            if (!active) {
-                alert('You are not checked in yet!');
-                return;
-            }
-            await checkOut();
-        }
+        });
     };
 
     window.downloadTimesheetDirectImage = function() {
-        if (history.length === 0 && !active) {
-            alert('No attendance records found to generate image!');
-            return;
-        }
-
-        showToast('🖼️ Generating Excel Grid Image in Ascending Order...');
-
-        const now = new Date();
-        const todayDate = now.getDate();
-        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
-
-        const tempContainer = document.createElement('div');
-        tempContainer.className = 'excel-grid-container';
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '-9999px';
-        tempContainer.style.width = '820px';
-
-        let presentMap = {};
-        let totalDurationMs = 0;
-
-        history.forEach(row => {
-            let dateObj = new Date(row.checkInAt);
-            let dayNum = dateObj.getDate();
-            
-            if (!presentMap[dayNum]) {
-                presentMap[dayNum] = {
-                    rawDate: dateObj,
-                    dateStr: fmtDayDate(row.checkInAt),
-                    inTime: fmtTimeOnly(row.checkInAt),
-                    outTime: fmtTimeOnly(row.checkOutAt),
-                    durationMs: row.durationMs || 0,
-                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured'
-                };
-            } else {
-                presentMap[dayNum].durationMs += (row.durationMs || 0);
-                presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
+        checkUserAuthBeforeAction(() => {
+            if (history.length === 0 && !active) {
+                alert('No attendance records found to generate image!');
+                return;
             }
-            totalDurationMs += row.durationMs || 0;
-        });
 
-        let rowsHtml = '';
-        let presentCount = 0;
-        let absentCount = 0;
+            showToast('🖼️ Generating Excel Grid Image in Ascending Order...');
 
-        for (let day = 1; day <= todayDate; day++) {
-            if (presentMap[day]) {
-                presentCount++;
-                let item = presentMap[day];
-                rowsHtml += `
-                    <tr>
-                        <td><b>${item.dateStr}</b></td>
-                        <td><span style="color:#059669; font-weight:bold;">Present</span></td>
-                        <td>${item.inTime}</td>
-                        <td>${item.outTime}</td>
-                        <td><b>${fmtDuration(item.durationMs)}</b></td>
-                        <td>📍 ${item.location}</td>
-                    </tr>
-                `;
-            } else {
-                absentCount++;
-                let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
-                let dateStr = fmtDayDate(dummyDate.toISOString());
-                rowsHtml += `
-                    <tr class="absent-row-highlight">
-                        <td><b>${dateStr}</b></td>
-                        <td><span style="color:#dc2626; font-weight:bold;">ABSENT</span></td>
-                        <td>--:--:--</td>
-                        <td>--:--:--</td>
-                        <td>00:00:00</td>
-                        <td>Not Available</td>
-                    </tr>
-                `;
+            const now = new Date();
+            const todayDate = now.getDate();
+            const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
+
+            const tempContainer = document.createElement('div');
+            tempContainer.className = 'excel-grid-container';
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.width = '820px';
+
+            let presentMap = {};
+            let totalDurationMs = 0;
+
+            history.forEach(row => {
+                let dateObj = new Date(row.checkInAt);
+                let dayNum = dateObj.getDate();
+                
+                if (!presentMap[dayNum]) {
+                    presentMap[dayNum] = {
+                        rawDate: dateObj,
+                        dateStr: fmtDayDate(row.checkInAt),
+                        inTime: fmtTimeOnly(row.checkInAt),
+                        outTime: fmtTimeOnly(row.checkOutAt),
+                        durationMs: row.durationMs || 0,
+                        location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured'
+                    };
+                } else {
+                    presentMap[dayNum].durationMs += (row.durationMs || 0);
+                    presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
+                }
+                totalDurationMs += row.durationMs || 0;
+            });
+
+            let rowsHtml = '';
+            let presentCount = 0;
+            let absentCount = 0;
+
+            for (let day = 1; day <= todayDate; day++) {
+                if (presentMap[day]) {
+                    presentCount++;
+                    let item = presentMap[day];
+                    rowsHtml += `
+                        <tr>
+                            <td><b>${item.dateStr}</b></td>
+                            <td><span style="color:#059669; font-weight:bold;">Present</span></td>
+                            <td>${item.inTime}</td>
+                            <td>${item.outTime}</td>
+                            <td><b>${fmtDuration(item.durationMs)}</b></td>
+                            <td>📍 ${item.location}</td>
+                        </tr>
+                    `;
+                } else {
+                    absentCount++;
+                    let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
+                    let dateStr = fmtDayDate(dummyDate.toISOString());
+                    rowsHtml += `
+                        <tr class="absent-row-highlight">
+                            <td><b>${dateStr}</b></td>
+                            <td><span style="color:#dc2626; font-weight:bold;">ABSENT</span></td>
+                            <td>--:--:--</td>
+                            <td>--:--:--</td>
+                            <td>00:00:00</td>
+                            <td>Not Available</td>
+                        </tr>
+                    `;
+                }
             }
-        }
 
-        tempContainer.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom:2px solid #2563eb; padding-bottom:8px;">
-                <div>
-                  <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; font-family: Arial, sans-serif;">
-                      ELITE WORKFORCE SOLUTIONS
-                  </div>
-                  <div style="font-size: 13px; font-weight: 600; color: #475569;">
-                      Attendance Timesheet (Ascending Order & Absent Tracker) — <span style="color:#2563eb;">${currentMonthYear}</span>
-                  </div>
+            tempContainer.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom:2px solid #2563eb; padding-bottom:8px;">
+                    <div>
+                      <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; font-family: Arial, sans-serif;">
+                          ELITE WORKFORCE SOLUTIONS
+                      </div>
+                      <div style="font-size: 13px; font-weight: 600; color: #475569;">
+                          Attendance Timesheet (Ascending Order & Absent Tracker) — <span style="color:#2563eb;">${currentMonthYear}</span>
+                      </div>
+                    </div>
+                    <div style="text-align:right; font-size:11px; font-weight:bold; color:#059669;">
+                       Verified Monthly Log
+                    </div>
                 </div>
-                <div style="text-align:right; font-size:11px; font-weight:bold; color:#059669;">
-                   Verified Monthly Log
-                </div>
-            </div>
 
-            <div style="display:flex; gap:15px; background:#f1f5f9; padding:10px 14px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1; font-family:Arial, sans-serif;">
-                <div style="flex:1; text-align:center;">
-                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Present Days</span>
-                    <div style="font-size:16px; font-weight:bold; color:#16a34a;">${presentCount} Days</div>
+                <div style="display:flex; gap:15px; background:#f1f5f9; padding:10px 14px; border-radius:8px; margin-bottom:12px; border:1px solid #cbd5e1; font-family:Arial, sans-serif;">
+                    <div style="flex:1; text-align:center;">
+                        <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Present Days</span>
+                        <div style="font-size:16px; font-weight:bold; color:#16a34a;">${presentCount} Days</div>
+                    </div>
+                    <div style="flex:1; text-align:center; border-left:1px solid #cbd5e1; border-right:1px solid #cbd5e1;">
+                        <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Absent Days</span>
+                        <div style="font-size:16px; font-weight:bold; color:#dc2626;">${absentCount} Days</div>
+                    </div>
+                    <div style="flex:1; text-align:center;">
+                        <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Total Hours</span>
+                        <div style="font-size:16px; font-weight:bold; color:#2563eb;">${fmtDuration(totalDurationMs)}</div>
+                    </div>
                 </div>
-                <div style="flex:1; text-align:center; border-left:1px solid #cbd5e1; border-right:1px solid #cbd5e1;">
-                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Absent Days</span>
-                    <div style="font-size:16px; font-weight:bold; color:#dc2626;">${absentCount} Days</div>
-                </div>
-                <div style="flex:1; text-align:center;">
-                    <span style="font-size:10px; color:#64748b; font-weight:bold; text-transform:uppercase;">Total Hours</span>
-                    <div style="font-size:16px; font-weight:bold; color:#2563eb;">${fmtDuration(totalDurationMs)}</div>
-                </div>
-            </div>
 
-            <table class="excel-grid-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>In Time</th>
-                        <th>Out Time</th>
-                        <th>Total Duration</th>
-                        <th>Pinpoint Site Location</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rowsHtml}
-                </tbody>
-            </table>
-        `;
+                <table class="excel-grid-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>In Time</th>
+                            <th>Out Time</th>
+                            <th>Total Duration</th>
+                            <th>Pinpoint Site Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+            `;
 
-        document.body.appendChild(tempContainer);
+            document.body.appendChild(tempContainer);
 
-        html2canvas(tempContainer, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `Ascending_Attendance_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            document.body.removeChild(tempContainer);
-            showToast('🖼️ Ascending Timesheet Image Downloaded!');
-        }).catch(err => {
-            if(document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
-            showToast('Error: ' + err.message, 'error');
+            html2canvas(tempContainer, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Ascending_Attendance_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                document.body.removeChild(tempContainer);
+                showToast('🖼️ Ascending Timesheet Image Downloaded!');
+            }).catch(err => {
+                if(document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
+                showToast('Error: ' + err.message, 'error');
+            });
         });
     };
 
     window.shareAttendanceWhatsApp = function() {
-        let currentStatusText = active ? "🟢 Currently ON DUTY" : "🔴 Currently OFF DUTY";
-        let lastLoc = active && active.location ? active.location.areaName : (history.length > 0 && history[0].checkInLocation ? history[0].checkInLocation.areaName : 'UAE Site');
-        
-        let msg = `*Elite Workforce Attendance Report*%0A` +
-                  `📌 *Status:* ${currentStatusText}%0A` +
-                  `📍 *Pinpoint Location:* ${encodeURIComponent(lastLoc)}%0A` +
-                  `📅 *Date:* ${new Date().toLocaleDateString()}`;
-                  
-        window.open(`https://wa.me/?text=${msg}`, '_blank');
+        checkUserAuthBeforeAction(() => {
+            let currentStatusText = active ? "🟢 Currently ON DUTY" : "🔴 Currently OFF DUTY";
+            let lastLoc = active && active.location ? active.location.areaName : (history.length > 0 && history[0].checkInLocation ? history[0].checkInLocation.areaName : 'UAE Site');
+            
+            let msg = `*Elite Workforce Attendance Report*%0A` +
+                      `📌 *Status:* ${currentStatusText}%0A` +
+                      `📍 *Pinpoint Location:* ${encodeURIComponent(lastLoc)}%0A` +
+                      `📅 *Date:* ${new Date().toLocaleDateString()}`;
+                      
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        });
     };
 
     async function saveToSupabase(recordData) {
@@ -3691,59 +3707,61 @@ document.addEventListener('click', async (e) => {
     }
 
     window.exportToExcel = function() {
-        if (history.length === 0 && !active) {
-            alert('No attendance records found to export!');
-            return;
-        }
-
-        const now = new Date();
-        const todayDate = now.getDate();
-        const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
-
-        const excelData = [];
-        excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
-        excelData.push(["Timesheet Month:", currentMonthYear]);
-        excelData.push(["Generated Date:", new Date().toLocaleString()]);
-        excelData.push(["Developer/Author:", "Manjur Ansari"]);
-        excelData.push([]);
-        
-        excelData.push(["Date", "Status", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Pinpoint Site Location"]);
-
-        let presentMap = {};
-        history.forEach(row => {
-            let dayNum = new Date(row.checkInAt).getDate();
-            if (!presentMap[dayNum]) {
-                presentMap[dayNum] = {
-                    dateStr: fmtDayDate(row.checkInAt),
-                    inTime: fmtTimeOnly(row.checkInAt),
-                    outTime: fmtTimeOnly(row.checkOutAt),
-                    durationMs: row.durationMs || 0,
-                    location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured'
-                };
-            } else {
-                presentMap[dayNum].durationMs += (row.durationMs || 0);
-                presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
+        checkUserAuthBeforeAction(() => {
+            if (history.length === 0 && !active) {
+                alert('No attendance records found to export!');
+                return;
             }
+
+            const now = new Date();
+            const todayDate = now.getDate();
+            const currentMonthYear = new Intl.DateTimeFormat('en-GB',{month:'long',year:'numeric'}).format(now);
+
+            const excelData = [];
+            excelData.push(["ELITE WORKFORCE SOLUTIONS - ATTENDANCE REPORT"]);
+            excelData.push(["Timesheet Month:", currentMonthYear]);
+            excelData.push(["Generated Date:", new Date().toLocaleString()]);
+            excelData.push(["Developer/Author:", "Manjur Ansari"]);
+            excelData.push([]);
+            
+            excelData.push(["Date", "Status", "Check-In Time", "Check-Out Time", "Duration (HH:MM:SS)", "Pinpoint Site Location"]);
+
+            let presentMap = {};
+            history.forEach(row => {
+                let dayNum = new Date(row.checkInAt).getDate();
+                if (!presentMap[dayNum]) {
+                    presentMap[dayNum] = {
+                        dateStr: fmtDayDate(row.checkInAt),
+                        inTime: fmtTimeOnly(row.checkInAt),
+                        outTime: fmtTimeOnly(row.checkOutAt),
+                        durationMs: row.durationMs || 0,
+                        location: (row.checkInLocation && row.checkInLocation.areaName) ? row.checkInLocation.areaName : 'Pinpoint Location Captured'
+                    };
+                } else {
+                    presentMap[dayNum].durationMs += (row.durationMs || 0);
+                    presentMap[dayNum].outTime = fmtTimeOnly(row.checkOutAt);
+                }
+            });
+
+            for (let day = 1; day <= todayDate; day++) {
+                if (presentMap[day]) {
+                    let item = presentMap[day];
+                    excelData.push([item.dateStr, "Present", item.inTime, item.outTime, fmtDuration(item.durationMs), item.location]);
+                } else {
+                    let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
+                    excelData.push([fmtDayDate(dummyDate.toISOString()), "ABSENT", "--:--:--", "--:--:--", "00:00:00", "Not Available"]);
+                }
+            }
+
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            ws['!cols'] = [{wch:15}, {wch:12}, {wch:15}, {wch:20}, {wch:40}];
+            
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
+            
+            XLSX.writeFile(wb, `Elite_Workforce_Ascending_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.xlsx`);
+            showToast('📊 Ascending Excel File Downloaded Successfully!');
         });
-
-        for (let day = 1; day <= todayDate; day++) {
-            if (presentMap[day]) {
-                let item = presentMap[day];
-                excelData.push([item.dateStr, "Present", item.inTime, item.outTime, fmtDuration(item.durationMs), item.location]);
-            } else {
-                let dummyDate = new Date(now.getFullYear(), now.getMonth(), day);
-                excelData.push([fmtDayDate(dummyDate.toISOString()), "ABSENT", "--:--:--", "--:--:--", "00:00:00", "Not Available"]);
-            }
-        }
-
-        const ws = XLSX.utils.aoa_to_sheet(excelData);
-        ws['!cols'] = [{wch:15}, {wch:12}, {wch:15}, {wch:20}, {wch:40}];
-        
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Attendance Timesheet");
-        
-        XLSX.writeFile(wb, `Elite_Workforce_Ascending_Timesheet_${currentMonthYear.replace(/\s+/g,'_')}.xlsx`);
-        showToast('📊 Ascending Excel File Downloaded Successfully!');
     };
 
     function updateSummaryBox() {
