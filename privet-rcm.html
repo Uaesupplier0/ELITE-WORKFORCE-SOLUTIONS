@@ -155,6 +155,11 @@
                 <select id="parsedTrade" class="w-full p-2 border rounded-md text-xs bg-white outline-none">
                     <option value="Electrician">Electrician</option>
                     <option value="Plumber">Plumber</option>
+                    <option value="Mason">Mason</option>
+                    <option value="Welder">Welder</option>
+                    <option value="Fitter / Mechanical">Fitter / Mechanical</option>
+                    <option value="HVAC Technician">HVAC Technician</option>
+                    <option value="Driver">Driver</option>
                     <option value="Helper">Helper / Labor</option>
                     <option value="Technician">General Technician</option>
                     <option value="Other">Other</option>
@@ -216,8 +221,13 @@
       let detectedTrade = 'Other';
       if(lowerText.includes('electric') || lowerText.includes('wiring')) detectedTrade = 'Electrician';
       else if(lowerText.includes('plumb') || lowerText.includes('pipe')) detectedTrade = 'Plumber';
+      else if(lowerText.includes('mason') || lowerText.includes('brick') || lowerText.includes('block')) detectedTrade = 'Mason';
+      else if(lowerText.includes('welder') || lowerText.includes('welding')) detectedTrade = 'Welder';
+      else if(lowerText.includes('fitter') || lowerText.includes('mechanical')) detectedTrade = 'Fitter / Mechanical';
+      else if(lowerText.includes('hvac') || lowerText.includes('ac')) detectedTrade = 'HVAC Technician';
+      else if(lowerText.includes('driver') || lowerText.includes('licence') || lowerText.includes('license')) detectedTrade = 'Driver';
       else if(lowerText.includes('helper') || lowerText.includes('labor') || lowerText.includes('labour')) detectedTrade = 'Helper';
-      else if(lowerText.includes('technician') || lowerText.includes('ac')) detectedTrade = 'Technician';
+      else if(lowerText.includes('technician')) detectedTrade = 'Technician';
 
       document.getElementById('parsedPhone').value = phone;
       document.getElementById('parsedDetails').value = rawText;
