@@ -887,9 +887,82 @@ textarea{min-height:115px;resize:vertical}
   50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 35px rgba(16, 185, 129, 0.95); }
   100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.5); }
 }
+
+/* CUSTOM POPUP STYLING FOR PLEASE LOGIN */
+.custom-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+.custom-popup-box {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  max-width: 320px;
+  width: 90%;
+  font-family: Arial, sans-serif;
+}
+.custom-popup-box h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #222;
+  font-size: 20px;
+  font-weight: 800;
+}
+.custom-popup-box p {
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 14px;
+}
+.custom-popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.c-btn-cancel {
+  flex: 1;
+  background: #f1f1f1;
+  color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.c-btn-ok {
+  flex: 1;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
 </style>
 </head>
 <body class="">
+
+<!-- PLEASE LOGIN POPUP MODAL -->
+<div id="pleaseLoginPopup" class="custom-popup-overlay" style="display: none;">
+  <div class="custom-popup-box">
+    <h3>Please Login</h3>
+    <p>Aage badhne ke liye pehle login karein.</p>
+    <div class="custom-popup-buttons">
+      <button onclick="closePleaseLoginPopup()" class="c-btn-cancel">Cancel</button>
+      <button onclick="redirectToLoginPage()" class="c-btn-ok">OK</button>
+    </div>
+  </div>
+</div>
 
 <!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/971500000000" target="_blank" class="floating-whatsapp" title="Chat with us on WhatsApp">
@@ -2028,6 +2101,54 @@ textarea{min-height:115px;resize:vertical}
   const SUPABASE_URL = 'https://maakqzczkhkoimlmnvws.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_kiZxMM-2_11uQA_GQctlxw_DoEo_pu1';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // PLEASE LOGIN POPUP FUNCTIONS
+  function closePleaseLoginPopup() {
+    document.getElementById('pleaseLoginPopup').style.display = 'none';
+  }
+
+  function redirectToLoginPage() {
+    document.getElementById('pleaseLoginPopup').style.display = 'none';
+    openAdvanceAuthModal('login');
+  }
+
+  // Intercept button clicks when user is not logged in
+  async function checkLoginBeforeAction(event) {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) {
+      event.preventDefault();
+      event.stopPropagation();
+      document.getElementById('pleaseLoginPopup').style.display = 'flex';
+      return false;
+    }
+    return true;
+  }
+
+  // Global listener for action buttons & links
+  document.addEventListener('click', async (e) => {
+    const target = e.target.closest('button, a');
+    if (!target) return;
+
+    // Kuch specific buttons/links jo login ke bina chalne chahiye (jaise modals open karne wale ya menu toggle)
+    if (
+      target.id === 'navProfileBtn' || 
+      target.closest('#navProfileDropdown') || 
+      target.closest('#advanceAuthModal') || 
+      target.closest('#pleaseLoginPopup') ||
+      target.classList.contains('menu-btn') ||
+      target.getAttribute('href')?.startsWith('#') ||
+      target.getAttribute('onclick')?.includes('open')
+    ) {
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('pleaseLoginPopup').style.display = 'flex';
+    }
+  }, true);
 
   // Policy Modal Handler Functions (Meta Compliance)
   function openPolicyModal(type) {
