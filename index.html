@@ -2112,24 +2112,13 @@ textarea{min-height:115px;resize:vertical}
     openAdvanceAuthModal('login');
   }
 
-  // Intercept button clicks when user is not logged in
-  async function checkLoginBeforeAction(event) {
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session) {
-      event.preventDefault();
-      event.stopPropagation();
-      document.getElementById('pleaseLoginPopup').style.display = 'flex';
-      return false;
-    }
-    return true;
-  }
-
-  // Global listener for action buttons & links
+  // FIXED INTERCEPTOR: Click par check karega ki user logged-in hai ya nahi
   document.addEventListener('click', async (e) => {
+    // Sirf buttons aur clickable links ko target karein
     const target = e.target.closest('button, a');
     if (!target) return;
 
-    // Kuch specific buttons/links jo login ke bina chalne chahiye (jaise modals open karne wale ya menu toggle)
+    // In cheezon par click karne par login check nahi hona chahiye (jaise login/register modal, close buttons, menu toggles)
     if (
       target.id === 'navProfileBtn' || 
       target.closest('#navProfileDropdown') || 
@@ -2137,7 +2126,10 @@ textarea{min-height:115px;resize:vertical}
       target.closest('#pleaseLoginPopup') ||
       target.classList.contains('menu-btn') ||
       target.getAttribute('href')?.startsWith('#') ||
-      target.getAttribute('onclick')?.includes('open')
+      target.getAttribute('onclick')?.includes('open') ||
+      target.getAttribute('onclick')?.includes('auth') ||
+      target.getAttribute('onclick')?.includes('Login') ||
+      target.getAttribute('onclick')?.includes('Register')
     ) {
       return;
     }
@@ -2343,26 +2335,25 @@ textarea{min-height:115px;resize:vertical}
         document.getElementById('googleRoleModal').style.display = 'flex';
       }
 
-      // Agar user ka role admin hai, tabhi Admin Panel ka button dikhega
       if (userRole === 'admin' || user.email === 'mohdmanjur022@gmail.com') {
         if (adminNavLink) adminNavLink.style.display = 'block';
       } else {
         if (adminNavLink) adminNavLink.style.display = 'none';
       }
-          // Private CRM Button Visibility Check
-    const crmButton = document.getElementById('privateCrmBtn');
-    const allowedEmails = [
-      'mohdmanjur022@gmail.com',
-      'mohdmanjur021@gmail.com'
-    ];
-    
-    if (crmButton) {
-      if (user && allowedEmails.includes(user.email)) {
-        crmButton.style.display = 'flex'; // Sirf aapki dono emails ke liye dikhega
-      } else {
-        crmButton.style.display = 'none'; // Baaki sabhi ke liye gayab rahega
+
+      const crmButton = document.getElementById('privateCrmBtn');
+      const allowedEmails = [
+        'mohdmanjur022@gmail.com',
+        'mohdmanjur021@gmail.com'
+      ];
+      
+      if (crmButton) {
+        if (user && allowedEmails.includes(user.email)) {
+          crmButton.style.display = 'flex';
+        } else {
+          crmButton.style.display = 'none';
+        }
       }
-    }
 
       if (navName) navName.innerText = userName;
       if (dropName) dropName.innerText = userName;
@@ -4411,22 +4402,21 @@ document.addEventListener('click', async (e) => {
         .catch(err => console.log('Service Worker registration failed:', err));
     });
   }
-  // FETCH LATEST LEAD FOR TICKER BANNER
-async function loadLatestTickerLead() {
-  try {
-    const { data, error } = await _supabase.from('companies').select('requirement_details').order('created_at', { ascending: false }).limit(1);
-    if(data && data.length > 0 && data[0].requirement_details) {
-      document.getElementById('liveTickerText').innerText = "⚡ LIVE REQUIREMENT: " + data[0].requirement_details;
+  
+  async function loadLatestTickerLead() {
+    try {
+      const { data, error } = await _supabase.from('companies').select('requirement_details').order('created_at', { ascending: false }).limit(1);
+      if(data && data.length > 0 && data[0].requirement_details) {
+        document.getElementById('liveTickerText').innerText = "⚡ LIVE REQUIREMENT: " + data[0].requirement_details;
+      }
+    } catch(e) {
+      console.error(e);
     }
-  } catch(e) {
-    console.error(e);
   }
-}
 
-window.addEventListener('DOMContentLoaded', () => {
-  loadLatestTickerLead();
-});
-
+  window.addEventListener('DOMContentLoaded', () => {
+    loadLatestTickerLead();
+  });
 </script>
 
 </body>
