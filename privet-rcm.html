@@ -15,27 +15,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <style>
-  body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 0; }
   
-  /* Admin Tabs */
-  .admin-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-  .admin-tab-btn { background: #e2e8f0; border: 0; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; color: #475569; transition: all 0.25s; }
-  .admin-tab-btn:hover { background: #3b82f6; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
-  .admin-tab-btn.active { background: #1d4ed8; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(29,78,216,0.35); }
+  /* Compact Admin Tabs */
+  .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .admin-tab-btn { background: #e2e8f0; border: 0; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; color: #475569; font-size: 13px; transition: all 0.25s; }
+  .admin-tab-btn:hover { background: #3b82f6; color: #fff; transform: translateY(-1px); }
+  .admin-tab-btn.active { background: #1d4ed8; color: #fff; box-shadow: 0 4px 10px rgba(29,78,216,0.3); }
   
   /* Admin Table */
   .admin-table-wrap { overflow-x: auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; width: 100%; }
-  .admin-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 800px; }
-  .admin-table th { background: #f8fafc; padding: 14px; border-bottom: 2px solid #e2e8f0; color: #64748b; }
-  .admin-table td { padding: 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; }
+  .admin-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 750px; }
+  .admin-table th { background: #f8fafc; padding: 12px; border-bottom: 2px solid #e2e8f0; color: #64748b; }
+  .admin-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; }
   
-  .admin-badge { background: rgba(59,130,246,0.1); color: #2563eb; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-  .admin-del-btn { background: #ef4444; color: #fff; border: 0; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-  .admin-del-btn:hover { filter: brightness(1.1); transform: scale(1.05); }
+  .admin-badge { background: rgba(59,130,246,0.1); color: #2563eb; padding: 3px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+  .admin-del-btn { background: #ef4444; color: #fff; border: 0; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+  .admin-del-btn:hover { filter: brightness(1.1); }
 
   /* Toast Notification */
   #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
-  .toast { background: #0f172a; color: #fff; padding: 14px 20px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); margin-top: 10px; font-size: 14px; display: flex; align-items: center; gap: 12px; animation: slideIn 0.3s ease; }
+  .toast { background: #0f172a; color: #fff; padding: 12px 18px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); margin-top: 10px; font-size: 13px; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; }
   @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 </style>
 </head>
@@ -43,76 +43,75 @@
 
 <!-- LOGIN SECTION -->
 <div id="loginSection" class="min-h-screen flex items-center justify-center bg-slate-900 p-4" style="display: none;">
-  <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
-    <div class="text-center mb-6">
-      <h2 class="text-2xl font-bold text-slate-800"><i class="fa-solid fa-shield-halved text-blue-600"></i> Privet RCM Access</h2>
-      <p class="text-sm text-slate-500 mt-2">Please login to manage database</p>
+  <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
+    <div class="text-center mb-5">
+      <h2 class="text-xl font-bold text-slate-800"><i class="fa-solid fa-shield-halved text-blue-600"></i> Privet RCM Access</h2>
+      <p class="text-xs text-slate-500 mt-1">Please login to manage database</p>
     </div>
     <form onsubmit="handleAdminLogin(event)">
-      <div class="mb-4">
-        <label class="block text-sm font-bold mb-2">Admin Email</label>
-        <input type="email" id="adminEmail" required class="w-full p-3 border rounded-lg outline-none focus:border-blue-500" placeholder="admin@example.com">
+      <div class="mb-3">
+        <label class="block text-xs font-bold mb-1">Admin Email</label>
+        <input type="email" id="adminEmail" required class="w-full p-2.5 text-sm border rounded-lg outline-none focus:border-blue-500" placeholder="admin@example.com">
       </div>
-      <div class="mb-6">
-        <label class="block text-sm font-bold mb-2">Password</label>
-        <input type="password" id="adminPassword" required class="w-full p-3 border rounded-lg outline-none focus:border-blue-500" placeholder="••••••••">
+      <div class="mb-5">
+        <label class="block text-xs font-bold mb-1">Password</label>
+        <input type="password" id="adminPassword" required class="w-full p-2.5 text-sm border rounded-lg outline-none focus:border-blue-500" placeholder="••••••••">
       </div>
-      <button type="submit" id="loginBtn" class="w-full bg-blue-600 text-white font-bold p-3 rounded-lg hover:bg-blue-700 transition">Login to Dashboard</button>
+      <button type="submit" id="loginBtn" class="w-full bg-blue-600 text-white font-bold p-2.5 rounded-lg text-sm hover:bg-blue-700 transition">Login to Dashboard</button>
     </form>
   </div>
 </div>
 
 <!-- DASHBOARD SECTION -->
 <div id="dashboardSection" style="display: none;">
-  <!-- Header -->
-  <header class="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-      <div class="bg-blue-600 text-white p-2 rounded-lg"><i class="fa-solid fa-server"></i></div>
-      <h1 class="text-xl font-bold text-slate-800">Privet RCM Control</h1>
+  <!-- Compact & Beautiful Header -->
+  <header class="bg-white shadow-sm border-b px-4 py-3 flex flex-wrap justify-between items-center gap-2 sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-600 text-white p-1.5 rounded-md text-sm"><i class="fa-solid fa-server"></i></div>
+      <h1 class="text-base font-bold text-slate-800">Privet RCM</h1>
     </div>
-    <div class="flex gap-3">
-      <button onclick="triggerBulkEmail()" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-700 text-sm shadow-md transition"><i class="fa-solid fa-envelope-open-text"></i> Bulk Email</button>
-      <button onclick="exportAllDatabaseToExcel()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 text-sm shadow-md transition"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
-      <button onclick="logoutAdmin()" class="bg-red-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-600 text-sm shadow-md transition"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    <div class="flex items-center gap-1.5 flex-wrap">
+      <button onclick="triggerBulkEmail()" class="bg-purple-600 text-white px-2.5 py-1.5 rounded-md font-bold text-xs hover:bg-purple-700 transition flex items-center gap-1"><i class="fa-solid fa-envelope"></i> Email</button>
+      <button onclick="exportAllDatabaseToExcel()" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-md font-bold text-xs hover:bg-emerald-700 transition flex items-center gap-1"><i class="fa-solid fa-file-excel"></i> Excel</button>
+      <button onclick="logoutAdmin()" class="bg-red-500 text-white px-2.5 py-1.5 rounded-md font-bold text-xs hover:bg-red-600 transition flex items-center gap-1"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto p-6 mt-4">
+  <main class="max-w-7xl mx-auto p-4 mt-2">
     
-    <!-- NEWLY ADDED: LIVE MARKET LEADS & DEMAND SECTION -->
-    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 mb-6">
-        <h3 class="text-lg font-bold text-slate-800 mb-2 border-b-2 border-blue-600 pb-2 flex items-center gap-2">
+    <!-- Compact Market Leads & Demand Section -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-5">
+        <h3 class="text-sm font-bold text-slate-800 mb-1.5 border-b border-blue-600 pb-1.5 flex items-center gap-1.5">
             <i class="fa-solid fa-chart-line text-blue-600"></i> Live Market Leads & Demand Sources
         </h3>
-        <p class="text-sm text-slate-500 mb-4">Yahan se aap direct check kar sakte hain ki Ajman aur Sharjah mein kahan labor aur electricians ki demand hai:</p>
+        <p class="text-xs text-slate-500 mb-3">Ajman aur Sharjah mein labor aur electricians ki demand check karein:</p>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <!-- Dubizzle UAE -->
-            <a href="https://dubai.dubizzle.com/jobs/" target="_blank" class="bg-slate-50 border border-slate-200 p-3 rounded-lg hover:border-blue-500 transition block">
-                <strong class="text-slate-800 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-blue-600"></i> Dubizzle UAE Jobs</strong>
-                <p class="text-xs text-slate-500 mt-1">Check daily contractor & worker requirements</p>
+            <a href="https://dubai.dubizzle.com/jobs/" target="_blank" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg hover:border-blue-500 transition block">
+                <strong class="text-xs text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-magnifying-glass text-blue-600"></i> Dubizzle Jobs</strong>
+                <p class="text-[11px] text-slate-500 mt-0.5">Check daily worker requirements</p>
             </a>
 
             <!-- OLX UAE -->
-            <a href="https://www.olx.ae/" target="_blank" class="bg-slate-50 border border-slate-200 p-3 rounded-lg hover:border-blue-500 transition block">
-                <strong class="text-slate-800 flex items-center gap-2"><i class="fa-solid fa-box-archive text-blue-600"></i> OLX UAE Services</strong>
-                <p class="text-xs text-slate-500 mt-1">Browse local maintenance & helper posts</p>
+            <a href="https://www.olx.ae/" target="_blank" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg hover:border-blue-500 transition block">
+                <strong class="text-xs text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-box-archive text-blue-600"></i> OLX Services</strong>
+                <p class="text-[11px] text-slate-500 mt-0.5">Browse local helper posts</p>
             </a>
 
             <!-- Google Maps Local Search -->
-            <a href="https://www.google.com/maps/search/Building+Maintenance+Companies+in+Ajman" target="_blank" class="bg-slate-50 border border-slate-200 p-3 rounded-lg hover:border-blue-500 transition block">
-                <strong class="text-slate-800 flex items-center gap-2"><i class="fa-solid fa-building text-blue-600"></i> Ajman Maintenance Firms</strong>
-                <p class="text-xs text-slate-500 mt-1">Find local companies for subcontracting</p>
+            <a href="https://www.google.com/maps/search/Building+Maintenance+Companies+in+Ajman" target="_blank" class="bg-slate-50 border border-slate-200 p-2.5 rounded-lg hover:border-blue-500 transition block">
+                <strong class="text-xs text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-building text-blue-600"></i> Ajman Firms</strong>
+                <p class="text-[11px] text-slate-500 mt-0.5">Find local subcontracting firms</p>
             </a>
         </div>
 
-        <h4 class="text-sm font-bold text-slate-700 mb-2">📥 Client Requirement Form Generator</h4>
-        <p class="text-xs text-slate-500 mb-2">Agar koi contractor ya client aapse labor maangta hai, toh yeh WhatsApp quick-link use karein:</p>
-        <div class="bg-blue-50 p-3 rounded-lg border border-dashed border-blue-300">
-            <input type="text" id="clientReqText" placeholder="Jaise: Need 2 Electricians for Ajman site" class="w-full p-2.5 border rounded-lg mb-2 text-sm outline-none bg-white">
-            <button onclick="sendRequirementToWhatsApp()" type="button" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-emerald-700 transition flex items-center gap-2">
-                <i class="fa-brands fa-whatsapp text-sm"></i> Send Lead to WhatsApp
+        <h4 class="text-xs font-bold text-slate-700 mb-1.5">📥 Client Requirement Form Generator</h4>
+        <div class="bg-blue-50 p-2.5 rounded-lg border border-dashed border-blue-300">
+            <input type="text" id="clientReqText" placeholder="Jaise: Need 2 Electricians for Ajman site" class="w-full p-2 border rounded-md mb-2 text-xs outline-none bg-white">
+            <button onclick="sendRequirementToWhatsApp()" type="button" class="bg-emerald-600 text-white px-3 py-1.5 rounded-md font-bold text-[11px] hover:bg-emerald-700 transition flex items-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-xs"></i> Send Lead to WhatsApp
             </button>
         </div>
     </div>
@@ -125,7 +124,7 @@
     </div>
 
     <div class="admin-table-wrap" id="admin-table-container">
-      <p style="padding:20px; text-align:center;">Checking authorization...</p>
+      <p style="padding:15px; text-align:center; font-size:13px;">Checking authorization...</p>
     </div>
   </main>
 </div>
@@ -223,15 +222,15 @@
   // FETCH COMPANIES
   async function fetchCompanies() {
     const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading companies...</p>';
+    container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">Loading companies...</p>';
     const { data, error } = await _supabase.from('companies').select('*').order('created_at', { ascending: false });
 
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No company requirements posted yet.</p>'; return; }
+    if (error) { container.innerHTML = `<p style="padding:15px;color:red;font-size:13px;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">No company requirements posted yet.</p>'; return; }
 
     let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Company & License</th><th>Person</th><th>Email / Phone</th><th>Location</th><th>Details</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:30px;height:30px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
       html += `<tr>
         <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
         <td>${logoImg}</td>
@@ -249,15 +248,15 @@
   // FETCH SUPPLIERS
   async function fetchSuppliers() {
     const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading suppliers...</p>';
+    container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">Loading suppliers...</p>';
     const { data, error } = await _supabase.from('suppliers').select('*').order('created_at', { ascending: false });
 
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No suppliers registered yet.</p>'; return; }
+    if (error) { container.innerHTML = `<p style="padding:15px;color:red;font-size:13px;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">No suppliers registered yet.</p>'; return; }
 
     let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Logo</th><th>Supplier & License</th><th>Person</th><th>Email / Phone</th><th>Categories</th><th>Workers</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:35px;height:35px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
+      const logoImg = i.logo_url ? `<img src="${i.logo_url}" style="width:30px;height:30px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Logo</span>`;
       html += `<tr>
         <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
         <td>${logoImg}</td>
@@ -275,15 +274,15 @@
   // FETCH AZAD WORKERS
   async function fetchAzadWorkers() {
     const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading Azad Workers...</p>';
+    container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">Loading Azad Workers...</p>';
     const { data, error } = await _supabase.from('azad_workers').select('*').order('created_at', { ascending: false });
 
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No Azad workers registered yet.</p>'; return; }
+    if (error) { container.innerHTML = `<p style="padding:15px;color:red;font-size:13px;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">No Azad workers registered yet.</p>'; return; }
 
     let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Photo</th><th>Name</th><th>Email</th><th>Phone</th><th>Trade</th><th>Location</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
-      const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Photo</span>`;
+      const workerPhoto = i.file_uri ? `<img src="${i.file_uri}" style="width:30px;height:30px;object-fit:cover;border-radius:50%;border:1px solid #ddd;">` : `<span style="color:#aaa;">No Photo</span>`;
       html += `<tr>
         <td><span class="admin-badge">${new Date(i.created_at).toLocaleDateString()}</span></td>
         <td>${workerPhoto}</td>
@@ -301,11 +300,11 @@
   // FETCH MESSAGES
   async function fetchMessages() {
     const container = document.getElementById('admin-table-container');
-    container.innerHTML = '<p style="padding:20px;text-align:center;">Loading messages...</p>';
+    container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">Loading messages...</p>';
     const { data, error } = await _supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
 
-    if (error) { container.innerHTML = `<p style="padding:20px;color:red;">Error: ${error.message}</p>`; return; }
-    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:20px;text-align:center;">No messages received yet.</p>'; return; }
+    if (error) { container.innerHTML = `<p style="padding:15px;color:red;font-size:13px;">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { container.innerHTML = '<p style="padding:15px;text-align:center;font-size:13px;">No messages received yet.</p>'; return; }
 
     let html = `<table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Message</th><th>Action</th></tr></thead><tbody>`;
     data.forEach(i => {
@@ -404,7 +403,7 @@
   async function exportAllDatabaseToExcel() {
     showToast("Fetching all database records for export...");
     try {
-      const { data: comps } = await _supabase.from('companies').select('*');
+      The { data: comps } = await _supabase.from('companies').select('*');
       const { data: supps } = await _supabase.from('suppliers').select('*');
       const { data: workers } = await _supabase.from('azad_workers').select('*');
       const { data: msgs } = await _supabase.from('contact_messages').select('*');
