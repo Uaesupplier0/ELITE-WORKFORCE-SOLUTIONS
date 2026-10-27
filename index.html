@@ -4290,6 +4290,22 @@ document.addEventListener('click', async (e) => {
         .catch(err => console.log('Service Worker registration failed:', err));
     });
   }
+  // FETCH LATEST LEAD FOR TICKER BANNER
+async function loadLatestTickerLead() {
+  try {
+    const { data, error } = await _supabase.from('companies').select('requirement_details').order('created_at', { ascending: false }).limit(1);
+    if(data && data.length > 0 && data[0].requirement_details) {
+      document.getElementById('liveTickerText').innerText = "⚡ LIVE REQUIREMENT: " + data[0].requirement_details;
+    }
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadLatestTickerLead();
+});
+
 </script>
 
 </body>
