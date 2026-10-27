@@ -2021,6 +2021,19 @@ textarea{min-height:115px;resize:vertical}
     </div>
 </div>
 
+<!-- PLEASE LOGIN CUSTOM ALERT POPUP -->
+<div id="customAlertPopup" class="azad-modal" style="display: none; z-index: 100000;">
+    <div class="azad-modal-content" style="max-width: 380px; text-align: center; padding: 24px;">
+        <div style="font-size: 32px; color: #f59e0b; margin-bottom: 10px;">🔒</div>
+        <h3 style="font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px;">Please login</h3>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">Is feature ko use karne ke liye aapko pehle login karna hoga.</p>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" onclick="closeCustomAlert()" class="btn" style="background: var(--border-color); color: var(--text); padding: 8px 16px; font-size: 13px;">Cancel</button>
+            <button type="button" onclick="redirectToLoginModal()" class="btn" style="background: var(--blue); color: #fff; padding: 8px 16px; font-size: 13px;">OK</button>
+        </div>
+    </div>
+</div>
+
 <div id="toast-container"></div>
 
 <!-- SUPABASE LOGIC & EVENT HANDLERS -->
@@ -2055,6 +2068,27 @@ textarea{min-height:115px;resize:vertical}
   let currentPublicTab = 'companies';
   let rawPublicData = []; 
   let currentPairExchangeRate = 26.05;
+
+  /* AUTH CHECK BEFORE ACTION HELPER */
+  async function checkUserAuthBeforeAction(callbackAction) {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (session && session.user) {
+          if (typeof callbackAction === 'function') {
+              callbackAction();
+          }
+      } else {
+          document.getElementById('customAlertPopup').style.display = 'flex';
+      }
+  }
+
+  function closeCustomAlert() {
+      document.getElementById('customAlertPopup').style.display = 'none';
+  }
+
+  function redirectToLoginModal() {
+      document.getElementById('customAlertPopup').style.display = 'none';
+      openAdvanceAuthModal('login');
+  }
 
   /* ADVANCED LOGIN & AUTHENTICATION MODAL FUNCTIONS */
   function openAdvanceAuthModal(tab = 'login') {
@@ -2882,193 +2916,199 @@ textarea{min-height:115px;resize:vertical}
       document.getElementById('file-name-label').style.color = "#e2e8f0";
   }
 
-  /* COMPANY FORM SUBMISSION */
+  /* COMPANY FORM SUBMISSION WITH AUTH CHECK */
   async function submitCompanyForm(e) {
     e.preventDefault();
-    const btn = document.getElementById('comp_btn');
-    btn.disabled = true; 
-    btn.innerText = 'Submitting...';
+    checkUserAuthBeforeAction(async () => {
+      const btn = document.getElementById('comp_btn');
+      btn.disabled = true; 
+      btn.innerText = 'Submitting...';
 
-    try {
-      const companyName = document.getElementById('comp_name').value.trim();
-      const tradeLicense = document.getElementById('comp_license').value.trim();
-      const contactPerson = document.getElementById('comp_person').value.trim();
-      const email = document.getElementById('comp_email').value.trim();
-      const phone = document.getElementById('comp_phone').value.trim();
-      const location = document.getElementById('comp_location').value.trim();
-      const requirementDetails = document.getElementById('comp_details').value.trim();
-      
-      const rawLogoFile = document.getElementById('comp_logo_file').files[0];
-      let logoUrl = '';
-
-      if (rawLogoFile) {
-        const logoFile = await compressImage(rawLogoFile);
-        const fileName = `comp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('photos')
-          .upload(fileName, logoFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = _supabase.storage
-          .from('photos')
-          .getPublicUrl(fileName);
+      try {
+        const companyName = document.getElementById('comp_name').value.trim();
+        const tradeLicense = document.getElementById('comp_license').value.trim();
+        const contactPerson = document.getElementById('comp_person').value.trim();
+        const email = document.getElementById('comp_email').value.trim();
+        const phone = document.getElementById('comp_phone').value.trim();
+        const location = document.getElementById('comp_location').value.trim();
+        const requirementDetails = document.getElementById('comp_details').value.trim();
         
-        logoUrl = publicUrlData.publicUrl;
+        const rawLogoFile = document.getElementById('comp_logo_file').files[0];
+        let logoUrl = '';
+
+        if (rawLogoFile) {
+          const logoFile = await compressImage(rawLogoFile);
+          const fileName = `comp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
+          const { data: uploadData, error: uploadError } = await _supabase.storage
+            .from('photos')
+            .upload(fileName, logoFile);
+
+          if (uploadError) throw uploadError;
+
+          const { data: publicUrlData } = _supabase.storage
+            .from('photos')
+            .getPublicUrl(fileName);
+          
+          logoUrl = publicUrlData.publicUrl;
+        }
+
+        const payload = {
+          company_name: companyName,
+          trade_license: tradeLicense,
+          logo_url: logoUrl,
+          contact_person: contactPerson,
+          email: email,
+          phone: phone,
+          location: location,
+          requirement_details: requirementDetails
+        };
+
+        const { error } = await _supabase.from('companies').insert([payload]);
+        if (error) throw error;
+
+        showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
+        document.getElementById('companyForm').reset();
+        loadPublicLeaderboard();
+        if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false; 
+        btn.innerText = 'Submit Requirement';
       }
-
-      const payload = {
-        company_name: companyName,
-        trade_license: tradeLicense,
-        logo_url: logoUrl,
-        contact_person: contactPerson,
-        email: email,
-        phone: phone,
-        location: location,
-        requirement_details: requirementDetails
-      };
-
-      const { error } = await _supabase.from('companies').insert([payload]);
-      if (error) throw error;
-
-      showSuccessPopup('Done ✅ - Aapka requirement successfully database mein save ho gaya hai!');
-      document.getElementById('companyForm').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      btn.disabled = false; 
-      btn.innerText = 'Submit Requirement';
-    }
+    });
   }
 
-  /* SUPPLIER FORM SUBMISSION */
+  /* SUPPLIER FORM SUBMISSION WITH AUTH CHECK */
   async function submitModalSupplier(e) {
     e.preventDefault();
-    const btn = document.getElementById('m_supp_btn');
-    btn.disabled = true; 
-    btn.innerText = 'Registering...';
+    checkUserAuthBeforeAction(async () => {
+      const btn = document.getElementById('m_supp_btn');
+      btn.disabled = true; 
+      btn.innerText = 'Registering...';
 
-    try {
-      const suppName = document.getElementById('m_supp_name').value.trim();
-      const suppLicense = document.getElementById('m_supp_license').value.trim();
-      const suppEmail = document.getElementById('m_supp_email_field').value.trim();
-      const suppPerson = document.getElementById('m_supp_person').value.trim();
-      const suppPhone = document.getElementById('m_supp_phone').value.trim();
-      const suppTypes = document.getElementById('m_supp_types').value.trim();
-      const rawWorkers = document.getElementById('m_supp_workers').value;
+      try {
+        const suppName = document.getElementById('m_supp_name').value.trim();
+        const suppLicense = document.getElementById('m_supp_license').value.trim();
+        const suppEmail = document.getElementById('m_supp_email_field').value.trim();
+        const suppPerson = document.getElementById('m_supp_person').value.trim();
+        const suppPhone = document.getElementById('m_supp_phone').value.trim();
+        const suppTypes = document.getElementById('m_supp_types').value.trim();
+        const rawWorkers = document.getElementById('m_supp_workers').value;
 
-      const rawLogoFile = document.getElementById('m_supp_photo').files[0];
-      let logoUrl = '';
+        const rawLogoFile = document.getElementById('m_supp_photo').files[0];
+        let logoUrl = '';
 
-      if (rawLogoFile) {
-        const logoFile = await compressImage(rawLogoFile);
-        const fileName = `supp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('photos')
-          .upload(fileName, logoFile);
+        if (rawLogoFile) {
+          const logoFile = await compressImage(rawLogoFile);
+          const fileName = `supp_${Date.now()}_${logoFile.name.replace(/\s+/g, '_')}`;
+          const { data: uploadData, error: uploadError } = await _supabase.storage
+            .from('photos')
+            .upload(fileName, logoFile);
 
-        if (uploadError) throw uploadError;
+          if (uploadError) throw uploadError;
 
-        const { data: publicUrlData } = _supabase.storage
-          .from('photos')
-          .getPublicUrl(fileName);
-        
-        logoUrl = publicUrlData.publicUrl;
+          const { data: publicUrlData } = _supabase.storage
+            .from('photos')
+            .getPublicUrl(fileName);
+          
+          logoUrl = publicUrlData.publicUrl;
+        }
+
+        const payload = {
+          company_name: suppName,
+          trade_license: suppLicense,
+          email: suppEmail,
+          logo_url: logoUrl,
+          contact_person: suppPerson,
+          phone: suppPhone,
+          manpower_types: suppTypes,
+          workers_available: rawWorkers ? parseInt(rawWorkers, 10) : 0
+        };
+
+        const { error } = await _supabase.from('suppliers').insert([payload]);
+        if (error) throw error;
+
+        closeSupplierModal();
+        showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
+        document.getElementById('supplierModal').querySelector('form').reset();
+        loadPublicLeaderboard();
+        if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false; 
+        btn.innerText = 'Submit Supplier Details';
       }
-
-      const payload = {
-        company_name: suppName,
-        trade_license: suppLicense,
-        email: suppEmail,
-        logo_url: logoUrl,
-        contact_person: suppPerson,
-        phone: suppPhone,
-        manpower_types: suppTypes,
-        workers_available: rawWorkers ? parseInt(rawWorkers, 10) : 0
-      };
-
-      const { error } = await _supabase.from('suppliers').insert([payload]);
-      if (error) throw error;
-
-      closeSupplierModal();
-      showSuccessPopup('Done ✅ - Supplier details successfully database mein save ho gaye hain!');
-      document.getElementById('supplierModal').querySelector('form').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      btn.disabled = false; 
-      btn.innerText = 'Submit Supplier Details';
-    }
+    });
   }
 
-  /* AZAD WORKER FORM SUBMISSION */
+  /* AZAD WORKER FORM SUBMISSION WITH AUTH CHECK */
   async function submitModalAzadWorker(e) {
     e.preventDefault();
-    const btn = document.getElementById('m_azad_btn');
-    btn.disabled = true; 
-    btn.innerText = 'Registering...';
+    checkUserAuthBeforeAction(async () => {
+      const btn = document.getElementById('m_azad_btn');
+      btn.disabled = true; 
+      btn.innerText = 'Registering...';
 
-    try {
-      const fullName = document.getElementById('m_azad_name').value.trim();
-      const email = document.getElementById('m_azad_email').value.trim();
-      const phone = document.getElementById('m_azad_phone').value.trim();
-      const trade = document.getElementById('m_azad_trade').value;
-      const location = document.getElementById('m_azad_location').value;
-      
-      const rawPhotoFile = document.getElementById('m_azad_photo').files[0];
-      let photoUrl = '';
-
-      if (rawPhotoFile) {
-        const photoFile = await compressImage(rawPhotoFile);
-        const fileName = `worker_${Date.now()}_${photoFile.name.replace(/\s+/g, '_')}`;
-        const { data: uploadData, error: uploadError } = await _supabase.storage
-          .from('photos')
-          .upload(fileName, photoFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = _supabase.storage
-          .from('photos')
-          .getPublicUrl(fileName);
+      try {
+        const fullName = document.getElementById('m_azad_name').value.trim();
+        const email = document.getElementById('m_azad_email').value.trim();
+        const phone = document.getElementById('m_azad_phone').value.trim();
+        const trade = document.getElementById('m_azad_trade').value;
+        const location = document.getElementById('m_azad_location').value;
         
-        photoUrl = publicUrlData.publicUrl;
+        const rawPhotoFile = document.getElementById('m_azad_photo').files[0];
+        let photoUrl = '';
+
+        if (rawPhotoFile) {
+          const photoFile = await compressImage(rawPhotoFile);
+          const fileName = `worker_${Date.now()}_${photoFile.name.replace(/\s+/g, '_')}`;
+          const { data: uploadData, error: uploadError } = await _supabase.storage
+            .from('photos')
+            .upload(fileName, photoFile);
+
+          if (uploadError) throw uploadError;
+
+          const { data: publicUrlData } = _supabase.storage
+            .from('photos')
+            .getPublicUrl(fileName);
+          
+          photoUrl = publicUrlData.publicUrl;
+        }
+
+        const payload = {
+          full_name: fullName,
+          email: email,
+          phone_number: phone,
+          trade: trade,
+          location: location,
+          expected_daily_rate: 0,
+          file_uri: photoUrl
+        };
+
+        const { error } = await _supabase.from('azad_workers').insert([payload]);
+        if (error) throw error;
+
+        localStorage.setItem('selected_profile_type', 'azad_workers');
+        localStorage.setItem('selected_profile_data', JSON.stringify(payload));
+        updateNavProfileState();
+
+        closeAzadModal();
+        showSuccessPopup('Done ✅ - Azad worker registration successful.');
+        document.getElementById('azadModal').querySelector('form').reset();
+        loadPublicLeaderboard();
+        if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
+
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false; 
+        btn.innerText = 'Submit Azad Worker Details';
       }
-
-      const payload = {
-        full_name: fullName,
-        email: email,
-        phone_number: phone,
-        trade: trade,
-        location: location,
-        expected_daily_rate: 0,
-        file_uri: photoUrl
-      };
-
-      const { error } = await _supabase.from('azad_workers').insert([payload]);
-      if (error) throw error;
-
-      localStorage.setItem('selected_profile_type', 'azad_workers');
-      localStorage.setItem('selected_profile_data', JSON.stringify(payload));
-      updateNavProfileState();
-
-      closeAzadModal();
-      showSuccessPopup('Done ✅ - Azad worker registration successful.');
-      document.getElementById('azadModal').querySelector('form').reset();
-      loadPublicLeaderboard();
-      if (document.getElementById('admin').style.display === 'block') loadActiveTabData();
-
-    } catch (error) {
-      showToast('Error: ' + error.message, 'error');
-    } finally {
-      btn.disabled = false; 
-      btn.innerText = 'Submit Azad Worker Details';
-    }
+    });
   }
 
   async function submitContactForm(e) {
@@ -3406,22 +3446,24 @@ document.addEventListener('click', async (e) => {
     }
 
     async function checkIn(){
-      setStatus('Capturing pinpoint GPS location & Area name…');
-      try{
-        const loc=await getLocation();
-        active={checkInAt:new Date().toISOString(),location:loc}; 
-        save(); 
-        renderLocation(loc);
-        
-        await saveToSupabase({ id: Date.now(), type: 'Clock In', time: active.checkInAt, location: loc.areaName });
+      checkUserAuthBeforeAction(async () => {
+        setStatus('Capturing pinpoint GPS location & Area name…');
+        try{
+          const loc=await getLocation();
+          active={checkInAt:new Date().toISOString(),location:loc}; 
+          save(); 
+          renderLocation(loc);
+          
+          await saveToSupabase({ id: Date.now(), type: 'Clock In', time: active.checkInAt, location: loc.areaName });
 
-        setStatus('Checked in successfully with pinpoint location!');
-        showToast('🟢 Direct Clock-In Successful!');
-      }catch(e){ 
-        setStatus(e.message); 
-        showToast(e.message, 'error');
-      }
-      finally{ updateBadgeState(); }
+          setStatus('Checked in successfully with pinpoint location!');
+          showToast('🟢 Direct Clock-In Successful!');
+        }catch(e){ 
+          setStatus(e.message); 
+          showToast(e.message, 'error');
+        }
+        finally{ updateBadgeState(); }
+      });
     }
 
     async function checkOut(){
@@ -3429,40 +3471,42 @@ document.addEventListener('click', async (e) => {
         alert('You are not checked in yet!');
         return;
       }
-      setStatus('Capturing check-out location…');
-      let outLoc=null;
-      try{ 
-        outLoc=await getLocation(); 
-        renderLocation(outLoc); 
-      }catch(e){ 
-        setStatus(e.message+' Check-out was not saved.'); 
-        showToast(e.message, 'error');
-        return; 
-      }
+      checkUserAuthBeforeAction(async () => {
+        setStatus('Capturing check-out location…');
+        let outLoc=null;
+        try{ 
+          outLoc=await getLocation(); 
+          renderLocation(outLoc); 
+        }catch(e){ 
+          setStatus(e.message+' Check-out was not saved.'); 
+          showToast(e.message, 'error');
+          return; 
+        }
 
-      const end=new Date(); 
-      const start=new Date(active.checkInAt); 
-      let duration=Math.max(0,end-start);
+        const end=new Date(); 
+        const start=new Date(active.checkInAt); 
+        let duration=Math.max(0,end-start);
 
-      history.unshift({
-        checkInAt:active.checkInAt,
-        checkOutAt:end.toISOString(),
-        durationMs:duration,
-        checkInLocation:active.location,
-        checkOutLocation:outLoc
+        history.unshift({
+          checkInAt:active.checkInAt,
+          checkOutAt:end.toISOString(),
+          durationMs:duration,
+          checkInLocation:active.location,
+          checkOutLocation:outLoc
+        });
+        
+        history=history.slice(0,100); 
+        active=null; 
+        save(); 
+        update(); 
+        renderHistory();
+
+        await saveToSupabase({ id: Date.now(), type: 'Clock Out', time: end.toISOString(), location: outLoc.areaName });
+
+        setStatus('Checked out. Total duty time: '+fmtDuration(duration)+'.');
+        showToast('🔴 Direct Clock-Out Successful!');
+        updateBadgeState();
       });
-      
-      history=history.slice(0,100); 
-      active=null; 
-      save(); 
-      update(); 
-      renderHistory();
-
-      await saveToSupabase({ id: Date.now(), type: 'Clock Out', time: end.toISOString(), location: outLoc.areaName });
-
-      setStatus('Checked out. Total duty time: '+fmtDuration(duration)+'.');
-      showToast('🔴 Direct Clock-Out Successful!');
-      updateBadgeState();
     }
 
     window.performDirectClock = async function(type) {
