@@ -1074,6 +1074,25 @@ textarea{min-height:115px;resize:vertical}
     </div>
   </div>
 </section>
+<!-- DYNAMIC LIVE JOB VACANCIES SECTION -->
+<section style="background: var(--light); padding: 60px 20px; border-bottom: 1px solid var(--border-color);" id="job-vacancies">
+    <div class="container" style="max-width: 1200px; margin: auto;">
+        <div class="section-title" style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--blue2); font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Active Opportunities</span>
+            <h2 style="font-size: 32px; color: var(--text); margin-top: 5px;">Latest Job Vacancies in UAE</h2>
+            <p style="color: var(--muted); max-width: 600px; margin: 10px auto 0;">Explore live manpower requirements posted by companies and employers across UAE emirates.</p>
+        </div>
+        
+        <!-- Live Dynamic Grid Container -->
+        <div id="dynamic-vacancies-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <p style="text-align: center; color: var(--muted); grid-column: span 3;">Loading live job vacancies from database...</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="#leaderboard" style="color: var(--blue2); font-weight: 800; font-size: 14px; text-decoration: underline;">View All Active Listings on Public Board &rarr;</a>
+        </div>
+    </div>
+</section>
 
 <!-- TRUST & COMPLIANCE BADGES SECTION -->
 <section class="reveal-on-scroll" style="background: var(--white); padding: 40px 20px; border-bottom: 1px solid var(--border-color); transition: background 0.3s;">
@@ -4363,6 +4382,60 @@ async function loadLatestTickerLead() {
     console.error(e);
   }
 }
+  // FETCH LIVE JOB VACANCIES DYNAMICALLY FROM SUPABASE
+  async function loadDynamicJobVacancies() {
+    const gridContainer = document.getElementById('dynamic-vacancies-grid');
+    if (!gridContainer) return;
+
+    try {
+        const { data, error } = await _supabase
+            .from('companies')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(6);
+
+        if (error || !data || data.length === 0) {
+            gridContainer.innerHTML = '<p style="text-align: center; color: var(--muted); grid-column: span 3;">No live vacancies posted at the moment. Be the first to post!</p>';
+            return;
+        }
+
+        let html = '';
+        data.forEach(item => {
+            const companyName = item.company_name || 'UAE Company';
+            const location = item.location || 'Dubai, UAE';
+            const details = item.requirement_details || 'Urgent manpower requirement for ongoing projects.';
+            const timeAgo = new Date(item.created_at).toLocaleDateString();
+            const cleanPhone = item.phone ? item.phone.replace(/[^0-9]/g, '') : '';
+
+            html += `
+                <div class="hover-card-effect" style="background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="background: rgba(59, 130, 246, 0.1); color: var(--blue2); font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px;">🏢 ${companyName}</span>
+                            <span style="font-size: 11px; color: var(--muted); font-weight: 600;">${timeAgo}</span>
+                        </div>
+                        <h3 style="font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px;">Manpower Requirement</h3>
+                        <p style="font-size: 13px; color: var(--muted); margin-bottom: 15px; line-height: 1.5;">${details}</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; font-size: 12px; color: var(--text);">
+                            <span style="background: var(--light); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color);"><i class="fa-solid fa-location-dot" style="color: var(--blue);"></i> ${location}</span>
+                            <span style="background: var(--light); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color);"><i class="fa-solid fa-file-shield" style="color: var(--emerald2);"></i> Verified Post</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="openAzadModal()" style="flex: 1; background: var(--blue); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                            Apply Now
+                        </button>
+                        ${cleanPhone ? `<a href="https://wa.me/${cleanPhone}" target="_blank" style="background: #25d366; color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 14px; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-whatsapp"></i></a>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        gridContainer.innerHTML = html;
+    } catch (err) {
+        console.error("Vacancies fetch error:", err);
+    }
+  }
 
 window.addEventListener('DOMContentLoaded', () => {
   loadLatestTickerLead();
