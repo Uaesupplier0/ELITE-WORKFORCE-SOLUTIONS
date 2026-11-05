@@ -4383,9 +4383,10 @@ async function loadLatestTickerLead() {
                         </div>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button onclick="openAzadModal()" style="flex: 1; background: var(--blue); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
-                            Apply Now
+                        <button onclick="handleApplyDirect('${details.substring(0, 30).replace(/'/g, "")}', '${companyName.replace(/'/g, "")}')" style="flex: 1; background: var(--blue); color: #fff; border: 0; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                        Apply Now
                         </button>
+
                         ${cleanPhone ? `<a href="https://wa.me/${cleanPhone}" target="_blank" style="background: #25d366; color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 14px; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-whatsapp"></i></a>` : ''}
                     </div>
                 </div>
