@@ -4343,6 +4343,35 @@ async function loadLatestTickerLead() {
     console.error(e);
   }
 }
+  async function handleApplyDirect(jobTitle, companyName) {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session || !session.user) {
+        document.getElementById('customAlertPopup').style.display = 'flex';
+        return;
+    }
+
+    const user = session.user;
+    const applicantName = user.user_metadata.full_name || user.email.split('@')[0];
+    const applicantEmail = user.email;
+
+    try {
+        const { error } = await _supabase.from('azad_workers').insert([{
+            full_name: applicantName,
+            email: applicantEmail,
+            trade: jobTitle,
+            location: companyName,
+            phone_number: user.user_metadata.phone || '+971500000000'
+        }]);
+
+        if (error) throw error;
+
+        showSuccessPopup("Submit Successfully! Aapka application data record kar liya gaya hai.");
+
+    } catch (err) {
+        showToast('Error: ' + err.message, 'error');
+    }
+}
+
   // FETCH LIVE JOB VACANCIES DYNAMICALLY FROM SUPABASE
   async function loadDynamicJobVacancies() {
     const gridContainer = document.getElementById('dynamic-vacancies-grid');
