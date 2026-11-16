@@ -106,7 +106,17 @@
         }
     }
 </script>
-
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister();
+        console.log('ServiceWorker unregistered');
+      }
+    });
+  }
+</script>
+  
 <style>
 :root{--navy:#061b3a;--blue:#0b3d91;--blue2:#1255b3;--gold:#fbbf24;--gold2:#f59e0b;--emerald:#10b981;--emerald2:#059669;--text:#17233a;--muted:#64748b;--light:#f8fafc;--white:#fff; --card-bg:#fff; --border-color:#e7ebf0;}
 .dark{--navy:#020617;--blue:#1d4ed8;--blue2:#2563eb;--gold:#f59e0b;--gold2:#fbbf24;--emerald:#10b981;--emerald2:#059669;--text:#f8fafc;--muted:#94a3b8;--light:#0f172a;--white:#1e293b; --card-bg:#1e293b; --border-color:#334155;}
